@@ -93,7 +93,7 @@ impl Collector<UniswapXOrder> for UniswapXOrderCollector {
 #[cfg(test)]
 mod tests {
     use crate::collectors::uniswapx_order_collector::UniswapXOrderCollector;
-    use crate::types::Collector;
+    use artemis_core::types::Collector;
     use futures::StreamExt;
     use mockito::{Mock, Server, ServerGuard};
 
