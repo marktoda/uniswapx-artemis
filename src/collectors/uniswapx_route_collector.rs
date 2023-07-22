@@ -186,6 +186,7 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
                 for (batch, route_result) in routes.iter() {
                     if let Ok(route) = route_result {
                         yield RoutedOrder {
+                            // TODO: fix double clone
                             request: batch.clone().clone(),
                             route: route.clone()
                         };

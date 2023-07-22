@@ -195,7 +195,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 order, signature, ..
             } = batch;
             signed_orders.push(SignedOrder {
-                order: Bytes::from(encode_order(&order)),
+                order: Bytes::from(encode_order(order)),
                 sig: Bytes::from_str(signature)?,
             });
         }
@@ -204,12 +204,12 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
             Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
         ]);
-        let call = reactor.execute_batch(
+        let mut call = reactor.execute_batch(
             signed_orders,
             H160::from_str(EXECUTOR_ADDRESS)?,
             Bytes::from(calldata),
         );
-        Ok(call.tx.clone().set_chain_id(CHAIN_ID).clone())
+        Ok(call.tx.set_chain_id(CHAIN_ID).clone())
     }
 
     fn get_order_batches(&self) -> HashMap<TokenInTokenOut, OrderBatchData> {
@@ -230,9 +230,8 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 .fold(Uint::from(0), |sum, output| sum.wrapping_add(output.amount));
 
             // insert new order and update total amount out
-            if !order_batches.contains_key(&token_in_token_out) {
-                order_batches.insert(
-                    token_in_token_out.clone(),
+            if let std::collections::hash_map::Entry::Vacant(e) = order_batches.entry(token_in_token_out.clone()) {
+                e.insert(
                     OrderBatchData {
                         orders: vec![order_data.clone()],
                         amount_in,
@@ -328,7 +327,6 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         match order_status {
             OrderStatus::Done => {
                 self.mark_as_done(&order_hash);
-                ()
             }
             OrderStatus::Open(resolved_order) => {
                 if self.done_orders.contains_key(&order_hash) {

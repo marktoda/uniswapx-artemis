@@ -8,7 +8,6 @@ edition = "2021"
 [dependencies]
 uniswapx-rs = { path = "./crates/uniswapx-rs" }
 bindings-uniswapx = { path = "./crates/bindings-uniswapx" }
-bindings-swaprouter-executor = { path = "./crates/bindings-swaprouter-executor" }
 
 artemis-core = { git = "https://github.com/paradigmxyz/artemis"}
 ethers = { version = "2", features = ["ws", "rustls"]}
@@ -29,3 +28,4 @@ reqwest = "0.11.18"
 alloy-primitives = "0.2.0"
 serde_qs = "0.12.0"
 async-stream = "0.3.5"
+mockito = "1.1.0"
