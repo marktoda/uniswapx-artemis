@@ -6,7 +6,7 @@ Feel free to fork and modify to run any strategies you wish to fill UniswapX ord
 
 # Usage
 
-First you must deploy an executor contract that implements the [IReactor](https://github.com/Uniswap/UniswapX/blob/main/src/interfaces/IReactor.sol) interface. This sample currently uses the provided [SwapRouter02Executor](https://github.com/Uniswap/UniswapX/blob/main/src/sample-executors/SwapRouter02Executor.sol).
+First you must deploy an executor contract that implements the [IReactorCallback](https://github.com/Uniswap/UniswapX/blob/main/src/interfaces/IReactorCallback.sol) interface. This sample currently uses the provided [SwapRouter02Executor](https://github.com/Uniswap/UniswapX/blob/main/src/sample-executors/SwapRouter02Executor.sol).
 
 Then update the address constant in [uniswapx_strategy](./src/strategies/uniswapx_strategy.rs) to point to your executor contract.
 
