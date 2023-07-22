@@ -12,8 +12,11 @@ use async_trait::async_trait;
 use bindings_uniswapx::{
     exclusive_dutch_order_reactor::ExclusiveDutchOrderReactor, shared_types::SignedOrder,
 };
-use ethers::providers::Middleware;
-use ethers::types::{transaction::eip2718::TypedTransaction, Address, Bytes, Filter, H160, U256};
+use ethers::{
+    abi::{ethabi, Token, AbiEncode},
+    providers::Middleware,
+    types::{transaction::eip2718::TypedTransaction, Address, Bytes, Filter, H160, U256},
+};
 use std::collections::HashMap;
 use std::str::FromStr;
 use std::sync::Arc;
@@ -29,8 +32,8 @@ use super::types::{Action, Event};
 const BLOCK_TIME: u64 = 12;
 const DONE_EXPIRY: u64 = 300;
 const REACTOR_ADDRESS: &str = "0xe80bF394d190851E215D5F67B67f8F5A52783F1E";
-pub const EXECUTOR_ADDRESS: &str = "TODO: Fill in router address";
 pub const WETH_ADDRESS: &str = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+pub const EXECUTOR_ADDRESS: &str = "TODO: Fill in swaprouter02 executor address";
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
 struct TokenInTokenOut {
@@ -57,7 +60,7 @@ pub struct UniswapXUniswapFill<M> {
     open_orders: HashMap<String, OrderData>,
     // map of done order hashes to time at which we can safely prune them
     done_orders: HashMap<String, u64>,
-    order_sender: Sender<Vec<OrderBatchData>>,
+    batch_sender: Sender<Vec<OrderBatchData>>,
     route_receiver: Receiver<RoutedOrder>,
 }
 
@@ -196,11 +199,15 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 sig: Bytes::from_str(signature)?,
             });
         }
-        // TODO: abi encode as [tokens to approve, multicall data]
+        // abi encode as [tokens to approve, multicall data]
+        let calldata = ethabi::encode(&[
+            Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
+            Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
+        ]);
         let call = reactor.execute_batch(
             signed_orders,
             H160::from_str(EXECUTOR_ADDRESS)?,
-            Bytes::from_str(&route.method_parameters.calldata)?,
+            Bytes::from(calldata),
         );
         Ok(call.tx.clone().set_chain_id(CHAIN_ID).clone())
     }
@@ -359,7 +366,6 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         let profit_quote = quote.saturating_sub(amount_out_required);
 
         if request.token_out.to_lowercase() == WETH_ADDRESS.to_lowercase() {
-            info!("Profitable trade found: {} ETH", profit_quote);
             return Some(profit_quote);
         }
 

@@ -7,12 +7,12 @@ use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::info;
 use uniswapx_rs::order::{ExclusiveDutchOrder, ResolvedOrder};
 
+use crate::strategies::uniswapx_strategy::EXECUTOR_ADDRESS;
 use artemis_core::types::{Collector, CollectorStream};
 use async_trait::async_trait;
 use futures::lock::Mutex;
 use futures::stream::{FuturesUnordered, StreamExt};
 use reqwest::Client;
-use crate::strategies::uniswapx_strategy::EXECUTOR_ADDRESS;
 
 const ROUTING_API: &str = "https://api.uniswap.org/v1/quote";
 const SLIPPAGE_TOLERANCE: &str = "0.5";
