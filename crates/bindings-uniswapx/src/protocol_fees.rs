@@ -7,183 +7,14 @@ pub use protocol_fees::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod protocol_fees {
-    #[allow(deprecated)]
-    fn __abi() -> ::ethers::core::abi::Abi {
-        ::ethers::core::abi::ethabi::Contract {
-            constructor: ::core::option::Option::None,
-            functions: ::core::convert::From::from([
-                (
-                    ::std::borrow::ToOwned::to_owned("feeController"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("feeController"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("contract IProtocolFeeController",),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("owner"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("owner"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("setProtocolFeeController"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("setProtocolFeeController",),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("_newFeeController"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                    },],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("transferOwnership"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("transferOwnership"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("newOwner"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                    },],
-                ),
-            ]),
-            events: ::core::convert::From::from([
-                (
-                    ::std::borrow::ToOwned::to_owned("OwnershipTransferred"),
-                    ::std::vec![::ethers::core::abi::ethabi::Event {
-                        name: ::std::borrow::ToOwned::to_owned("OwnershipTransferred",),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("user"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: true,
-                            },
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("newOwner"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: true,
-                            },
-                        ],
-                        anonymous: false,
-                    },],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("ProtocolFeeControllerSet"),
-                    ::std::vec![::ethers::core::abi::ethabi::Event {
-                        name: ::std::borrow::ToOwned::to_owned("ProtocolFeeControllerSet",),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("oldFeeController"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: false,
-                            },
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("newFeeController"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: false,
-                            },
-                        ],
-                        anonymous: false,
-                    },],
-                ),
-            ]),
-            errors: ::core::convert::From::from([
-                (
-                    ::std::borrow::ToOwned::to_owned("DuplicateFeeOutput"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("DuplicateFeeOutput"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("duplicateToken"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                    },],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("FeeTooLarge"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("FeeTooLarge"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("token"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("address"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("amount"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("uint256"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("recipient"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("address"),
-                                ),
-                            },
-                        ],
-                    },],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("InvalidFeeToken"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("InvalidFeeToken"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("feeToken"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                    },],
-                ),
-            ]),
-            receive: false,
-            fallback: false,
-        }
-    }
+    #[rustfmt::skip]
+    const __ABI: &str = "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"duplicateToken\",\"type\":\"address\",\"components\":[]}],\"type\":\"error\",\"name\":\"DuplicateFeeOutput\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\",\"components\":[]}],\"type\":\"error\",\"name\":\"FeeTooLarge\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"feeToken\",\"type\":\"address\",\"components\":[]}],\"type\":\"error\",\"name\":\"InvalidFeeToken\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\",\"components\":[],\"indexed\":true},{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\",\"components\":[],\"indexed\":true}],\"type\":\"event\",\"name\":\"OwnershipTransferred\",\"outputs\":[],\"anonymous\":false},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oldFeeController\",\"type\":\"address\",\"components\":[],\"indexed\":false},{\"internalType\":\"address\",\"name\":\"newFeeController\",\"type\":\"address\",\"components\":[],\"indexed\":false}],\"type\":\"event\",\"name\":\"ProtocolFeeControllerSet\",\"outputs\":[],\"anonymous\":false},{\"inputs\":[],\"stateMutability\":\"view\",\"type\":\"function\",\"name\":\"feeController\",\"outputs\":[{\"internalType\":\"contract IProtocolFeeController\",\"name\":\"\",\"type\":\"address\",\"components\":[]}]},{\"inputs\":[],\"stateMutability\":\"view\",\"type\":\"function\",\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\",\"components\":[]}]},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newFeeController\",\"type\":\"address\",\"components\":[]}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"name\":\"setProtocolFeeController\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\",\"components\":[]}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"name\":\"transferOwnership\",\"outputs\":[]}]";
     ///The parsed JSON ABI of the contract.
-    pub static PROTOCOLFEES_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static PROTOCOLFEES_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(||
+    ::ethers::core::utils::__serde_json::from_str(__ABI).expect("ABI is always valid"));
     pub struct ProtocolFees<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for ProtocolFees<M> {
         fn clone(&self) -> Self {
@@ -203,9 +34,7 @@ pub mod protocol_fees {
     }
     impl<M> ::core::fmt::Debug for ProtocolFees<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(ProtocolFees))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(stringify!(ProtocolFees)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> ProtocolFees<M> {
@@ -215,16 +44,21 @@ pub mod protocol_fees {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                PROTOCOLFEES_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    PROTOCOLFEES_ABI.clone(),
+                    client,
+                ),
+            )
         }
         ///Calls the contract's `feeController` (0x6999b377) function
         pub fn fee_controller(
             &self,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::ethers::core::types::Address> {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            ::ethers::core::types::Address,
+        > {
             self.0
                 .method_hash([105, 153, 179, 119], ())
                 .expect("method not found (this should never happen)")
@@ -232,7 +66,10 @@ pub mod protocol_fees {
         ///Calls the contract's `owner` (0x8da5cb5b) function
         pub fn owner(
             &self,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::ethers::core::types::Address> {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            ::ethers::core::types::Address,
+        > {
             self.0
                 .method_hash([141, 165, 203, 91], ())
                 .expect("method not found (this should never happen)")
@@ -258,8 +95,11 @@ pub mod protocol_fees {
         ///Gets the contract's `OwnershipTransferred` event
         pub fn ownership_transferred_filter(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, OwnershipTransferredFilter>
-        {
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            OwnershipTransferredFilter,
+        > {
             self.0.event()
         }
         ///Gets the contract's `ProtocolFeeControllerSet` event
@@ -275,13 +115,16 @@ pub mod protocol_fees {
         /// Returns an `Event` builder for all the events of this contract.
         pub fn events(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, ProtocolFeesEvents>
-        {
-            self.0
-                .event_with_filter(::core::default::Default::default())
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            ProtocolFeesEvents,
+        > {
+            self.0.event_with_filter(::core::default::Default::default())
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for ProtocolFees<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for ProtocolFees<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -295,7 +138,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "DuplicateFeeOutput", abi = "DuplicateFeeOutput(address)")]
     pub struct DuplicateFeeOutput {
@@ -310,7 +153,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "FeeTooLarge", abi = "FeeTooLarge(address,uint256,address)")]
     pub struct FeeTooLarge {
@@ -327,7 +170,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "InvalidFeeToken", abi = "InvalidFeeToken(address)")]
     pub struct InvalidFeeToken {
@@ -348,20 +191,22 @@ pub mod protocol_fees {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(
+                    data,
+                ) {
                 return Ok(Self::RevertString(decoded));
             }
-            if let Ok(decoded) =
-                <DuplicateFeeOutput as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <DuplicateFeeOutput as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::DuplicateFeeOutput(decoded));
             }
-            if let Ok(decoded) = <FeeTooLarge as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded)
+                = <FeeTooLarge as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::FeeTooLarge(decoded));
             }
-            if let Ok(decoded) = <InvalidFeeToken as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded)
+                = <InvalidFeeToken as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::InvalidFeeToken(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -373,8 +218,12 @@ pub mod protocol_fees {
                 Self::DuplicateFeeOutput(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::FeeTooLarge(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::InvalidFeeToken(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::FeeTooLarge(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::InvalidFeeToken(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::RevertString(s) => ::ethers::core::abi::AbiEncode::encode(s),
             }
         }
@@ -384,12 +233,13 @@ pub mod protocol_fees {
             match selector {
                 [0x08, 0xc3, 0x79, 0xa0] => true,
                 _ if selector
-                    == <DuplicateFeeOutput as ::ethers::contract::EthError>::selector() =>
-                {
+                    == <DuplicateFeeOutput as ::ethers::contract::EthError>::selector() => {
                     true
                 }
-                _ if selector == <FeeTooLarge as ::ethers::contract::EthError>::selector() => true,
-                _ if selector == <InvalidFeeToken as ::ethers::contract::EthError>::selector() => {
+                _ if selector
+                    == <FeeTooLarge as ::ethers::contract::EthError>::selector() => true,
+                _ if selector
+                    == <InvalidFeeToken as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ => false,
@@ -399,7 +249,9 @@ pub mod protocol_fees {
     impl ::core::fmt::Display for ProtocolFeesErrors {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
-                Self::DuplicateFeeOutput(element) => ::core::fmt::Display::fmt(element, f),
+                Self::DuplicateFeeOutput(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::FeeTooLarge(element) => ::core::fmt::Display::fmt(element, f),
                 Self::InvalidFeeToken(element) => ::core::fmt::Display::fmt(element, f),
                 Self::RevertString(s) => ::core::fmt::Display::fmt(s, f),
@@ -434,7 +286,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "OwnershipTransferred",
@@ -454,7 +306,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "ProtocolFeeControllerSet",
@@ -486,7 +338,9 @@ pub mod protocol_fees {
     impl ::core::fmt::Display for ProtocolFeesEvents {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
-                Self::OwnershipTransferredFilter(element) => ::core::fmt::Display::fmt(element, f),
+                Self::OwnershipTransferredFilter(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::ProtocolFeeControllerSetFilter(element) => {
                     ::core::fmt::Display::fmt(element, f)
                 }
@@ -512,7 +366,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "feeController", abi = "feeController()")]
     pub struct FeeControllerCall;
@@ -525,7 +379,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "owner", abi = "owner()")]
     pub struct OwnerCall;
@@ -538,7 +392,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "setProtocolFeeController",
@@ -556,7 +410,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "transferOwnership", abi = "transferOwnership(address)")]
     pub struct TransferOwnershipCall {
@@ -575,21 +429,24 @@ pub mod protocol_fees {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) = <FeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <FeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::FeeController(decoded));
             }
-            if let Ok(decoded) = <OwnerCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded)
+                = <OwnerCall as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::Owner(decoded));
             }
-            if let Ok(decoded) =
-                <SetProtocolFeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <SetProtocolFeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(
+                    data,
+                ) {
                 return Ok(Self::SetProtocolFeeController(decoded));
             }
-            if let Ok(decoded) =
-                <TransferOwnershipCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <TransferOwnershipCall as ::ethers::core::abi::AbiDecode>::decode(
+                    data,
+                ) {
                 return Ok(Self::TransferOwnership(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -598,12 +455,16 @@ pub mod protocol_fees {
     impl ::ethers::core::abi::AbiEncode for ProtocolFeesCalls {
         fn encode(self) -> Vec<u8> {
             match self {
-                Self::FeeController(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::FeeController(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::Owner(element) => ::ethers::core::abi::AbiEncode::encode(element),
                 Self::SetProtocolFeeController(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::TransferOwnership(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::TransferOwnership(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
             }
         }
     }
@@ -612,7 +473,9 @@ pub mod protocol_fees {
             match self {
                 Self::FeeController(element) => ::core::fmt::Display::fmt(element, f),
                 Self::Owner(element) => ::core::fmt::Display::fmt(element, f),
-                Self::SetProtocolFeeController(element) => ::core::fmt::Display::fmt(element, f),
+                Self::SetProtocolFeeController(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::TransferOwnership(element) => ::core::fmt::Display::fmt(element, f),
             }
         }
@@ -646,7 +509,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct FeeControllerReturn(pub ::ethers::core::types::Address);
     ///Container type for all return fields from the `owner` function with signature `owner()` and selector `0x8da5cb5b`
@@ -658,7 +521,7 @@ pub mod protocol_fees {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct OwnerReturn(pub ::ethers::core::types::Address);
 }

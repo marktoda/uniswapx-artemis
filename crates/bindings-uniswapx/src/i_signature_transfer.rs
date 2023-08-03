@@ -7,467 +7,19 @@ pub use i_signature_transfer::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod i_signature_transfer {
     pub use super::super::shared_types::*;
-    #[allow(deprecated)]
-    fn __abi() -> ::ethers::core::abi::Abi {
-        ::ethers::core::abi::ethabi::Contract {
-            constructor: ::core::option::Option::None,
-            functions: ::core::convert::From::from([
-                (
-                    ::std::borrow::ToOwned::to_owned("DOMAIN_SEPARATOR"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("DOMAIN_SEPARATOR"),
-                            inputs: ::std::vec![],
-                            outputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::string::String::new(),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::FixedBytes(
-                                        32usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes32"),
-                                    ),
-                                },
-                            ],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                        },
-                    ],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("invalidateUnorderedNonces"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned(
-                                "invalidateUnorderedNonces",
-                            ),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("wordPos"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("uint256"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("mask"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("uint256"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                        },
-                    ],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("nonceBitmap"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("nonceBitmap"),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::string::String::new(),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::string::String::new(),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("uint256"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::string::String::new(),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("uint256"),
-                                    ),
-                                },
-                            ],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                        },
-                    ],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("permitTransferFrom"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("permitTransferFrom"),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("permit"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                        ::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                                ::std::vec![
-                                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                                    ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                                ],
-                                            ),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                        ],
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.PermitTransferFrom",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("transferDetails"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                        ::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Address,
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                        ],
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.SignatureTransferDetails",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("owner"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("signature"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                        },
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned("permitTransferFrom"),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("permit"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                        ::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Array(
-                                                ::std::boxed::Box::new(
-                                                    ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                                        ::std::vec![
-                                                            ::ethers::core::abi::ethabi::ParamType::Address,
-                                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                                        ],
-                                                    ),
-                                                ),
-                                            ),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                        ],
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.PermitBatchTransferFrom",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("transferDetails"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
-                                        ::std::boxed::Box::new(
-                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                                ::std::vec![
-                                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                                    ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                                ],
-                                            ),
-                                        ),
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.SignatureTransferDetails[]",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("owner"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("signature"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                        },
-                    ],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("permitWitnessTransferFrom"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned(
-                                "permitWitnessTransferFrom",
-                            ),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("permit"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                        ::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                                ::std::vec![
-                                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                                    ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                                ],
-                                            ),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                        ],
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.PermitTransferFrom",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("transferDetails"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                        ::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Address,
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                        ],
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.SignatureTransferDetails",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("owner"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("witness"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::FixedBytes(
-                                        32usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes32"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("witnessTypeString"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::String,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("string"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("signature"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                        },
-                        ::ethers::core::abi::ethabi::Function {
-                            name: ::std::borrow::ToOwned::to_owned(
-                                "permitWitnessTransferFrom",
-                            ),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("permit"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                        ::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Array(
-                                                ::std::boxed::Box::new(
-                                                    ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                                        ::std::vec![
-                                                            ::ethers::core::abi::ethabi::ParamType::Address,
-                                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                                        ],
-                                                    ),
-                                                ),
-                                            ),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                        ],
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.PermitBatchTransferFrom",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("transferDetails"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
-                                        ::std::boxed::Box::new(
-                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
-                                                ::std::vec![
-                                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                                    ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                                ],
-                                            ),
-                                        ),
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned(
-                                            "struct ISignatureTransfer.SignatureTransferDetails[]",
-                                        ),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("owner"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("witness"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::FixedBytes(
-                                        32usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes32"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("witnessTypeString"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::String,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("string"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("signature"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("bytes"),
-                                    ),
-                                },
-                            ],
-                            outputs: ::std::vec![],
-                            constant: ::core::option::Option::None,
-                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                        },
-                    ],
-                ),
-            ]),
-            events: ::core::convert::From::from([
-                (
-                    ::std::borrow::ToOwned::to_owned("UnorderedNonceInvalidation"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::Event {
-                            name: ::std::borrow::ToOwned::to_owned(
-                                "UnorderedNonceInvalidation",
-                            ),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::EventParam {
-                                    name: ::std::borrow::ToOwned::to_owned("owner"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    indexed: true,
-                                },
-                                ::ethers::core::abi::ethabi::EventParam {
-                                    name: ::std::borrow::ToOwned::to_owned("word"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    indexed: false,
-                                },
-                                ::ethers::core::abi::ethabi::EventParam {
-                                    name: ::std::borrow::ToOwned::to_owned("mask"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    indexed: false,
-                                },
-                            ],
-                            anonymous: false,
-                        },
-                    ],
-                ),
-            ]),
-            errors: ::core::convert::From::from([
-                (
-                    ::std::borrow::ToOwned::to_owned("InvalidAmount"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::AbiError {
-                            name: ::std::borrow::ToOwned::to_owned("InvalidAmount"),
-                            inputs: ::std::vec![
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("maxAmount"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
-                                        256usize,
-                                    ),
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("uint256"),
-                                    ),
-                                },
-                            ],
-                        },
-                    ],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("LengthMismatch"),
-                    ::std::vec![
-                        ::ethers::core::abi::ethabi::AbiError {
-                            name: ::std::borrow::ToOwned::to_owned("LengthMismatch"),
-                            inputs: ::std::vec![],
-                        },
-                    ],
-                ),
-            ]),
-            receive: false,
-            fallback: false,
-        }
-    }
+    #[rustfmt::skip]
+    const __ABI: &str = "[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"maxAmount\",\"type\":\"uint256\",\"components\":[]}],\"type\":\"error\",\"name\":\"InvalidAmount\",\"outputs\":[]},{\"inputs\":[],\"type\":\"error\",\"name\":\"LengthMismatch\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\",\"components\":[],\"indexed\":true},{\"internalType\":\"uint256\",\"name\":\"word\",\"type\":\"uint256\",\"components\":[],\"indexed\":false},{\"internalType\":\"uint256\",\"name\":\"mask\",\"type\":\"uint256\",\"components\":[],\"indexed\":false}],\"type\":\"event\",\"name\":\"UnorderedNonceInvalidation\",\"outputs\":[],\"anonymous\":false},{\"inputs\":[],\"stateMutability\":\"view\",\"type\":\"function\",\"name\":\"DOMAIN_SEPARATOR\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\",\"components\":[]}]},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"wordPos\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"mask\",\"type\":\"uint256\",\"components\":[]}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"name\":\"invalidateUnorderedNonces\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\",\"components\":[]}],\"stateMutability\":\"view\",\"type\":\"function\",\"name\":\"nonceBitmap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\",\"components\":[]}]},{\"inputs\":[{\"internalType\":\"struct ISignatureTransfer.PermitTransferFrom\",\"name\":\"permit\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"struct ISignatureTransfer.TokenPermissions\",\"name\":\"permitted\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"struct ISignatureTransfer.SignatureTransferDetails\",\"name\":\"transferDetails\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"requestedAmount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\",\"components\":[]}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"name\":\"permitTransferFrom\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"struct ISignatureTransfer.PermitBatchTransferFrom\",\"name\":\"permit\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"struct ISignatureTransfer.TokenPermissions[]\",\"name\":\"permitted\",\"type\":\"tuple[]\",\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"struct ISignatureTransfer.SignatureTransferDetails[]\",\"name\":\"transferDetails\",\"type\":\"tuple[]\",\"components\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"requestedAmount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\",\"components\":[]}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"name\":\"permitTransferFrom\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"struct ISignatureTransfer.PermitTransferFrom\",\"name\":\"permit\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"struct ISignatureTransfer.TokenPermissions\",\"name\":\"permitted\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"struct ISignatureTransfer.SignatureTransferDetails\",\"name\":\"transferDetails\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"requestedAmount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"bytes32\",\"name\":\"witness\",\"type\":\"bytes32\",\"components\":[]},{\"internalType\":\"string\",\"name\":\"witnessTypeString\",\"type\":\"string\",\"components\":[]},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\",\"components\":[]}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"name\":\"permitWitnessTransferFrom\",\"outputs\":[]},{\"inputs\":[{\"internalType\":\"struct ISignatureTransfer.PermitBatchTransferFrom\",\"name\":\"permit\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"struct ISignatureTransfer.TokenPermissions[]\",\"name\":\"permitted\",\"type\":\"tuple[]\",\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"struct ISignatureTransfer.SignatureTransferDetails[]\",\"name\":\"transferDetails\",\"type\":\"tuple[]\",\"components\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"requestedAmount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"bytes32\",\"name\":\"witness\",\"type\":\"bytes32\",\"components\":[]},{\"internalType\":\"string\",\"name\":\"witnessTypeString\",\"type\":\"string\",\"components\":[]},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\",\"components\":[]}],\"stateMutability\":\"nonpayable\",\"type\":\"function\",\"name\":\"permitWitnessTransferFrom\",\"outputs\":[]}]";
     ///The parsed JSON ABI of the contract.
-    pub static ISIGNATURETRANSFER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static ISIGNATURETRANSFER_ABI: ::ethers::contract::Lazy<
+        ::ethers::core::abi::Abi,
+    > = ::ethers::contract::Lazy::new(|| {
+        ::ethers::core::utils::__serde_json::from_str(__ABI)
+            .expect("ABI is always valid")
+    });
     pub struct ISignatureTransfer<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for ISignatureTransfer<M> {
         fn clone(&self) -> Self {
@@ -487,9 +39,7 @@ pub mod i_signature_transfer {
     }
     impl<M> ::core::fmt::Debug for ISignatureTransfer<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(ISignatureTransfer))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(stringify!(ISignatureTransfer)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> ISignatureTransfer<M> {
@@ -499,14 +49,18 @@ pub mod i_signature_transfer {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                ISIGNATURETRANSFER_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    ISIGNATURETRANSFER_ABI.clone(),
+                    client,
+                ),
+            )
         }
         ///Calls the contract's `DOMAIN_SEPARATOR` (0x3644e515) function
-        pub fn domain_separator(&self) -> ::ethers::contract::builders::ContractCall<M, [u8; 32]> {
+        pub fn domain_separator(
+            &self,
+        ) -> ::ethers::contract::builders::ContractCall<M, [u8; 32]> {
             self.0
                 .method_hash([54, 68, 229, 21], ())
                 .expect("method not found (this should never happen)")
@@ -627,13 +181,11 @@ pub mod i_signature_transfer {
             M,
             UnorderedNonceInvalidationFilter,
         > {
-            self.0
-                .event_with_filter(::core::default::Default::default())
+            self.0.event_with_filter(::core::default::Default::default())
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for ISignatureTransfer<M>
-    {
+    for ISignatureTransfer<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -647,7 +199,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "InvalidAmount", abi = "InvalidAmount(uint256)")]
     pub struct InvalidAmount {
@@ -662,7 +214,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "LengthMismatch", abi = "LengthMismatch()")]
     pub struct LengthMismatch;
@@ -680,15 +232,18 @@ pub mod i_signature_transfer {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(
+                    data,
+                ) {
                 return Ok(Self::RevertString(decoded));
             }
-            if let Ok(decoded) = <InvalidAmount as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded)
+                = <InvalidAmount as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::InvalidAmount(decoded));
             }
-            if let Ok(decoded) = <LengthMismatch as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded)
+                = <LengthMismatch as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::LengthMismatch(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -697,8 +252,12 @@ pub mod i_signature_transfer {
     impl ::ethers::core::abi::AbiEncode for ISignatureTransferErrors {
         fn encode(self) -> ::std::vec::Vec<u8> {
             match self {
-                Self::InvalidAmount(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::LengthMismatch(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::InvalidAmount(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::LengthMismatch(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::RevertString(s) => ::ethers::core::abi::AbiEncode::encode(s),
             }
         }
@@ -707,10 +266,12 @@ pub mod i_signature_transfer {
         fn valid_selector(selector: [u8; 4]) -> bool {
             match selector {
                 [0x08, 0xc3, 0x79, 0xa0] => true,
-                _ if selector == <InvalidAmount as ::ethers::contract::EthError>::selector() => {
+                _ if selector
+                    == <InvalidAmount as ::ethers::contract::EthError>::selector() => {
                     true
                 }
-                _ if selector == <LengthMismatch as ::ethers::contract::EthError>::selector() => {
+                _ if selector
+                    == <LengthMismatch as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ => false,
@@ -749,7 +310,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "UnorderedNonceInvalidation",
@@ -770,7 +331,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "DOMAIN_SEPARATOR", abi = "DOMAIN_SEPARATOR()")]
     pub struct DomainSeparatorCall;
@@ -783,7 +344,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "invalidateUnorderedNonces",
@@ -802,7 +363,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "nonceBitmap", abi = "nonceBitmap(address,uint256)")]
     pub struct NonceBitmapCall(
@@ -818,7 +379,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "permitTransferFrom",
@@ -839,7 +400,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "permitTransferFrom",
@@ -860,7 +421,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "permitWitnessTransferFrom",
@@ -883,14 +444,13 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "permitWitnessTransferFrom",
         abi = "permitWitnessTransferFrom(((address,uint256)[],uint256,uint256),(address,uint256)[],address,bytes32,string,bytes)"
     )]
-    pub struct PermitWitnessTransferFromWithPermitAndTransferDetailsAndOwnerAndWitnessAndWitnessTypeStringAndSignatureCall
-    {
+    pub struct PermitWitnessTransferFromWithPermitAndTransferDetailsAndOwnerAndWitnessAndWitnessTypeStringAndSignatureCall {
         pub permit: PermitBatchTransferFrom,
         pub transfer_details: ::std::vec::Vec<SignatureTransferDetails>,
         pub owner: ::ethers::core::types::Address,
@@ -918,22 +478,24 @@ pub mod i_signature_transfer {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <DomainSeparatorCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <DomainSeparatorCall as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::DomainSeparator(decoded));
             }
-            if let Ok(decoded) =
-                <InvalidateUnorderedNoncesCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <InvalidateUnorderedNoncesCall as ::ethers::core::abi::AbiDecode>::decode(
+                    data,
+                ) {
                 return Ok(Self::InvalidateUnorderedNonces(decoded));
             }
-            if let Ok(decoded) = <NonceBitmapCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded)
+                = <NonceBitmapCall as ::ethers::core::abi::AbiDecode>::decode(data) {
                 return Ok(Self::NonceBitmap(decoded));
             }
-            if let Ok(decoded) =
-                <PermitTransferFromCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <PermitTransferFromCall as ::ethers::core::abi::AbiDecode>::decode(
+                    data,
+                ) {
                 return Ok(Self::PermitTransferFrom(decoded));
             }
             if let Ok(decoded)
@@ -946,9 +508,10 @@ pub mod i_signature_transfer {
                     ),
                 );
             }
-            if let Ok(decoded) =
-                <PermitWitnessTransferFromCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded)
+                = <PermitWitnessTransferFromCall as ::ethers::core::abi::AbiDecode>::decode(
+                    data,
+                ) {
                 return Ok(Self::PermitWitnessTransferFrom(decoded));
             }
             if let Ok(decoded)
@@ -1019,7 +582,8 @@ pub mod i_signature_transfer {
             Self::DomainSeparator(value)
         }
     }
-    impl ::core::convert::From<InvalidateUnorderedNoncesCall> for ISignatureTransferCalls {
+    impl ::core::convert::From<InvalidateUnorderedNoncesCall>
+    for ISignatureTransferCalls {
         fn from(value: InvalidateUnorderedNoncesCall) -> Self {
             Self::InvalidateUnorderedNonces(value)
         }
@@ -1034,18 +598,19 @@ pub mod i_signature_transfer {
             Self::PermitTransferFrom(value)
         }
     }
-    impl
-        ::core::convert::From<
-            PermitTransferFromWithPermitAndTransferDetailsAndOwnerAndSignatureCall,
-        > for ISignatureTransferCalls
-    {
+    impl ::core::convert::From<
+        PermitTransferFromWithPermitAndTransferDetailsAndOwnerAndSignatureCall,
+    > for ISignatureTransferCalls {
         fn from(
             value: PermitTransferFromWithPermitAndTransferDetailsAndOwnerAndSignatureCall,
         ) -> Self {
-            Self::PermitTransferFromWithPermitAndTransferDetailsAndOwnerAndSignature(value)
+            Self::PermitTransferFromWithPermitAndTransferDetailsAndOwnerAndSignature(
+                value,
+            )
         }
     }
-    impl ::core::convert::From<PermitWitnessTransferFromCall> for ISignatureTransferCalls {
+    impl ::core::convert::From<PermitWitnessTransferFromCall>
+    for ISignatureTransferCalls {
         fn from(value: PermitWitnessTransferFromCall) -> Self {
             Self::PermitWitnessTransferFrom(value)
         }
@@ -1070,7 +635,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct DomainSeparatorReturn(pub [u8; 32]);
     ///Container type for all return fields from the `nonceBitmap` function with signature `nonceBitmap(address,uint256)` and selector `0x4fe02b44`
@@ -1082,7 +647,7 @@ pub mod i_signature_transfer {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct NonceBitmapReturn(pub ::ethers::core::types::U256);
 }

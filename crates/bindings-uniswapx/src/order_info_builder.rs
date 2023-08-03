@@ -7,33 +7,259 @@ pub use order_info_builder::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod order_info_builder {
-    #[allow(deprecated)]
-    fn __abi() -> ::ethers::core::abi::Abi {
-        ::ethers::core::abi::ethabi::Contract {
-            constructor: ::core::option::Option::None,
-            functions: ::std::collections::BTreeMap::new(),
-            events: ::std::collections::BTreeMap::new(),
-            errors: ::std::collections::BTreeMap::new(),
-            receive: false,
-            fallback: false,
-        }
-    }
+    #[rustfmt::skip]
+    const __ABI: &str = "[]";
     ///The parsed JSON ABI of the contract.
-    pub static ORDERINFOBUILDER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static ORDERINFOBUILDER_ABI: ::ethers::contract::Lazy<
+        ::ethers::core::abi::Abi,
+    > = ::ethers::contract::Lazy::new(|| {
+        ::ethers::core::utils::__serde_json::from_str(__ABI)
+            .expect("ABI is always valid")
+    });
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x8F\xA2>\x8F\xAE\x11A\x1E\xE35\xB8\xBB\xDF\xAE\x9F\xC5w\xFF-\xBF\x06K\xB1\xE6\x9D\x14d\xC4q\xE8&6dsolcC\0\x08\x13\x003";
-    /// The bytecode of the contract.
-    pub static ORDERINFOBUILDER_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    const __BYTECODE: &[u8] = &[
+        96,
+        86,
+        96,
+        55,
+        96,
+        11,
+        130,
+        130,
+        130,
+        57,
+        128,
+        81,
+        96,
+        0,
+        26,
+        96,
+        115,
+        20,
+        96,
+        42,
+        87,
+        99,
+        78,
+        72,
+        123,
+        113,
+        96,
+        224,
+        27,
+        96,
+        0,
+        82,
+        96,
+        0,
+        96,
+        4,
+        82,
+        96,
+        36,
+        96,
+        0,
+        253,
+        91,
+        48,
+        96,
+        0,
+        82,
+        96,
+        115,
+        129,
+        83,
+        130,
+        129,
+        243,
+        254,
+        115,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        48,
+        20,
+        96,
+        128,
+        96,
+        64,
+        82,
+        96,
+        0,
+        128,
+        253,
+        254,
+        162,
+        100,
+        105,
+        112,
+        102,
+        115,
+        88,
+        34,
+        18,
+        32,
+        176,
+        14,
+        128,
+        80,
+        2,
+        158,
+        71,
+        94,
+        190,
+        103,
+        245,
+        150,
+        176,
+        99,
+        228,
+        62,
+        161,
+        86,
+        249,
+        17,
+        25,
+        125,
+        222,
+        173,
+        137,
+        105,
+        154,
+        154,
+        6,
+        175,
+        12,
+        52,
+        100,
+        115,
+        111,
+        108,
+        99,
+        67,
+        0,
+        8,
+        19,
+        0,
+        51,
+    ];
+    ///The bytecode of the contract.
+    pub static ORDERINFOBUILDER_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x8F\xA2>\x8F\xAE\x11A\x1E\xE35\xB8\xBB\xDF\xAE\x9F\xC5w\xFF-\xBF\x06K\xB1\xE6\x9D\x14d\xC4q\xE8&6dsolcC\0\x08\x13\x003";
-    /// The deployed bytecode of the contract.
-    pub static ORDERINFOBUILDER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    const __DEPLOYED_BYTECODE: &[u8] = &[
+        115,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        48,
+        20,
+        96,
+        128,
+        96,
+        64,
+        82,
+        96,
+        0,
+        128,
+        253,
+        254,
+        162,
+        100,
+        105,
+        112,
+        102,
+        115,
+        88,
+        34,
+        18,
+        32,
+        176,
+        14,
+        128,
+        80,
+        2,
+        158,
+        71,
+        94,
+        190,
+        103,
+        245,
+        150,
+        176,
+        99,
+        228,
+        62,
+        161,
+        86,
+        249,
+        17,
+        25,
+        125,
+        222,
+        173,
+        137,
+        105,
+        154,
+        154,
+        6,
+        175,
+        12,
+        52,
+        100,
+        115,
+        111,
+        108,
+        99,
+        67,
+        0,
+        8,
+        19,
+        0,
+        51,
+    ];
+    ///The deployed bytecode of the contract.
+    pub static ORDERINFOBUILDER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct OrderInfoBuilder<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for OrderInfoBuilder<M> {
         fn clone(&self) -> Self {
@@ -53,9 +279,7 @@ pub mod order_info_builder {
     }
     impl<M> ::core::fmt::Debug for OrderInfoBuilder<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(OrderInfoBuilder))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(stringify!(OrderInfoBuilder)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> OrderInfoBuilder<M> {
@@ -65,11 +289,13 @@ pub mod order_info_builder {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                ORDERINFOBUILDER_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    ORDERINFOBUILDER_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -112,8 +338,7 @@ pub mod order_info_builder {
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for OrderInfoBuilder<M>
-    {
+    for OrderInfoBuilder<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
