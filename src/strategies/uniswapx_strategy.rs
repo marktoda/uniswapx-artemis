@@ -199,9 +199,11 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 sig: Bytes::from_str(signature)?,
             });
         }
-        // abi encode as [tokens to approve, multicall data]
+        // abi encode as [tokensToApproveForSwapRouter02, tokensToApproveForReactor, multicall data]
         let calldata = ethabi::encode(&[
             Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
+            // TODO: fix for multiple outputs
+            Token::Array(vec![Token::Address(H160::from_str(&request.token_out)?)]),
             Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
         ]);
         let mut call = fill_contract.execute_batch(
