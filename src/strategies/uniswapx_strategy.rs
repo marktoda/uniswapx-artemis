@@ -212,29 +212,22 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         // check token approvals
         let token_in_contract = ERC20::new(H160::from_str(&request.token_in)?, self.client.clone());
         let token_out_contract = ERC20::new(H160::from_str(&request.token_out)?, self.client.clone());
-        // if token_in allowance is less than half of max uint256, approve
         let allowance_in = token_in_contract
             .allowance(
                 H160::from_str(EXECUTOR_ADDRESS)?,
                 H160::from_str(SWAPROUTER_02_ADDRESS)?,
             )
             .await?;
-        info!("allowance_in: {}", allowance_in);
         if allowance_in < U256::MAX / 2 {
-            info!("< max uint/2");
-            // push token_in to tokens_in_to_approve
             tokens_to_approve_to_swap_router02.push(Token::Address(H160::from_str(&request.token_in)?));
         }
-        // if token_out allowance is less than half of max uint256, approve
         let allowance_out = token_out_contract
             .allowance(
                 H160::from_str(EXECUTOR_ADDRESS)?,
                 H160::from_str(REACTOR_ADDRESS)?,
             )
             .await?;
-        info!("allowance_out: {}", allowance_out);
         if allowance_out < U256::MAX / 2 {
-            info!("< max uint/2");
             tokens_to_approve_to_reactor.push(Token::Address(H160::from_str(&request.token_out)?));
         }
         // abi encode as [tokensToApproveForSwapRouter02, tokensToApproveForReactor, multicall data]
