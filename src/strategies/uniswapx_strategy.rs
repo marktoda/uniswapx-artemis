@@ -10,7 +10,8 @@ use artemis_core::executors::mempool_executor::{GasBidInfo, SubmitTxToMempool};
 use artemis_core::types::Strategy;
 use async_trait::async_trait;
 use bindings_uniswapx::{
-    swap_router_02_executor::SwapRouter02Executor, shared_types::SignedOrder
+    swap_router_02_executor::SwapRouter02Executor, shared_types::SignedOrder,
+    erc20::ERC20,
 };
 use ethers::{
     abi::{ethabi, Token, AbiEncode},
@@ -26,14 +27,16 @@ use tracing::{error, info};
 use uniswapx_rs::order::{
     decode_order, encode_order, ExclusiveDutchOrder, OrderResolution, ResolvedOrder,
 };
+use std::env;
 
 use super::types::{Action, Event};
 
 const BLOCK_TIME: u64 = 12;
 const DONE_EXPIRY: u64 = 300;
-const REACTOR_ADDRESS: &str = "0x6000da47483062A0D734Ba3dc7576Ce6A0B645C4";
+const REACTOR_ADDRESS: &str = "0x6000da47483062A0D734Ba3dc7576Ce6A0B645C4"; 
+pub const SWAPROUTER_02_ADDRESS: &str = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
 pub const WETH_ADDRESS: &str = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
-pub const EXECUTOR_ADDRESS: &str = "TODO: Fill in swaprouter02 executor address";
+pub const EXECUTOR_ADDRESS: &str = env!("EXECUTOR_ADDRESS", "$EXECUTOR_ADDRESS is not set");
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
 struct TokenInTokenOut {
@@ -72,6 +75,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         receiver: Receiver<RoutedOrder>,
     ) -> Self {
         info!("syncing state");
+        info!("EXECUTOR_ADDRESS: {}", EXECUTOR_ADDRESS);
 
         Self {
             client,
@@ -141,13 +145,13 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             info!(
                 "Sending trade: num trades: {} routed quote: {}, batch needs: {}, profit: {} wei",
                 orders.len(),
-                event.route.quote,
+                event.route.quote_gas_adjusted,
                 amount_out_required,
                 profit
             );
 
             return Some(Action::SubmitTx(SubmitTxToMempool {
-                tx: self.build_fill(event).ok()?,
+                tx: self.build_fill(event).await.ok().unwrap(),
                 gas_bid_info: Some(GasBidInfo {
                     bid_percentage: self.bid_percentage,
                     total_profit: profit,
@@ -186,7 +190,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
     }
 
     // builds a transaction to fill an order
-    fn build_fill(&self, RoutedOrder { request, route }: RoutedOrder) -> Result<TypedTransaction> {
+    async fn build_fill(&self, RoutedOrder { request, route }: RoutedOrder) -> Result<TypedTransaction> {
         let fill_contract =
             SwapRouter02Executor::new(H160::from_str(EXECUTOR_ADDRESS)?, self.client.clone());
         let mut signed_orders: Vec<SignedOrder> = Vec::new();
@@ -199,12 +203,46 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 sig: Bytes::from_str(signature)?,
             });
         }
+        // slice off function selector
+        let cleaned_method_paramaters = &route.method_parameters.calldata[10..];
+        info!("cleaned_method_paramaters: {}", cleaned_method_paramaters);
+
+        let mut tokens_to_approve_to_swap_router02 = Vec::new();
+        let mut tokens_to_approve_to_reactor = Vec::new();
+        // check token approvals
+        let token_in_contract = ERC20::new(H160::from_str(&request.token_in)?, self.client.clone());
+        let token_out_contract = ERC20::new(H160::from_str(&request.token_out)?, self.client.clone());
+        // if token_in allowance is less than half of max uint256, approve
+        let allowance_in = token_in_contract
+            .allowance(
+                H160::from_str(EXECUTOR_ADDRESS)?,
+                H160::from_str(SWAPROUTER_02_ADDRESS)?,
+            )
+            .await?;
+        info!("allowance_in: {}", allowance_in);
+        if allowance_in < U256::MAX / 2 {
+            info!("< max uint/2");
+            // push token_in to tokens_in_to_approve
+            tokens_to_approve_to_swap_router02.push(Token::Address(H160::from_str(&request.token_in)?));
+        }
+        // if token_out allowance is less than half of max uint256, approve
+        let allowance_out = token_out_contract
+            .allowance(
+                H160::from_str(EXECUTOR_ADDRESS)?,
+                H160::from_str(REACTOR_ADDRESS)?,
+            )
+            .await?;
+        info!("allowance_out: {}", allowance_out);
+        if allowance_out < U256::MAX / 2 {
+            info!("< max uint/2");
+            tokens_to_approve_to_reactor.push(Token::Address(H160::from_str(&request.token_out)?));
+        }
         // abi encode as [tokensToApproveForSwapRouter02, tokensToApproveForReactor, multicall data]
         let calldata = ethabi::encode(&[
-            Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
+            Token::Array(tokens_to_approve_to_swap_router02),
             // TODO: fix for multiple outputs
-            Token::Array(vec![Token::Address(H160::from_str(&request.token_out)?)]),
-            Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
+            Token::Array(tokens_to_approve_to_reactor),
+            Token::Bytes(Bytes::from_str(&cleaned_method_paramaters)?.encode()),
         ]);
         let mut call = fill_contract.execute_batch(
             signed_orders,

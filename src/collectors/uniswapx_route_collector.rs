@@ -109,6 +109,7 @@ pub struct MethodParameters {
 #[serde(rename_all = "camelCase")]
 pub struct OrderRoute {
     pub quote: String,
+    pub quote_gas_adjusted: String,
     pub gas_price_wei: String,
     pub gas_use_estimate_quote: String,
     pub gas_use_estimate: String,
@@ -185,6 +186,7 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
 
                 for (batch, route_result) in routes.iter() {
                     if let Ok(route) = route_result {
+                        info!("Found route: {:?}", route);
                         yield RoutedOrder {
                             // TODO: fix double clone
                             request: batch.clone().clone(),
