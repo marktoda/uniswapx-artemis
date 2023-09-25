@@ -81,7 +81,7 @@ async fn main() -> Result<()> {
     );
 
     // Set up engine.
-    let mut engine: Engine<Event, Action> = Engine::default();
+    let mut engine = Engine::default();
 
     // Set up block collector.
     let block_collector = Box::new(BlockCollector::new(provider.clone()));
