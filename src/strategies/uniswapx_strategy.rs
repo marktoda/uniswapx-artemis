@@ -13,7 +13,7 @@ use bindings_uniswapx::{
     exclusive_dutch_order_reactor::ExclusiveDutchOrderReactor, shared_types::SignedOrder,
 };
 use ethers::{
-    abi::{ethabi, Token, AbiEncode},
+    abi::{ethabi, AbiEncode, Token},
     providers::Middleware,
     types::{transaction::eip2718::TypedTransaction, Address, Bytes, Filter, H160, U256},
 };
@@ -230,18 +230,18 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 .fold(Uint::from(0), |sum, output| sum.wrapping_add(output.amount));
 
             // insert new order and update total amount out
-            if let std::collections::hash_map::Entry::Vacant(e) = order_batches.entry(token_in_token_out.clone()) {
-                e.insert(
-                    OrderBatchData {
-                        orders: vec![order_data.clone()],
-                        amount_in,
-                        amount_out_required: amount_out,
-                        token_in: order_data.resolved.input.token.clone(),
-                        token_out: order_data.resolved.outputs[0].token.clone(),
-                    },
-                );
+            if let std::collections::hash_map::Entry::Vacant(e) =
+                order_batches.entry(token_in_token_out.clone())
+            {
+                e.insert(OrderBatchData {
+                    orders: vec![order_data.clone()],
+                    amount_in,
+                    amount_out_required: amount_out,
+                    token_in: order_data.resolved.input.token.clone(),
+                    token_out: order_data.resolved.outputs[0].token.clone(),
+                });
             } else {
-                let mut order_batch_data = order_batches.get_mut(&token_in_token_out).unwrap();
+                let order_batch_data = order_batches.get_mut(&token_in_token_out).unwrap();
                 order_batch_data.orders.push(order_data.clone());
                 order_batch_data.amount_in = order_batch_data.amount_in.wrapping_add(amount_in);
                 order_batch_data.amount_out_required = order_batch_data

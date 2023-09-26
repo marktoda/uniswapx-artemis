@@ -182,13 +182,11 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
                     }).collect();
 
                 let routes: Vec<_> = tasks.collect().await;
-
-                for (batch, route_result) in routes.iter() {
+                for (batch, route_result) in routes {
                     if let Ok(route) = route_result {
                         yield RoutedOrder {
-                            // TODO: fix double clone
-                            request: batch.clone().clone(),
-                            route: route.clone()
+                            request: batch.clone(),
+                            route: route,
                         };
                     }
                 }
