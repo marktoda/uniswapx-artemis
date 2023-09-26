@@ -7,76 +7,19 @@ pub use i_protocol_fee_controller::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod i_protocol_fee_controller {
     pub use super::super::shared_types::*;
-    #[allow(deprecated)]
-    fn __abi() -> ::ethers::core::abi::Abi {
-        ::ethers::core::abi::ethabi::Contract {
-            constructor: ::core::option::Option::None,
-            functions: ::core::convert::From::from([(
-                ::std::borrow::ToOwned::to_owned("getFeeOutputs"),
-                ::std::vec![::ethers::core::abi::ethabi::Function {
-                    name: ::std::borrow::ToOwned::to_owned("getFeeOutputs"),
-                    inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                        name: ::std::borrow::ToOwned::to_owned("order"),
-                        kind: ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                            ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                ::ethers::core::abi::ethabi::ParamType::Address,
-                                ::ethers::core::abi::ethabi::ParamType::Address,
-                                ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                ::ethers::core::abi::ethabi::ParamType::Address,
-                                ::ethers::core::abi::ethabi::ParamType::Bytes,
-                            ],),
-                            ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                ::ethers::core::abi::ethabi::ParamType::Address,
-                                ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                            ],),
-                            ::ethers::core::abi::ethabi::ParamType::Array(::std::boxed::Box::new(
-                                ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                    ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                ],),
-                            ),),
-                            ::ethers::core::abi::ethabi::ParamType::Bytes,
-                            ::ethers::core::abi::ethabi::ParamType::FixedBytes(32usize),
-                        ],),
-                        internal_type: ::core::option::Option::Some(
-                            ::std::borrow::ToOwned::to_owned("struct ResolvedOrder"),
-                        ),
-                    },],
-                    outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                        name: ::std::string::String::new(),
-                        kind: ::ethers::core::abi::ethabi::ParamType::Array(
-                            ::std::boxed::Box::new(::ethers::core::abi::ethabi::ParamType::Tuple(
-                                ::std::vec![
-                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                    ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                    ::ethers::core::abi::ethabi::ParamType::Address,
-                                ],
-                            ),),
-                        ),
-                        internal_type: ::core::option::Option::Some(
-                            ::std::borrow::ToOwned::to_owned("struct OutputToken[]"),
-                        ),
-                    },],
-                    constant: ::core::option::Option::None,
-                    state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                },],
-            )]),
-            events: ::std::collections::BTreeMap::new(),
-            errors: ::std::collections::BTreeMap::new(),
-            receive: false,
-            fallback: false,
-        }
-    }
+    #[rustfmt::skip]
+    const __ABI: &str = "[{\"inputs\":[{\"internalType\":\"struct ResolvedOrder\",\"name\":\"order\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"struct OrderInfo\",\"name\":\"info\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"contract IReactor\",\"name\":\"reactor\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"address\",\"name\":\"swapper\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"contract IValidationCallback\",\"name\":\"additionalValidationContract\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"bytes\",\"name\":\"additionalValidationData\",\"type\":\"bytes\",\"components\":[]}]},{\"internalType\":\"struct InputToken\",\"name\":\"input\",\"type\":\"tuple\",\"components\":[{\"internalType\":\"contract ERC20\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"maxAmount\",\"type\":\"uint256\",\"components\":[]}]},{\"internalType\":\"struct OutputToken[]\",\"name\":\"outputs\",\"type\":\"tuple[]\",\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\",\"components\":[]}]},{\"internalType\":\"bytes\",\"name\":\"sig\",\"type\":\"bytes\",\"components\":[]},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\",\"components\":[]}]}],\"stateMutability\":\"view\",\"type\":\"function\",\"name\":\"getFeeOutputs\",\"outputs\":[{\"internalType\":\"struct OutputToken[]\",\"name\":\"\",\"type\":\"tuple[]\",\"components\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\",\"components\":[]},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\",\"components\":[]},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\",\"components\":[]}]}]}]";
     ///The parsed JSON ABI of the contract.
-    pub static IPROTOCOLFEECONTROLLER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static IPROTOCOLFEECONTROLLER_ABI: ::ethers::contract::Lazy<
+        ::ethers::core::abi::Abi,
+    > = ::ethers::contract::Lazy::new(|| {
+        ::ethers::core::utils::__serde_json::from_str(__ABI)
+            .expect("ABI is always valid")
+    });
     pub struct IProtocolFeeController<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for IProtocolFeeController<M> {
         fn clone(&self) -> Self {
@@ -96,7 +39,7 @@ pub mod i_protocol_fee_controller {
     }
     impl<M> ::core::fmt::Debug for IProtocolFeeController<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(IProtocolFeeController))
+            f.debug_tuple(stringify!(IProtocolFeeController))
                 .field(&self.address())
                 .finish()
         }
@@ -108,25 +51,29 @@ pub mod i_protocol_fee_controller {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                IPROTOCOLFEECONTROLLER_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    IPROTOCOLFEECONTROLLER_ABI.clone(),
+                    client,
+                ),
+            )
         }
         ///Calls the contract's `getFeeOutputs` (0x8aa6cf03) function
         pub fn get_fee_outputs(
             &self,
             order: ResolvedOrder,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::std::vec::Vec<OutputToken>> {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            ::std::vec::Vec<OutputToken>,
+        > {
             self.0
                 .method_hash([138, 166, 207, 3], (order,))
                 .expect("method not found (this should never happen)")
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for IProtocolFeeController<M>
-    {
+    for IProtocolFeeController<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -140,7 +87,7 @@ pub mod i_protocol_fee_controller {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "getFeeOutputs",
@@ -158,7 +105,7 @@ pub mod i_protocol_fee_controller {
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct GetFeeOutputsReturn(pub ::std::vec::Vec<OutputToken>);
 }

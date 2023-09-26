@@ -7,33 +7,255 @@ pub use std_style::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod std_style {
-    #[allow(deprecated)]
-    fn __abi() -> ::ethers::core::abi::Abi {
-        ::ethers::core::abi::ethabi::Contract {
-            constructor: ::core::option::Option::None,
-            functions: ::std::collections::BTreeMap::new(),
-            events: ::std::collections::BTreeMap::new(),
-            errors: ::std::collections::BTreeMap::new(),
-            receive: false,
-            fallback: false,
-        }
-    }
+    #[rustfmt::skip]
+    const __ABI: &str = "[]";
     ///The parsed JSON ABI of the contract.
-    pub static STDSTYLE_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static STDSTYLE_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(||
+    ::ethers::core::utils::__serde_json::from_str(__ABI).expect("ABI is always valid"));
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xE1dX\x1Amv^7\xCC\xC8\x9D\x7Fn\xF5\x17^\x14\x94\x0E\xD7\xB9\xBD\xE3'@\xCCi\xBD\xEF|CydsolcC\0\x08\x13\x003";
-    /// The bytecode of the contract.
-    pub static STDSTYLE_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    const __BYTECODE: &[u8] = &[
+        96,
+        86,
+        96,
+        55,
+        96,
+        11,
+        130,
+        130,
+        130,
+        57,
+        128,
+        81,
+        96,
+        0,
+        26,
+        96,
+        115,
+        20,
+        96,
+        42,
+        87,
+        99,
+        78,
+        72,
+        123,
+        113,
+        96,
+        224,
+        27,
+        96,
+        0,
+        82,
+        96,
+        0,
+        96,
+        4,
+        82,
+        96,
+        36,
+        96,
+        0,
+        253,
+        91,
+        48,
+        96,
+        0,
+        82,
+        96,
+        115,
+        129,
+        83,
+        130,
+        129,
+        243,
+        254,
+        115,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        48,
+        20,
+        96,
+        128,
+        96,
+        64,
+        82,
+        96,
+        0,
+        128,
+        253,
+        254,
+        162,
+        100,
+        105,
+        112,
+        102,
+        115,
+        88,
+        34,
+        18,
+        32,
+        2,
+        255,
+        79,
+        251,
+        110,
+        101,
+        174,
+        235,
+        133,
+        61,
+        50,
+        234,
+        111,
+        103,
+        195,
+        163,
+        48,
+        176,
+        118,
+        182,
+        161,
+        108,
+        166,
+        43,
+        133,
+        125,
+        39,
+        69,
+        139,
+        87,
+        170,
+        161,
+        100,
+        115,
+        111,
+        108,
+        99,
+        67,
+        0,
+        8,
+        19,
+        0,
+        51,
+    ];
+    ///The bytecode of the contract.
+    pub static STDSTYLE_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xE1dX\x1Amv^7\xCC\xC8\x9D\x7Fn\xF5\x17^\x14\x94\x0E\xD7\xB9\xBD\xE3'@\xCCi\xBD\xEF|CydsolcC\0\x08\x13\x003";
-    /// The deployed bytecode of the contract.
-    pub static STDSTYLE_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    const __DEPLOYED_BYTECODE: &[u8] = &[
+        115,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        48,
+        20,
+        96,
+        128,
+        96,
+        64,
+        82,
+        96,
+        0,
+        128,
+        253,
+        254,
+        162,
+        100,
+        105,
+        112,
+        102,
+        115,
+        88,
+        34,
+        18,
+        32,
+        2,
+        255,
+        79,
+        251,
+        110,
+        101,
+        174,
+        235,
+        133,
+        61,
+        50,
+        234,
+        111,
+        103,
+        195,
+        163,
+        48,
+        176,
+        118,
+        182,
+        161,
+        108,
+        166,
+        43,
+        133,
+        125,
+        39,
+        69,
+        139,
+        87,
+        170,
+        161,
+        100,
+        115,
+        111,
+        108,
+        99,
+        67,
+        0,
+        8,
+        19,
+        0,
+        51,
+    ];
+    ///The deployed bytecode of the contract.
+    pub static STDSTYLE_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct StdStyle<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for StdStyle<M> {
         fn clone(&self) -> Self {
@@ -53,9 +275,7 @@ pub mod std_style {
     }
     impl<M> ::core::fmt::Debug for StdStyle<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(StdStyle))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(stringify!(StdStyle)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> StdStyle<M> {
@@ -65,11 +285,13 @@ pub mod std_style {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                STDSTYLE_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    STDSTYLE_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -111,7 +333,8 @@ pub mod std_style {
             Ok(deployer)
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for StdStyle<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for StdStyle<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }

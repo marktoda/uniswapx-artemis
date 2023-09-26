@@ -1,3 +1,20 @@
+///`ExactInputParams(bytes,address,uint256,uint256)`
+#[derive(
+    Clone,
+    ::ethers::contract::EthAbiType,
+    ::ethers::contract::EthAbiCodec,
+    Default,
+    Debug,
+    PartialEq,
+    Eq,
+    Hash
+)]
+pub struct ExactInputParams {
+    pub path: ::ethers::core::types::Bytes,
+    pub recipient: ::ethers::core::types::Address,
+    pub amount_in: ::ethers::core::types::U256,
+    pub amount_out_minimum: ::ethers::core::types::U256,
+}
 ///`AllowanceTransferDetails(address,address,uint160,address)`
 #[derive(
     Clone,
@@ -7,7 +24,7 @@
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct AllowanceTransferDetails {
     pub from: ::ethers::core::types::Address,
@@ -24,7 +41,7 @@ pub struct AllowanceTransferDetails {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitBatch {
     pub details: ::std::vec::Vec<PermitDetails>,
@@ -40,7 +57,7 @@ pub struct PermitBatch {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitDetails {
     pub token: ::ethers::core::types::Address,
@@ -57,7 +74,7 @@ pub struct PermitDetails {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitSingle {
     pub details: PermitDetails,
@@ -73,7 +90,7 @@ pub struct PermitSingle {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct TokenSpenderPair {
     pub token: ::ethers::core::types::Address,
@@ -88,7 +105,7 @@ pub struct TokenSpenderPair {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitBatchTransferFrom {
     pub permitted: ::std::vec::Vec<TokenPermissions>,
@@ -104,7 +121,7 @@ pub struct PermitBatchTransferFrom {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitTransferFrom {
     pub permitted: TokenPermissions,
@@ -120,7 +137,7 @@ pub struct PermitTransferFrom {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct SignatureTransferDetails {
     pub to: ::ethers::core::types::Address,
@@ -135,28 +152,11 @@ pub struct SignatureTransferDetails {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct TokenPermissions {
     pub token: ::ethers::core::types::Address,
     pub amount: ::ethers::core::types::U256,
-}
-///`ExactInputParams(bytes,address,uint256,uint256)`
-#[derive(
-    Clone,
-    ::ethers::contract::EthAbiType,
-    ::ethers::contract::EthAbiCodec,
-    Default,
-    Debug,
-    PartialEq,
-    Eq,
-    Hash,
-)]
-pub struct ExactInputParams {
-    pub path: ::ethers::core::types::Bytes,
-    pub recipient: ::ethers::core::types::Address,
-    pub amount_in: ::ethers::core::types::U256,
-    pub amount_out_minimum: ::ethers::core::types::U256,
 }
 ///`InputToken(address,uint256,uint256)`
 #[derive(
@@ -167,7 +167,7 @@ pub struct ExactInputParams {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct InputToken {
     pub token: ::ethers::core::types::Address,
@@ -183,7 +183,7 @@ pub struct InputToken {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct OrderInfo {
     pub reactor: ::ethers::core::types::Address,
@@ -202,7 +202,7 @@ pub struct OrderInfo {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct OutputToken {
     pub token: ::ethers::core::types::Address,
@@ -218,7 +218,7 @@ pub struct OutputToken {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct ResolvedOrder {
     pub info: OrderInfo,
@@ -236,7 +236,7 @@ pub struct ResolvedOrder {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct SignedOrder {
     pub order: ::ethers::core::types::Bytes,
@@ -251,7 +251,7 @@ pub struct SignedOrder {
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct FuzzSelector {
     pub addr: ::ethers::core::types::Address,

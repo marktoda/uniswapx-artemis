@@ -1,4 +1,4 @@
-pub use path::*;
+pub use exclusive_dutch_limit_order_lib::*;
 /// This module was auto-generated with ethers-rs Abigen.
 /// More information at: <https://github.com/gakonst/ethers-rs>
 #[allow(
@@ -9,12 +9,16 @@ pub use path::*;
     dead_code,
     non_camel_case_types,
 )]
-pub mod path {
+pub mod exclusive_dutch_limit_order_lib {
     #[rustfmt::skip]
     const __ABI: &str = "[]";
     ///The parsed JSON ABI of the contract.
-    pub static PATH_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(||
-    ::ethers::core::utils::__serde_json::from_str(__ABI).expect("ABI is always valid"));
+    pub static EXCLUSIVEDUTCHLIMITORDERLIB_ABI: ::ethers::contract::Lazy<
+        ::ethers::core::abi::Abi,
+    > = ::ethers::contract::Lazy::new(|| {
+        ::ethers::core::utils::__serde_json::from_str(__ABI)
+            .expect("ABI is always valid")
+    });
     #[rustfmt::skip]
     const __BYTECODE: &[u8] = &[
         96,
@@ -115,38 +119,38 @@ pub mod path {
         34,
         18,
         32,
-        97,
-        14,
-        96,
-        175,
-        56,
-        80,
-        183,
-        251,
+        36,
+        108,
+        208,
         224,
-        164,
-        129,
-        32,
-        79,
-        76,
-        134,
-        251,
-        60,
-        198,
-        198,
-        76,
-        33,
-        151,
-        79,
-        18,
-        46,
-        159,
-        132,
-        159,
-        61,
-        70,
-        65,
-        195,
+        153,
+        11,
+        124,
+        154,
+        40,
+        249,
+        235,
+        64,
+        8,
+        234,
+        23,
+        243,
+        20,
+        131,
+        95,
+        184,
+        212,
+        85,
+        123,
+        189,
+        133,
+        149,
+        112,
+        21,
+        193,
+        73,
+        202,
+        163,
         100,
         115,
         111,
@@ -160,7 +164,7 @@ pub mod path {
         51,
     ];
     ///The bytecode of the contract.
-    pub static PATH_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+    pub static EXCLUSIVEDUTCHLIMITORDERLIB_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
         __BYTECODE,
     );
     #[rustfmt::skip]
@@ -208,38 +212,38 @@ pub mod path {
         34,
         18,
         32,
-        97,
-        14,
-        96,
-        175,
-        56,
-        80,
-        183,
-        251,
+        36,
+        108,
+        208,
         224,
-        164,
-        129,
-        32,
-        79,
-        76,
-        134,
-        251,
-        60,
-        198,
-        198,
-        76,
-        33,
-        151,
-        79,
-        18,
-        46,
-        159,
-        132,
-        159,
-        61,
-        70,
-        65,
-        195,
+        153,
+        11,
+        124,
+        154,
+        40,
+        249,
+        235,
+        64,
+        8,
+        234,
+        23,
+        243,
+        20,
+        131,
+        95,
+        184,
+        212,
+        85,
+        123,
+        189,
+        133,
+        149,
+        112,
+        21,
+        193,
+        73,
+        202,
+        163,
         100,
         115,
         111,
@@ -253,32 +257,34 @@ pub mod path {
         51,
     ];
     ///The deployed bytecode of the contract.
-    pub static PATH_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+    pub static EXCLUSIVEDUTCHLIMITORDERLIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
         __DEPLOYED_BYTECODE,
     );
-    pub struct Path<M>(::ethers::contract::Contract<M>);
-    impl<M> ::core::clone::Clone for Path<M> {
+    pub struct ExclusiveDutchLimitOrderLib<M>(::ethers::contract::Contract<M>);
+    impl<M> ::core::clone::Clone for ExclusiveDutchLimitOrderLib<M> {
         fn clone(&self) -> Self {
             Self(::core::clone::Clone::clone(&self.0))
         }
     }
-    impl<M> ::core::ops::Deref for Path<M> {
+    impl<M> ::core::ops::Deref for ExclusiveDutchLimitOrderLib<M> {
         type Target = ::ethers::contract::Contract<M>;
         fn deref(&self) -> &Self::Target {
             &self.0
         }
     }
-    impl<M> ::core::ops::DerefMut for Path<M> {
+    impl<M> ::core::ops::DerefMut for ExclusiveDutchLimitOrderLib<M> {
         fn deref_mut(&mut self) -> &mut Self::Target {
             &mut self.0
         }
     }
-    impl<M> ::core::fmt::Debug for Path<M> {
+    impl<M> ::core::fmt::Debug for ExclusiveDutchLimitOrderLib<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(stringify!(Path)).field(&self.address()).finish()
+            f.debug_tuple(stringify!(ExclusiveDutchLimitOrderLib))
+                .field(&self.address())
+                .finish()
         }
     }
-    impl<M: ::ethers::providers::Middleware> Path<M> {
+    impl<M: ::ethers::providers::Middleware> ExclusiveDutchLimitOrderLib<M> {
         /// Creates a new contract instance with the specified `ethers` client at
         /// `address`. The contract derefs to a `ethers::Contract` object.
         pub fn new<T: Into<::ethers::core::types::Address>>(
@@ -288,7 +294,7 @@ pub mod path {
             Self(
                 ::ethers::contract::Contract::new(
                     address.into(),
-                    PATH_ABI.clone(),
+                    EXCLUSIVEDUTCHLIMITORDERLIB_ABI.clone(),
                     client,
                 ),
             )
@@ -324,8 +330,8 @@ pub mod path {
             ::ethers::contract::ContractError<M>,
         > {
             let factory = ::ethers::contract::ContractFactory::new(
-                PATH_ABI.clone(),
-                PATH_BYTECODE.clone().into(),
+                EXCLUSIVEDUTCHLIMITORDERLIB_ABI.clone(),
+                EXCLUSIVEDUTCHLIMITORDERLIB_BYTECODE.clone().into(),
                 client,
             );
             let deployer = factory.deploy(constructor_args)?;
@@ -334,7 +340,7 @@ pub mod path {
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-    for Path<M> {
+    for ExclusiveDutchLimitOrderLib<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }

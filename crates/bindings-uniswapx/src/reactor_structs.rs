@@ -7,23 +7,14 @@ pub use reactor_structs::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod reactor_structs {
-    #[allow(deprecated)]
-    fn __abi() -> ::ethers::core::abi::Abi {
-        ::ethers::core::abi::ethabi::Contract {
-            constructor: ::core::option::Option::None,
-            functions: ::std::collections::BTreeMap::new(),
-            events: ::std::collections::BTreeMap::new(),
-            errors: ::std::collections::BTreeMap::new(),
-            receive: false,
-            fallback: false,
-        }
-    }
+    #[rustfmt::skip]
+    const __ABI: &str = "[]";
     ///The parsed JSON ABI of the contract.
-    pub static REACTORSTRUCTS_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static REACTORSTRUCTS_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(||
+    ::ethers::core::utils::__serde_json::from_str(__ABI).expect("ABI is always valid"));
     pub struct ReactorStructs<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for ReactorStructs<M> {
         fn clone(&self) -> Self {
@@ -43,9 +34,7 @@ pub mod reactor_structs {
     }
     impl<M> ::core::fmt::Debug for ReactorStructs<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(ReactorStructs))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(stringify!(ReactorStructs)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> ReactorStructs<M> {
@@ -55,16 +44,17 @@ pub mod reactor_structs {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                REACTORSTRUCTS_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    REACTORSTRUCTS_ABI.clone(),
+                    client,
+                ),
+            )
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for ReactorStructs<M>
-    {
+    for ReactorStructs<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
