@@ -48,11 +48,11 @@ pub fn decode_order(encoded_order: &str) -> Result<ExclusiveDutchOrder> {
     };
     let order_hex = hex::decode(encoded_order)?;
 
-    Ok(ExclusiveDutchOrder::decode(&order_hex, false)?)
+    Ok(ExclusiveDutchOrder::abi_decode(&order_hex, false)?)
 }
 
 pub fn encode_order(order: &ExclusiveDutchOrder) -> Vec<u8> {
-    ExclusiveDutchOrder::encode(order)
+    ExclusiveDutchOrder::abi_encode(order)
 }
 
 #[derive(Debug, Clone)]
