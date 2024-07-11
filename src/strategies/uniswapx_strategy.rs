@@ -204,9 +204,8 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
             Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
         ]);
-        let mut call = reactor.execute_batch(
+        let mut call = reactor.execute_batch_with_callback(
             signed_orders,
-            H160::from_str(EXECUTOR_ADDRESS)?,
             Bytes::from(calldata),
         );
         Ok(call.tx.set_chain_id(CHAIN_ID).clone())
