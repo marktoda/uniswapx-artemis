@@ -24,7 +24,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::{error, info};
 use uniswapx_rs::order::{
-    decode_order, encode_order, ExclusiveDutchOrder, OrderResolution, ResolvedOrder,
+    decode_order, encode_order, ExclusiveDutchOrder, OrderResolution, ResolvedOrder
 };
 
 use super::types::{Action, Event};
@@ -112,7 +112,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             return None;
         }
 
-        let order = decode_order(&event.encoded_order)
+        let order: ExclusiveDutchOrder = decode_order(&event.encoded_order)
             .map_err(|e| error!("failed to decode: {}", e))
             .ok()?;
 

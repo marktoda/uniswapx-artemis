@@ -1,3 +1,5 @@
+use std::error::Error;
+
 use alloy_primitives::Uint;
 use alloy_sol_types::{sol, SolType};
 use anyhow::Result;
@@ -38,9 +40,47 @@ sol! {
         DutchInput input;
         DutchOutput[] outputs;
     }
+    
+    #[derive(Debug)]
+    struct PriorityInput {
+        address token;
+        uint256 amount;
+        uint256 mpsPerPriorityFeeWei;
+    }
+
+    #[derive(Debug)]
+    struct PriorityOutput {
+        address token;
+        uint256 amount;
+        uint256 mpsPerPriorityFeeWei;
+        address recipient;
+    }
+
+    #[derive(Debug)]
+    struct PriorityCosignerData {
+        uint256 auctionTargetBlock;
+    }
+
+    #[derive(Debug)]
+    struct PriorityOrder {
+        OrderInfo info;
+        address cosigner;
+        uint256 auctionStartBlock;
+        uint256 baselinePriorityFeeWei;
+        PriorityInput input;
+        PriorityOutput[] outputs;
+        PriorityCosignerData cosignerData;
+        bytes cosignature;
+    }
 }
 
-pub fn decode_order(encoded_order: &str) -> Result<ExclusiveDutchOrder> {
+pub trait Order: Sized {
+    fn _decode(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>>;
+    fn _encode(&self) -> Vec<u8>;
+}
+
+// Generic function to decode orders
+pub fn decode_order<T: Order>(encoded_order: &str) -> Result<T, Box<dyn Error>> {
     let encoded_order = if encoded_order.starts_with("0x") {
         &encoded_order[2..]
     } else {
@@ -48,11 +88,12 @@ pub fn decode_order(encoded_order: &str) -> Result<ExclusiveDutchOrder> {
     };
     let order_hex = hex::decode(encoded_order)?;
 
-    Ok(ExclusiveDutchOrder::decode(&order_hex, false)?)
+    T::_decode(&order_hex, false)
 }
 
-pub fn encode_order(order: &ExclusiveDutchOrder) -> Vec<u8> {
-    ExclusiveDutchOrder::encode(order)
+// Generic function to encode orders
+pub fn encode_order<T: Order>(order: &T) -> Vec<u8> {
+    order._encode()
 }
 
 #[derive(Debug, Clone)]
@@ -79,6 +120,16 @@ pub enum OrderResolution {
     Resolved(ResolvedOrder),
     Expired,
     Invalid,
+}
+
+impl Order for ExclusiveDutchOrder {
+    fn _decode(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
+        Ok(ExclusiveDutchOrder::decode(order_hex, validate)?)
+    }
+
+    fn _encode(&self) -> Vec<u8> {
+        ExclusiveDutchOrder::encode(self)
+    }
 }
 
 impl ExclusiveDutchOrder {
@@ -131,6 +182,51 @@ impl ExclusiveDutchOrder {
 
         OrderResolution::Resolved(ResolvedOrder { input, outputs })
     }
+}
+
+impl Order for PriorityOrder {
+    fn _decode(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
+        Ok(PriorityOrder::decode(order_hex, validate)?)
+    }
+
+    fn _encode(&self) -> Vec<u8> {
+        PriorityOrder::encode(self)
+    }
+}
+
+impl PriorityOrder {
+    pub fn resolve(&self, priority_fee: Uint<256, 4>) -> OrderResolution {
+        let input = self.input.scale(priority_fee);
+        let outputs = self
+            .outputs
+            .iter()
+            .map(|output| output.scale(priority_fee))
+            .collect();
+
+        OrderResolution::Resolved(ResolvedOrder { input, outputs })
+    }
+}
+
+impl PriorityInput {
+    pub fn scale(&self, priority_fee: Uint<256, 4>) -> ResolvedInput {
+        let amount = self.amount.wrapping_mul(Uint::from(1e7).wrapping_add(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(1e7));
+        ResolvedInput {
+            token: self.token.to_string(),
+            amount,
+        }
+    }
+}
+
+impl PriorityOutput {
+    pub fn scale(&self, priority_fee: Uint<256, 4>) -> ResolvedOutput {
+        let amount = self.amount.wrapping_mul(Uint::from(1e7).saturating_sub(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(1e7));
+        ResolvedOutput {
+            token: self.token.to_string(),
+            amount,
+            recipient: self.recipient.to_string(),
+        }
+    }
+
 }
 
 fn resolve_decay(
