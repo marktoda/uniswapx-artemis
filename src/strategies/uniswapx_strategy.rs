@@ -10,7 +10,7 @@ use artemis_core::executors::mempool_executor::{GasBidInfo, SubmitTxToMempool};
 use artemis_core::types::Strategy;
 use async_trait::async_trait;
 use bindings_uniswapx::{
-    exclusive_dutch_order_reactor::ExclusiveDutchOrderReactor, shared_types::SignedOrder,
+    shared_types::SignedOrder, swap_router_02_executor::SwapRouter02Executor,
 };
 use ethers::{
     abi::{ethabi, AbiEncode, Token},
@@ -187,8 +187,8 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
 
     // builds a transaction to fill an order
     fn build_fill(&self, RoutedOrder { request, route }: RoutedOrder) -> Result<TypedTransaction> {
-        let reactor =
-            ExclusiveDutchOrderReactor::new(H160::from_str(REACTOR_ADDRESS)?, self.client.clone());
+        let fill_contract =
+            SwapRouter02Executor::new(H160::from_str(EXECUTOR_ADDRESS)?, self.client.clone());
         let mut signed_orders: Vec<SignedOrder> = Vec::new();
         for batch in request.orders.iter() {
             let OrderData {
@@ -204,7 +204,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
             Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
         ]);
-        let mut call = reactor.execute_batch_with_callback(
+        let mut call = fill_contract.execute_batch(
             signed_orders,
             Bytes::from(calldata),
         );
