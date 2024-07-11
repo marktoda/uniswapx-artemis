@@ -112,7 +112,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             return None;
         }
 
-        let order: ExclusiveDutchOrder = decode_order(&event.encoded_order)
+        let order = decode_order(&event.encoded_order)
             .map_err(|e| error!("failed to decode: {}", e))
             .ok()?;
 
