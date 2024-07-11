@@ -1,4 +1,4 @@
-pub use expected_balance_lib::*;
+pub use exclusivity_lib::*;
 /// This module was auto-generated with ethers-rs Abigen.
 /// More information at: <https://github.com/gakonst/ethers-rs>
 #[allow(
@@ -7,90 +7,86 @@ pub use expected_balance_lib::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
-pub mod expected_balance_lib {
+pub mod exclusivity_lib {
     #[allow(deprecated)]
     fn __abi() -> ::ethers::core::abi::Abi {
         ::ethers::core::abi::ethabi::Contract {
             constructor: ::core::option::Option::None,
             functions: ::std::collections::BTreeMap::new(),
             events: ::std::collections::BTreeMap::new(),
-            errors: ::core::convert::From::from([(
-                ::std::borrow::ToOwned::to_owned("InsufficientOutput"),
-                ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                    name: ::std::borrow::ToOwned::to_owned("InsufficientOutput"),
-                    inputs: ::std::vec![
-                        ::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("actualBalance"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("uint256"),
+            errors: ::core::convert::From::from([
+                (
+                    ::std::borrow::ToOwned::to_owned("NoExclusiveOverride"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "NoExclusiveOverride",
                             ),
-                        },
-                        ::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("expectedBalance"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("uint256"),
-                            ),
+                            inputs: ::std::vec![],
                         },
                     ],
-                },],
-            )]),
+                ),
+            ]),
             receive: false,
             fallback: false,
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static EXPECTEDBALANCELIB_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static EXCLUSIVITYLIB_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 4\x12\xAC\x9F\xCFh\xF2\xABq\x01\xDA\0\xC6\x93C\xE4\xDEe\xC9\xE0\x81\x9C\xB6y\xC6\xDE\xF3\xC6\xE9\xDF\x99MdsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 d7\xE9\xE3\xB3&~\x18\x06\x15\"@\x9C\x8F\xEEe\x9B\x9FZ?\x9BfS\x1BDq\x9D\x15\xF0\xDA\xBFHdsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static EXPECTEDBALANCELIB_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static EXCLUSIVITYLIB_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 4\x12\xAC\x9F\xCFh\xF2\xABq\x01\xDA\0\xC6\x93C\xE4\xDEe\xC9\xE0\x81\x9C\xB6y\xC6\xDE\xF3\xC6\xE9\xDF\x99MdsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 d7\xE9\xE3\xB3&~\x18\x06\x15\"@\x9C\x8F\xEEe\x9B\x9FZ?\x9BfS\x1BDq\x9D\x15\xF0\xDA\xBFHdsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static EXPECTEDBALANCELIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
-    pub struct ExpectedBalanceLib<M>(::ethers::contract::Contract<M>);
-    impl<M> ::core::clone::Clone for ExpectedBalanceLib<M> {
+    pub static EXCLUSIVITYLIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
+    pub struct ExclusivityLib<M>(::ethers::contract::Contract<M>);
+    impl<M> ::core::clone::Clone for ExclusivityLib<M> {
         fn clone(&self) -> Self {
             Self(::core::clone::Clone::clone(&self.0))
         }
     }
-    impl<M> ::core::ops::Deref for ExpectedBalanceLib<M> {
+    impl<M> ::core::ops::Deref for ExclusivityLib<M> {
         type Target = ::ethers::contract::Contract<M>;
         fn deref(&self) -> &Self::Target {
             &self.0
         }
     }
-    impl<M> ::core::ops::DerefMut for ExpectedBalanceLib<M> {
+    impl<M> ::core::ops::DerefMut for ExclusivityLib<M> {
         fn deref_mut(&mut self) -> &mut Self::Target {
             &mut self.0
         }
     }
-    impl<M> ::core::fmt::Debug for ExpectedBalanceLib<M> {
+    impl<M> ::core::fmt::Debug for ExclusivityLib<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(ExpectedBalanceLib))
+            f.debug_tuple(::core::stringify!(ExclusivityLib))
                 .field(&self.address())
                 .finish()
         }
     }
-    impl<M: ::ethers::providers::Middleware> ExpectedBalanceLib<M> {
+    impl<M: ::ethers::providers::Middleware> ExclusivityLib<M> {
         /// Creates a new contract instance with the specified `ethers` client at
         /// `address`. The contract derefs to a `ethers::Contract` object.
         pub fn new<T: Into<::ethers::core::types::Address>>(
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                EXPECTEDBALANCELIB_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    EXCLUSIVITYLIB_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -123,8 +119,8 @@ pub mod expected_balance_lib {
             ::ethers::contract::ContractError<M>,
         > {
             let factory = ::ethers::contract::ContractFactory::new(
-                EXPECTEDBALANCELIB_ABI.clone(),
-                EXPECTEDBALANCELIB_BYTECODE.clone().into(),
+                EXCLUSIVITYLIB_ABI.clone(),
+                EXCLUSIVITYLIB_BYTECODE.clone().into(),
                 client,
             );
             let deployer = factory.deploy(constructor_args)?;
@@ -133,29 +129,24 @@ pub mod expected_balance_lib {
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for ExpectedBalanceLib<M>
-    {
+    for ExclusivityLib<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
     }
-    ///Custom Error type `InsufficientOutput` with signature `InsufficientOutput(uint256,uint256)` and selector `0x2c19b8b8`
+    ///Custom Error type `NoExclusiveOverride` with signature `NoExclusiveOverride()` and selector `0xb9ec1e96`
     #[derive(
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
-    #[etherror(
-        name = "InsufficientOutput",
-        abi = "InsufficientOutput(uint256,uint256)"
-    )]
-    pub struct InsufficientOutput {
-        pub actual_balance: ::ethers::core::types::U256,
-        pub expected_balance: ::ethers::core::types::U256,
-    }
+    #[etherror(name = "NoExclusiveOverride", abi = "NoExclusiveOverride()")]
+    pub struct NoExclusiveOverride;
 }

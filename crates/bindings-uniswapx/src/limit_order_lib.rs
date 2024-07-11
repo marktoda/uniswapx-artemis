@@ -7,7 +7,7 @@ pub use limit_order_lib::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod limit_order_lib {
     #[allow(deprecated)]
@@ -22,18 +22,21 @@ pub mod limit_order_lib {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static LIMITORDERLIB_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static LIMITORDERLIB_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xC6t\x8F\r~?\x14{\xD0\x07\r\x8C\xC09\x1B\xEB\xD9\x15\x95\xE6\xA4\xFAg\xE9\xBC%\x84\xD5\xA5-\xC3\x18dsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x95\xBD\x1E\xB8\xB1\xA5q\x02\x05\x9B\xBF\xBE\x06g*\xA9P\x90b\x12\x11&\xF0\xA6N,\xB8\x10\x81Y\xFF[dsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static LIMITORDERLIB_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static LIMITORDERLIB_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xC6t\x8F\r~?\x14{\xD0\x07\r\x8C\xC09\x1B\xEB\xD9\x15\x95\xE6\xA4\xFAg\xE9\xBC%\x84\xD5\xA5-\xC3\x18dsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x95\xBD\x1E\xB8\xB1\xA5q\x02\x05\x9B\xBF\xBE\x06g*\xA9P\x90b\x12\x11&\xF0\xA6N,\xB8\x10\x81Y\xFF[dsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static LIMITORDERLIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static LIMITORDERLIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct LimitOrderLib<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for LimitOrderLib<M> {
         fn clone(&self) -> Self {
@@ -65,11 +68,13 @@ pub mod limit_order_lib {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                LIMITORDERLIB_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    LIMITORDERLIB_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -112,8 +117,7 @@ pub mod limit_order_lib {
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for LimitOrderLib<M>
-    {
+    for LimitOrderLib<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }

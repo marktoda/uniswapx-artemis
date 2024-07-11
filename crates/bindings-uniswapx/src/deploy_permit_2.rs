@@ -7,29 +7,35 @@ pub use deploy_permit_2::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod deploy_permit_2 {
     #[allow(deprecated)]
     fn __abi() -> ::ethers::core::abi::Abi {
         ::ethers::core::abi::ethabi::Contract {
             constructor: ::core::option::Option::None,
-            functions: ::core::convert::From::from([(
-                ::std::borrow::ToOwned::to_owned("IS_SCRIPT"),
-                ::std::vec![::ethers::core::abi::ethabi::Function {
-                    name: ::std::borrow::ToOwned::to_owned("IS_SCRIPT"),
-                    inputs: ::std::vec![],
-                    outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                        name: ::std::string::String::new(),
-                        kind: ::ethers::core::abi::ethabi::ParamType::Bool,
-                        internal_type: ::core::option::Option::Some(
-                            ::std::borrow::ToOwned::to_owned("bool"),
-                        ),
-                    },],
-                    constant: ::core::option::Option::None,
-                    state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                },],
-            )]),
+            functions: ::core::convert::From::from([
+                (
+                    ::std::borrow::ToOwned::to_owned("IS_SCRIPT"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("IS_SCRIPT"),
+                            inputs: ::std::vec![],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Bool,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("bool"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
+                        },
+                    ],
+                ),
+            ]),
             events: ::std::collections::BTreeMap::new(),
             errors: ::std::collections::BTreeMap::new(),
             receive: false,
@@ -37,18 +43,21 @@ pub mod deploy_permit_2 {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static DEPLOYPERMIT2_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static DEPLOYPERMIT2_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`\x80`@R`\x04\x80T`\x01`\xFF\x19\x91\x82\x16\x81\x17\x90\x92U`\x0C\x80T\x90\x91\x16\x90\x91\x17\x90U4\x80\x15`,W`\0\x80\xFD[P`\x83\x80a\0;`\09`\0\xF3\xFE`\x80`@R4\x80\x15`\x0FW`\0\x80\xFD[P`\x046\x10`(W`\x005`\xE0\x1C\x80c\xF8\xCC\xBFG\x14`-W[`\0\x80\xFD[`\x0CT`9\x90`\xFF\x16\x81V[`@Q\x90\x15\x15\x81R` \x01`@Q\x80\x91\x03\x90\xF3\xFE\xA2dipfsX\"\x12 6\x87\x1CSU\x18\x83\x05\xF0!:F\x1B\xE3J\xB1\xC6\x13\xF3 \xA3Kw/\xF5\xD6\x8A\x1D\x8F\xE1\xA4\x9BdsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`\x80`@R`\x0C\x80Tb\xFF\0\xFF\x19\x16b\x01\0\x01\x17\x90U4\x80\x15` W`\0\x80\xFD[P`\x89\x80a\0/`\09`\0\xF3\xFE`\x80`@R4\x80\x15`\x0FW`\0\x80\xFD[P`\x046\x10`(W`\x005`\xE0\x1C\x80c\xF8\xCC\xBFG\x14`-W[`\0\x80\xFD[`\x0CT`?\x90b\x01\0\0\x90\x04`\xFF\x16\x81V[`@Q\x90\x15\x15\x81R` \x01`@Q\x80\x91\x03\x90\xF3\xFE\xA2dipfsX\"\x12 \xC7\x99\xA4\x83\xC7r\xE5\xD3#M\xF9\";Qtm\xDBi\xB3y\xF1K\xD9\x962\n\x16H\xD2\x13Y\xA8dsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static DEPLOYPERMIT2_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static DEPLOYPERMIT2_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R4\x80\x15`\x0FW`\0\x80\xFD[P`\x046\x10`(W`\x005`\xE0\x1C\x80c\xF8\xCC\xBFG\x14`-W[`\0\x80\xFD[`\x0CT`9\x90`\xFF\x16\x81V[`@Q\x90\x15\x15\x81R` \x01`@Q\x80\x91\x03\x90\xF3\xFE\xA2dipfsX\"\x12 6\x87\x1CSU\x18\x83\x05\xF0!:F\x1B\xE3J\xB1\xC6\x13\xF3 \xA3Kw/\xF5\xD6\x8A\x1D\x8F\xE1\xA4\x9BdsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R4\x80\x15`\x0FW`\0\x80\xFD[P`\x046\x10`(W`\x005`\xE0\x1C\x80c\xF8\xCC\xBFG\x14`-W[`\0\x80\xFD[`\x0CT`?\x90b\x01\0\0\x90\x04`\xFF\x16\x81V[`@Q\x90\x15\x15\x81R` \x01`@Q\x80\x91\x03\x90\xF3\xFE\xA2dipfsX\"\x12 \xC7\x99\xA4\x83\xC7r\xE5\xD3#M\xF9\";Qtm\xDBi\xB3y\xF1K\xD9\x962\n\x16H\xD2\x13Y\xA8dsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static DEPLOYPERMIT2_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static DEPLOYPERMIT2_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct DeployPermit2<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for DeployPermit2<M> {
         fn clone(&self) -> Self {
@@ -80,11 +89,13 @@ pub mod deploy_permit_2 {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                DEPLOYPERMIT2_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    DEPLOYPERMIT2_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -133,8 +144,7 @@ pub mod deploy_permit_2 {
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for DeployPermit2<M>
-    {
+    for DeployPermit2<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -144,11 +154,13 @@ pub mod deploy_permit_2 {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "IS_SCRIPT", abi = "IS_SCRIPT()")]
     pub struct IsScriptCall;
@@ -157,11 +169,13 @@ pub mod deploy_permit_2 {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct IsScriptReturn(pub bool);
 }

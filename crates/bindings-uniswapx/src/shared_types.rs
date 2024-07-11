@@ -1,13 +1,34 @@
+///`ExactInputParams(bytes,address,uint256,uint256)`
+#[derive(
+    Clone,
+    ::ethers::contract::EthAbiType,
+    ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
+    Default,
+    Debug,
+    PartialEq,
+    Eq,
+    Hash
+)]
+pub struct ExactInputParams {
+    pub path: ::ethers::core::types::Bytes,
+    pub recipient: ::ethers::core::types::Address,
+    pub amount_in: ::ethers::core::types::U256,
+    pub amount_out_minimum: ::ethers::core::types::U256,
+}
 ///`AllowanceTransferDetails(address,address,uint160,address)`
 #[derive(
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct AllowanceTransferDetails {
     pub from: ::ethers::core::types::Address,
@@ -20,11 +41,13 @@ pub struct AllowanceTransferDetails {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitBatch {
     pub details: ::std::vec::Vec<PermitDetails>,
@@ -36,11 +59,13 @@ pub struct PermitBatch {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitDetails {
     pub token: ::ethers::core::types::Address,
@@ -53,11 +78,13 @@ pub struct PermitDetails {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitSingle {
     pub details: PermitDetails,
@@ -69,11 +96,13 @@ pub struct PermitSingle {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct TokenSpenderPair {
     pub token: ::ethers::core::types::Address,
@@ -84,11 +113,13 @@ pub struct TokenSpenderPair {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitBatchTransferFrom {
     pub permitted: ::std::vec::Vec<TokenPermissions>,
@@ -100,11 +131,13 @@ pub struct PermitBatchTransferFrom {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct PermitTransferFrom {
     pub permitted: TokenPermissions,
@@ -116,11 +149,13 @@ pub struct PermitTransferFrom {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct SignatureTransferDetails {
     pub to: ::ethers::core::types::Address,
@@ -131,43 +166,30 @@ pub struct SignatureTransferDetails {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct TokenPermissions {
     pub token: ::ethers::core::types::Address,
     pub amount: ::ethers::core::types::U256,
-}
-///`ExactInputParams(bytes,address,uint256,uint256)`
-#[derive(
-    Clone,
-    ::ethers::contract::EthAbiType,
-    ::ethers::contract::EthAbiCodec,
-    Default,
-    Debug,
-    PartialEq,
-    Eq,
-    Hash,
-)]
-pub struct ExactInputParams {
-    pub path: ::ethers::core::types::Bytes,
-    pub recipient: ::ethers::core::types::Address,
-    pub amount_in: ::ethers::core::types::U256,
-    pub amount_out_minimum: ::ethers::core::types::U256,
 }
 ///`InputToken(address,uint256,uint256)`
 #[derive(
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct InputToken {
     pub token: ::ethers::core::types::Address,
@@ -179,11 +201,13 @@ pub struct InputToken {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct OrderInfo {
     pub reactor: ::ethers::core::types::Address,
@@ -198,11 +222,13 @@ pub struct OrderInfo {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct OutputToken {
     pub token: ::ethers::core::types::Address,
@@ -214,11 +240,13 @@ pub struct OutputToken {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct ResolvedOrder {
     pub info: OrderInfo,
@@ -232,26 +260,64 @@ pub struct ResolvedOrder {
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct SignedOrder {
     pub order: ::ethers::core::types::Bytes,
     pub sig: ::ethers::core::types::Bytes,
+}
+///`FuzzArtifactSelector(string,bytes4[])`
+#[derive(
+    Clone,
+    ::ethers::contract::EthAbiType,
+    ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
+    Default,
+    Debug,
+    PartialEq,
+    Eq,
+    Hash
+)]
+pub struct FuzzArtifactSelector {
+    pub artifact: ::std::string::String,
+    pub selectors: ::std::vec::Vec<[u8; 4]>,
+}
+///`FuzzInterface(address,string[])`
+#[derive(
+    Clone,
+    ::ethers::contract::EthAbiType,
+    ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
+    Default,
+    Debug,
+    PartialEq,
+    Eq,
+    Hash
+)]
+pub struct FuzzInterface {
+    pub addr: ::ethers::core::types::Address,
+    pub artifacts: ::std::vec::Vec<::std::string::String>,
 }
 ///`FuzzSelector(address,bytes4[])`
 #[derive(
     Clone,
     ::ethers::contract::EthAbiType,
     ::ethers::contract::EthAbiCodec,
+    serde::Serialize,
+    serde::Deserialize,
     Default,
     Debug,
     PartialEq,
     Eq,
-    Hash,
+    Hash
 )]
 pub struct FuzzSelector {
     pub addr: ::ethers::core::types::Address,

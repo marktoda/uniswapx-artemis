@@ -7,7 +7,7 @@ pub use math::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod math {
     #[allow(deprecated)]
@@ -22,18 +22,21 @@ pub mod math {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static MATH_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static MATH_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x0B\x98\x9C \xC7\xC2\xD5\xA9\xD1\xA1\x0F\x1D\x07Y*\xCB\xD5\xF3\x1Fw\x87\x96>Z\xDE\xF9\x80\xB3\xF9\x84\xD0\x08dsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xEBf\xD4h|\xBE\x0E\xD8\xD03@\x1B\xF5\xBF\xCB\x02\xF9\x98y\xF7\xE0\x1B\xC3\x1B,s\xED\xEE\xEE\x81C\x85dsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static MATH_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static MATH_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x0B\x98\x9C \xC7\xC2\xD5\xA9\xD1\xA1\x0F\x1D\x07Y*\xCB\xD5\xF3\x1Fw\x87\x96>Z\xDE\xF9\x80\xB3\xF9\x84\xD0\x08dsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xEBf\xD4h|\xBE\x0E\xD8\xD03@\x1B\xF5\xBF\xCB\x02\xF9\x98y\xF7\xE0\x1B\xC3\x1B,s\xED\xEE\xEE\x81C\x85dsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static MATH_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static MATH_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct Math<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for Math<M> {
         fn clone(&self) -> Self {
@@ -53,9 +56,7 @@ pub mod math {
     }
     impl<M> ::core::fmt::Debug for Math<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(Math))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(::core::stringify!(Math)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> Math<M> {
@@ -65,11 +66,13 @@ pub mod math {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                MATH_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    MATH_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -111,7 +114,8 @@ pub mod math {
             Ok(deployer)
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for Math<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for Math<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }

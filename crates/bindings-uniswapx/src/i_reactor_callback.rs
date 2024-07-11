@@ -7,7 +7,7 @@ pub use i_reactor_callback::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod i_reactor_callback {
     pub use super::super::shared_types::*;
@@ -67,14 +67,7 @@ pub mod i_reactor_callback {
                                     ),
                                 },
                                 ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("filler"),
-                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                    internal_type: ::core::option::Option::Some(
-                                        ::std::borrow::ToOwned::to_owned("address"),
-                                    ),
-                                },
-                                ::ethers::core::abi::ethabi::Param {
-                                    name: ::std::borrow::ToOwned::to_owned("fillData"),
+                                    name: ::std::borrow::ToOwned::to_owned("callbackData"),
                                     kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
                                     internal_type: ::core::option::Option::Some(
                                         ::std::borrow::ToOwned::to_owned("bytes"),
@@ -95,8 +88,9 @@ pub mod i_reactor_callback {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static IREACTORCALLBACK_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static IREACTORCALLBACK_ABI: ::ethers::contract::Lazy<
+        ::ethers::core::abi::Abi,
+    > = ::ethers::contract::Lazy::new(__abi);
     pub struct IReactorCallback<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for IReactorCallback<M> {
         fn clone(&self) -> Self {
@@ -128,49 +122,50 @@ pub mod i_reactor_callback {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                IREACTORCALLBACK_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    IREACTORCALLBACK_ABI.clone(),
+                    client,
+                ),
+            )
         }
-        ///Calls the contract's `reactorCallback` (0x9943fa89) function
+        ///Calls the contract's `reactorCallback` (0x585da628) function
         pub fn reactor_callback(
             &self,
             resolved_orders: ::std::vec::Vec<ResolvedOrder>,
-            filler: ::ethers::core::types::Address,
-            fill_data: ::ethers::core::types::Bytes,
+            callback_data: ::ethers::core::types::Bytes,
         ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
-                .method_hash([153, 67, 250, 137], (resolved_orders, filler, fill_data))
+                .method_hash([88, 93, 166, 40], (resolved_orders, callback_data))
                 .expect("method not found (this should never happen)")
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for IReactorCallback<M>
-    {
+    for IReactorCallback<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
     }
-    ///Container type for all input parameters for the `reactorCallback` function with signature `reactorCallback(((address,address,uint256,uint256,address,bytes),(address,uint256,uint256),(address,uint256,address)[],bytes,bytes32)[],address,bytes)` and selector `0x9943fa89`
+    ///Container type for all input parameters for the `reactorCallback` function with signature `reactorCallback(((address,address,uint256,uint256,address,bytes),(address,uint256,uint256),(address,uint256,address)[],bytes,bytes32)[],bytes)` and selector `0x585da628`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "reactorCallback",
-        abi = "reactorCallback(((address,address,uint256,uint256,address,bytes),(address,uint256,uint256),(address,uint256,address)[],bytes,bytes32)[],address,bytes)"
+        abi = "reactorCallback(((address,address,uint256,uint256,address,bytes),(address,uint256,uint256),(address,uint256,address)[],bytes,bytes32)[],bytes)"
     )]
     pub struct ReactorCallbackCall {
         pub resolved_orders: ::std::vec::Vec<ResolvedOrder>,
-        pub filler: ::ethers::core::types::Address,
-        pub fill_data: ::ethers::core::types::Bytes,
+        pub callback_data: ::ethers::core::types::Bytes,
     }
 }
