@@ -248,6 +248,7 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
     Ok(client
         .get(format!("{}?{}", ROUTING_API, query_string))
         .header(ORIGIN, "https://app.uniswap.org")
+        .header("x-request-source", "uniswap-web")
         .send()
         .await?
         .json::<OrderRoute>()
