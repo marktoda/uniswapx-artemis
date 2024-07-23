@@ -9,7 +9,9 @@ use anyhow::Result;
 use artemis_core::executors::mempool_executor::{GasBidInfo, SubmitTxToMempool};
 use artemis_core::types::Strategy;
 use async_trait::async_trait;
-use bindings_uniswapx::{shared_types::SignedOrder, swap_router_02_executor::SwapRouter02Executor};
+use bindings_uniswapx::{
+    erc20::ERC20, shared_types::SignedOrder, swap_router_02_executor::SwapRouter02Executor,
+};
 use ethers::{
     abi::{ethabi, AbiEncode, Token},
     providers::Middleware,
@@ -30,6 +32,7 @@ use super::types::{Action, Event};
 const BLOCK_TIME: u64 = 12;
 const DONE_EXPIRY: u64 = 300;
 const REACTOR_ADDRESS: &str = "0xe80bF394d190851E215D5F67B67f8F5A52783F1E";
+const SWAPROUTER_02_ADDRESS: &str = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
 pub const WETH_ADDRESS: &str = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
 pub const EXECUTOR_ADDRESS: &str = "TODO: Fill in swaprouter02 executor address";
 
@@ -141,13 +144,13 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             info!(
                 "Sending trade: num trades: {} routed quote: {}, batch needs: {}, profit: {} wei",
                 orders.len(),
-                event.route.quote,
+                event.route.quote_gas_adjusted,
                 amount_out_required,
                 profit
             );
 
             return Some(Action::SubmitTx(SubmitTxToMempool {
-                tx: self.build_fill(event).ok()?,
+                tx: self.build_fill(event).await.ok()?,
                 gas_bid_info: Some(GasBidInfo {
                     bid_percentage: self.bid_percentage,
                     total_profit: profit,
@@ -186,7 +189,10 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
     }
 
     // builds a transaction to fill an order
-    fn build_fill(&self, RoutedOrder { request, route }: RoutedOrder) -> Result<TypedTransaction> {
+    async fn build_fill(
+        &self,
+        RoutedOrder { request, route }: RoutedOrder,
+    ) -> Result<TypedTransaction> {
         let fill_contract =
             SwapRouter02Executor::new(H160::from_str(EXECUTOR_ADDRESS)?, self.client.clone());
         let mut signed_orders: Vec<SignedOrder> = Vec::new();
@@ -203,9 +209,32 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 }
             }
         }
-        // abi encode as [tokens to approve, multicall data]
+
+        let token_in: H160 = H160::from_str(&request.token_in)?;
+        let token_out: H160 = H160::from_str(&request.token_out)?;
+        let swaprouter_02_approvals = if self
+            .needs_approval(token_in, EXECUTOR_ADDRESS, SWAPROUTER_02_ADDRESS)
+            .await
+            .is_some()
+        {
+            vec![Token::Address(token_in)]
+        } else {
+            vec![]
+        };
+        let reactor_approvals = if self
+            .needs_approval(token_out, EXECUTOR_ADDRESS, REACTOR_ADDRESS)
+            .await
+            .is_some()
+        {
+            vec![Token::Address(token_out)]
+        } else {
+            vec![]
+        };
+
+        // abi encode as [tokens to approve to swap router 02, multicall data, tokens to approve to reactor]
         let calldata = ethabi::encode(&[
-            Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
+            Token::Array(swaprouter_02_approvals),
+            Token::Array(reactor_approvals),
             Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
         ]);
         let mut call = fill_contract.execute_batch(signed_orders, Bytes::from(calldata));
@@ -370,5 +399,14 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         profit_quote
             .saturating_mul(gas_use_eth)
             .checked_div(U256::from_str_radix(&route.gas_use_estimate_quote, 10).ok()?)
+    }
+
+    async fn needs_approval(&self, token: Address, from: &str, to: &str) -> Option<bool> {
+        let token_contract = ERC20::new(token, self.client.clone());
+        let allowance = token_contract
+            .allowance(H160::from_str(from).ok()?, H160::from_str(to).ok()?)
+            .await
+            .ok()?;
+        Some(allowance < U256::MAX / 2)
     }
 }

@@ -139,6 +139,7 @@ pub struct MethodParameters {
 #[serde(rename_all = "camelCase")]
 pub struct OrderRoute {
     pub quote: String,
+    pub quote_gas_adjusted: String,
     pub gas_price_wei: String,
     pub gas_use_estimate_quote: String,
     pub gas_use_estimate: String,
