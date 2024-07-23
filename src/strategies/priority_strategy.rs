@@ -1,4 +1,4 @@
-use super::types::{Config, OrderStatus, TokenInTokenOut};
+use super::types::{Config, OrderStatus};
 use crate::collectors::{
     block_collector::NewBlock,
     uniswapx_order_collector::{UniswapXOrder, CHAIN_ID},
@@ -175,7 +175,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         self.prune_done_orders();
 
         self.batch_sender
-            .send(self.get_order_batches().values().cloned().collect())
+            .send(self.get_order_batches())
             .await
             .ok()?;
 
@@ -209,16 +209,12 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         Ok(call.tx.set_chain_id(CHAIN_ID).clone())
     }
 
-    fn get_order_batches(&self) -> HashMap<TokenInTokenOut, OrderBatchData> {
-        let mut order_batches: HashMap<TokenInTokenOut, OrderBatchData> = HashMap::new();
+    /// We do not batch orders because priority fee is applied on the transaction level
+    fn get_order_batches(&self) -> Vec<OrderBatchData> {
+        let mut order_batches: Vec<OrderBatchData> = Vec::new();
 
-        // group orders by token in and token out
+        // generate batches of size 1
         self.open_orders.iter().for_each(|(_, order_data)| {
-            let token_in_token_out = TokenInTokenOut {
-                token_in: order_data.resolved.input.token.clone(),
-                token_out: order_data.resolved.outputs[0].token.clone(),
-            };
-
             let amount_in = order_data.resolved.input.amount;
             let amount_out = order_data
                 .resolved
@@ -226,27 +222,13 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                 .iter()
                 .fold(Uint::from(0), |sum, output| sum.wrapping_add(output.amount));
 
-            // insert new order and update total amount out
-            if let std::collections::hash_map::Entry::Vacant(e) =
-                order_batches.entry(token_in_token_out.clone())
-            {
-                e.insert(OrderBatchData {
-                    orders: vec![OrderData::PriorityOrderData(order_data.clone())],
-                    amount_in,
-                    amount_out_required: amount_out,
-                    token_in: order_data.resolved.input.token.clone(),
-                    token_out: order_data.resolved.outputs[0].token.clone(),
-                });
-            } else {
-                let order_batch_data = order_batches.get_mut(&token_in_token_out).unwrap();
-                order_batch_data
-                    .orders
-                    .push(OrderData::PriorityOrderData(order_data.clone()));
-                order_batch_data.amount_in = order_batch_data.amount_in.wrapping_add(amount_in);
-                order_batch_data.amount_out_required = order_batch_data
-                    .amount_out_required
-                    .wrapping_add(amount_out);
-            }
+            order_batches.push(OrderBatchData {
+                orders: vec![OrderData::PriorityOrderData(order_data.clone())],
+                amount_in,
+                amount_out_required: amount_out,
+                token_in: order_data.resolved.input.token.clone(),
+                token_out: order_data.resolved.outputs[0].token.clone(),
+            });
         });
         order_batches
     }
@@ -275,6 +257,11 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         Ok(())
     }
 
+    /// We still calculate profit in terms of ETH for priority fee orders
+    /// Rationale:
+    ///     - we have to bid at least the base fee
+    ///     - the priority fee set for the transaction is essentially total_profit_eth - base_fee
+    ///     - at 100% bid_percentage, our priority fee is total_profit_eth and thus gives the maximum amount to the user
     fn get_profit_eth(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
         let quote = U256::from_str_radix(&route.quote, 10).ok()?;
         let amount_out_required =
