@@ -2,7 +2,7 @@ use super::types::{Config, OrderStatus, TokenInTokenOut};
 use crate::collectors::{
     block_collector::NewBlock,
     uniswapx_order_collector::{UniswapXOrder, CHAIN_ID},
-    uniswapx_route_collector::{OrderBatchData, OrderData, RoutedOrder, V2DutchOrderData},
+    uniswapx_route_collector::{OrderBatchData, OrderData, PriorityOrderData, RoutedOrder},
 };
 use alloy_primitives::Uint;
 use anyhow::Result;
@@ -23,19 +23,18 @@ use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::{error, info};
-use uniswapx_rs::order::{OrderResolution, V2DutchOrder};
+use uniswapx_rs::order::{OrderResolution, PriorityOrder};
 
 use super::types::{Action, Event};
 
-const BLOCK_TIME: u64 = 12;
 const DONE_EXPIRY: u64 = 300;
-const REACTOR_ADDRESS: &str = "0xe80bF394d190851E215D5F67B67f8F5A52783F1E";
-pub const WETH_ADDRESS: &str = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
-pub const EXECUTOR_ADDRESS: &str = "TODO: Fill in swaprouter02 executor address";
+const REACTOR_ADDRESS: &str = "";
+const EXECUTOR_ADDRESS: &str = "";
+pub const WETH_ADDRESS: &str = "";
 
 #[derive(Debug)]
 #[allow(dead_code)]
-pub struct UniswapXUniswapFill<M> {
+pub struct UniswapXPriorityFill<M> {
     /// Ethers client.
     client: Arc<M>,
     /// Amount of profits to bid in gas
@@ -43,14 +42,14 @@ pub struct UniswapXUniswapFill<M> {
     last_block_number: u64,
     last_block_timestamp: u64,
     // map of open order hashes to order data
-    open_orders: HashMap<String, V2DutchOrderData>,
+    open_orders: HashMap<String, PriorityOrderData>,
     // map of done order hashes to time at which we can safely prune them
     done_orders: HashMap<String, u64>,
     batch_sender: Sender<Vec<OrderBatchData>>,
     route_receiver: Receiver<RoutedOrder>,
 }
 
-impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
+impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
     pub fn new(
         client: Arc<M>,
         config: Config,
@@ -73,7 +72,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
 }
 
 #[async_trait]
-impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXUniswapFill<M> {
+impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXPriorityFill<M> {
     // In order to sync this strategy, we need to get the current bid for all Sudo pools.
     async fn sync_state(&mut self) -> Result<()> {
         info!("syncing state");
@@ -84,7 +83,7 @@ impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXUniswapFill<M>
     // Process incoming events, seeing if we can arb new orders, and updating the internal state on new blocks.
     async fn process_event(&mut self, event: Event) -> Option<Action> {
         match event {
-            Event::UniswapXOrder(order) => self.process_order_event(*order).await,
+            Event::PriorityOrder(order) => self.process_order_event(*order).await,
             Event::NewBlock(block) => self.process_new_block_event(block).await,
             Event::UniswapXRoute(route) => self.process_new_route(*route).await,
             _ => None,
@@ -92,20 +91,18 @@ impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXUniswapFill<M>
     }
 }
 
-impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
-    fn decode_order(&self, encoded_order: &str) -> Result<V2DutchOrder, Box<dyn Error>> {
-        info!("Decoding order: {}", encoded_order);
+impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
+    fn decode_order(&self, encoded_order: &str) -> Result<PriorityOrder, Box<dyn Error>> {
         let encoded_order = if encoded_order.starts_with("0x") {
             &encoded_order[2..]
         } else {
             encoded_order
         };
-        let order_hex: Vec<u8> = hex::decode(encoded_order)?;
+        let order_hex = hex::decode(encoded_order)?;
 
-        Ok(V2DutchOrder::_decode(&order_hex, false)?)
+        Ok(PriorityOrder::_decode(&order_hex, false)?)
     }
 
-    // Process new orders as they come in.
     async fn process_order_event(&mut self, event: UniswapXOrder) -> Option<Action> {
         if self.last_block_timestamp == 0 {
             return None;
@@ -137,7 +134,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             ..
         } = &event.request;
 
-        if let Some(profit) = self.get_profit_eth(&event) {
+        if let Some(profit) = self.get_profit(&event) {
             info!(
                 "Sending trade: num trades: {} routed quote: {}, batch needs: {}, profit: {} wei",
                 orders.len(),
@@ -192,7 +189,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         let mut signed_orders: Vec<SignedOrder> = Vec::new();
         for batch in request.orders.iter() {
             match batch {
-                OrderData::V2DutchOrderData(order) => {
+                OrderData::PriorityOrderData(order) => {
                     signed_orders.push(SignedOrder {
                         order: Bytes::from(order.order._encode()),
                         sig: Bytes::from_str(&order.signature)?,
@@ -234,7 +231,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 order_batches.entry(token_in_token_out.clone())
             {
                 e.insert(OrderBatchData {
-                    orders: vec![OrderData::V2DutchOrderData(order_data.clone())],
+                    orders: vec![OrderData::PriorityOrderData(order_data.clone())],
                     amount_in,
                     amount_out_required: amount_out,
                     token_in: order_data.resolved.input.token.clone(),
@@ -244,7 +241,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 let order_batch_data = order_batches.get_mut(&token_in_token_out).unwrap();
                 order_batch_data
                     .orders
-                    .push(OrderData::V2DutchOrderData(order_data.clone()));
+                    .push(OrderData::PriorityOrderData(order_data.clone()));
                 order_batch_data.amount_in = order_batch_data.amount_in.wrapping_add(amount_in);
                 order_batch_data.amount_out_required = order_batch_data
                     .amount_out_required
@@ -278,43 +275,32 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         Ok(())
     }
 
-    fn prune_done_orders(&mut self) {
-        let mut to_remove = Vec::new();
-        for (order_hash, deadline) in self.done_orders.iter() {
-            if *deadline < self.last_block_timestamp {
-                to_remove.push(order_hash.clone());
-            }
+    fn get_profit(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
+        let quote = U256::from_str_radix(&route.quote, 10).ok()?;
+        let amount_out_required =
+            U256::from_str_radix(&request.amount_out_required.to_string(), 10).ok()?;
+        if quote.le(&amount_out_required) {
+            return None;
         }
-        for order_hash in to_remove {
-            self.done_orders.remove(&order_hash);
+        let profit_quote = quote.saturating_sub(amount_out_required);
+
+        if request.token_out.to_lowercase() == WETH_ADDRESS.to_lowercase() {
+            return Some(profit_quote);
         }
+
+        let gas_use_eth = U256::from_str_radix(&route.gas_use_estimate, 10)
+            .ok()?
+            .saturating_mul(U256::from_str_radix(&route.gas_price_wei, 10).ok()?);
+        profit_quote
+            .saturating_mul(gas_use_eth)
+            .checked_div(U256::from_str_radix(&route.gas_use_estimate_quote, 10).ok()?);
+        return profit_quote
+            .checked_div(quote)
+            .map(|profit| profit * U256::from(10_000_000));
     }
 
-    fn update_open_orders(&mut self) {
-        // TODO: this is nasty, plz cleanup
-        let binding = self.open_orders.clone();
-        let order_hashes: Vec<(&String, &V2DutchOrderData)> = binding.iter().collect();
-        for (order_hash, order_data) in order_hashes {
-            self.update_order_state(
-                order_data.order.clone(),
-                order_data.signature.clone(),
-                order_hash.clone().to_string(),
-            );
-        }
-    }
-
-    fn mark_as_done(&mut self, order: &str) {
-        if self.open_orders.contains_key(order) {
-            self.open_orders.remove(order);
-        }
-        if !self.done_orders.contains_key(order) {
-            self.done_orders
-                .insert(order.to_string(), self.last_block_timestamp + DONE_EXPIRY);
-        }
-    }
-
-    fn update_order_state(&mut self, order: V2DutchOrder, signature: String, order_hash: String) {
-        let resolved = order.resolve(self.last_block_timestamp + BLOCK_TIME);
+    fn update_order_state(&mut self, order: PriorityOrder, signature: String, order_hash: String) {
+        let resolved = order.resolve(Uint::from(0));
         let order_status: OrderStatus = match resolved {
             OrderResolution::Expired => OrderStatus::Done,
             OrderResolution::Invalid => OrderStatus::Done,
@@ -335,7 +321,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 }
                 self.open_orders.insert(
                     order_hash.clone(),
-                    V2DutchOrderData {
+                    PriorityOrderData {
                         order,
                         hash: order_hash,
                         signature,
@@ -346,29 +332,43 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         }
     }
 
+    fn prune_done_orders(&mut self) {
+        let mut to_remove = Vec::new();
+        for (order_hash, deadline) in self.done_orders.iter() {
+            if *deadline < self.last_block_timestamp {
+                to_remove.push(order_hash.clone());
+            }
+        }
+        for order_hash in to_remove {
+            self.done_orders.remove(&order_hash);
+        }
+    }
+
+    fn update_open_orders(&mut self) {
+        // TODO: this is nasty, plz cleanup
+        let binding = self.open_orders.clone();
+        let order_hashes: Vec<(&String, &PriorityOrderData)> = binding.iter().collect();
+        for (order_hash, order_data) in order_hashes {
+            self.update_order_state(
+                order_data.order.clone(),
+                order_data.signature.clone(),
+                order_hash.clone().to_string(),
+            );
+        }
+    }
+
+    fn mark_as_done(&mut self, order: &str) {
+        if self.open_orders.contains_key(order) {
+            self.open_orders.remove(order);
+        }
+        if !self.done_orders.contains_key(order) {
+            self.done_orders
+                .insert(order.to_string(), self.last_block_timestamp + DONE_EXPIRY);
+        }
+    }
+
     fn current_timestamp(&self) -> Result<u64> {
         let start = SystemTime::now();
         Ok(start.duration_since(UNIX_EPOCH)?.as_secs())
-    }
-
-    fn get_profit_eth(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
-        let quote = U256::from_str_radix(&route.quote, 10).ok()?;
-        let amount_out_required =
-            U256::from_str_radix(&request.amount_out_required.to_string(), 10).ok()?;
-        if quote.le(&amount_out_required) {
-            return None;
-        }
-        let profit_quote = quote.saturating_sub(amount_out_required);
-
-        if request.token_out.to_lowercase() == WETH_ADDRESS.to_lowercase() {
-            return Some(profit_quote);
-        }
-
-        let gas_use_eth = U256::from_str_radix(&route.gas_use_estimate, 10)
-            .ok()?
-            .saturating_mul(U256::from_str_radix(&route.gas_price_wei, 10).ok()?);
-        profit_quote
-            .saturating_mul(gas_use_eth)
-            .checked_div(U256::from_str_radix(&route.gas_use_estimate_quote, 10).ok()?)
     }
 }

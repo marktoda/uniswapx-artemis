@@ -3,6 +3,7 @@ use clap::Parser;
 
 use artemis_core::engine::Engine;
 use artemis_core::types::{CollectorMap, ExecutorMap};
+use collectors::uniswapx_order_collector::OrderType;
 use collectors::{
     block_collector::BlockCollector,
     uniswapx_order_collector::{UniswapXOrderCollector, CHAIN_ID},
@@ -91,10 +92,15 @@ async fn main() -> Result<()> {
     let (batch_sender, batch_receiver) = channel(512);
     let (route_sender, route_receiver) = channel(512);
 
-    let uniswapx_collector = Box::new(UniswapXOrderCollector::new());
+    let uniswapx_collector = Box::new(UniswapXOrderCollector::new(1, OrderType::Dutch));
     let uniswapx_collector =
         CollectorMap::new(uniswapx_collector, |e| Event::UniswapXOrder(Box::new(e)));
     engine.add_collector(Box::new(uniswapx_collector));
+
+    let priority_collector = Box::new(UniswapXOrderCollector::new(1, OrderType::Priority));
+    let priority_collector =
+        CollectorMap::new(priority_collector, |e| Event::PriorityOrder(Box::new(e)));
+    engine.add_collector(Box::new(priority_collector));
 
     let uniswapx_route_collector =
         Box::new(UniswapXRouteCollector::new(batch_receiver, route_sender));
