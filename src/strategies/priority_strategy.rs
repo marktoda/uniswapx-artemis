@@ -134,7 +134,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             ..
         } = &event.request;
 
-        if let Some(profit) = self.get_profit(&event) {
+        if let Some(profit) = self.get_profit_eth(&event) {
             info!(
                 "Sending trade: num trades: {} routed quote: {}, batch needs: {}, profit: {} wei",
                 orders.len(),
@@ -275,7 +275,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         Ok(())
     }
 
-    fn get_profit(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
+    fn get_profit_eth(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
         let quote = U256::from_str_radix(&route.quote, 10).ok()?;
         let amount_out_required =
             U256::from_str_radix(&request.amount_out_required.to_string(), 10).ok()?;
@@ -293,10 +293,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             .saturating_mul(U256::from_str_radix(&route.gas_price_wei, 10).ok()?);
         profit_quote
             .saturating_mul(gas_use_eth)
-            .checked_div(U256::from_str_radix(&route.gas_use_estimate_quote, 10).ok()?);
-        return profit_quote
-            .checked_div(quote)
-            .map(|profit| profit * U256::from(10_000_000));
+            .checked_div(U256::from_str_radix(&route.gas_use_estimate_quote, 10).ok()?)
     }
 
     fn update_order_state(&mut self, order: PriorityOrder, signature: String, order_hash: String) {

@@ -16,6 +16,7 @@ use ethers::{
 };
 use executors::protect_executor::ProtectExecutor;
 use std::sync::Arc;
+use strategies::priority_strategy::UniswapXPriorityFill;
 use strategies::{
     types::{Action, Config, Event},
     uniswapx_strategy::UniswapXUniswapFill,
@@ -90,7 +91,9 @@ async fn main() -> Result<()> {
     engine.add_collector(Box::new(block_collector));
 
     let (batch_sender, batch_receiver) = channel(512);
+    let (priority_batch_sender, priority_batch_receiver) = channel(512);
     let (route_sender, route_receiver) = channel(512);
+    let (priority_route_sender, priority_route_receiver) = channel(512);
 
     let uniswapx_collector = Box::new(UniswapXOrderCollector::new(1, OrderType::Dutch));
     let uniswapx_collector =
@@ -109,17 +112,34 @@ async fn main() -> Result<()> {
     });
     engine.add_collector(Box::new(uniswapx_route_collector));
 
+    let priority_route_collector = Box::new(UniswapXRouteCollector::new(
+        priority_batch_receiver,
+        priority_route_sender,
+    ));
+    let priority_route_collector = CollectorMap::new(priority_route_collector, |e| {
+        Event::UniswapXRoute(Box::new(e))
+    });
+    engine.add_collector(Box::new(priority_route_collector));
+
     let config = Config {
         bid_percentage: args.bid_percentage,
     };
 
-    let strategy = UniswapXUniswapFill::new(
+    let uniswapx_strategy = UniswapXUniswapFill::new(
         Arc::new(provider.clone()),
-        config,
+        config.clone(),
         batch_sender,
         route_receiver,
     );
-    engine.add_strategy(Box::new(strategy));
+    engine.add_strategy(Box::new(uniswapx_strategy));
+
+    let priority_strategy = UniswapXPriorityFill::new(
+        Arc::new(provider.clone()),
+        config.clone(),
+        priority_batch_sender,
+        priority_route_receiver,
+    );
+    engine.add_strategy(Box::new(priority_strategy));
 
     let executor = Box::new(ProtectExecutor::new(
         provider.clone(),
