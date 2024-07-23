@@ -141,16 +141,27 @@ async fn main() -> Result<()> {
     );
     engine.add_strategy(Box::new(priority_strategy));
 
-    let executor = Box::new(ProtectExecutor::new(
+    let protect_executor = Box::new(ProtectExecutor::new(
         provider.clone(),
         mevblocker_provider.clone(),
     ));
 
-    let executor = ExecutorMap::new(executor, |action| match action {
+    let public_tx_executor = Box::new(ProtectExecutor::new(provider.clone(), provider.clone()));
+
+    let protect_executor = ExecutorMap::new(protect_executor, |action| match action {
         Action::SubmitTx(tx) => Some(tx),
+        // No op for public transactions
+        _ => None,
     });
 
-    engine.add_executor(Box::new(executor));
+    let public_tx_executor = ExecutorMap::new(public_tx_executor, |action| match action {
+        Action::SubmitPublicTx(tx) => Some(tx),
+        // No op for protected transactions
+        _ => None,
+    });
+
+    engine.add_executor(Box::new(protect_executor));
+    engine.add_executor(Box::new(public_tx_executor));
     // Start engine.
     if let Ok(mut set) = engine.run().await {
         while let Some(res) = set.join_next().await {

@@ -18,6 +18,7 @@ pub enum Event {
 #[derive(Debug, Clone)]
 pub enum Action {
     SubmitTx(SubmitTxToMempool),
+    SubmitPublicTx(SubmitTxToMempool),
 }
 
 /// Configuration for variables we need to pass to the strategy.

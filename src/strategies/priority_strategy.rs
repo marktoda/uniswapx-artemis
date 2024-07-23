@@ -143,7 +143,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                 profit
             );
 
-            return Some(Action::SubmitTx(SubmitTxToMempool {
+            return Some(Action::SubmitPublicTx(SubmitTxToMempool {
                 tx: self.build_fill(event).ok()?,
                 gas_bid_info: Some(GasBidInfo {
                     bid_percentage: self.bid_percentage,
