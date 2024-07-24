@@ -87,6 +87,8 @@ struct RoutingApiQuery {
     recipient: String,
     slippage_tolerance: String,
     deadline: u64,
+    #[serde(rename = "enableUniversalRouter")]
+    enable_universal_router: bool,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -231,14 +233,15 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
 pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
     // TODO: support exactOutput
     let query = RoutingApiQuery {
-        token_in_address: params.token_in,
-        token_out_address: params.token_out,
+        token_in_address: resolve_address(params.token_in),
+        token_out_address: resolve_address(params.token_out),
         token_in_chain_id: CHAIN_ID,
         token_out_chain_id: CHAIN_ID,
         trade_type: TradeType::ExactIn,
         amount: params.amount,
         recipient: EXECUTOR_ADDRESS.to_string(),
         slippage_tolerance: SLIPPAGE_TOLERANCE.to_string(),
+        enable_universal_router: false,
         deadline: DEADLINE,
     };
 
@@ -254,4 +257,12 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
         .await?
         .json::<OrderRoute>()
         .await?)
+}
+
+// our routing provider requires that "ETH" be used instead of the zero address
+fn resolve_address(token: String) -> String {
+    if token == "0x0000000000000000000000000000000000000000" {
+        return "ETH".to_string();
+    }
+    return token;
 }
