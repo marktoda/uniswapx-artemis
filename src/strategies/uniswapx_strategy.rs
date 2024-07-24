@@ -392,7 +392,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
     }
 
     fn get_profit_eth(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
-        let quote = U256::from_str_radix(&route.quote_gas_adjusted, 10).ok()?;
+        let quote = U256::from_str_radix(&route.quote, 10).ok()?;
         let amount_out_required =
             U256::from_str_radix(&request.amount_out_required.to_string(), 10).ok()?;
         if quote.le(&amount_out_required) {
