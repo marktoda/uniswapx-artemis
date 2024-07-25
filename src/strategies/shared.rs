@@ -11,8 +11,11 @@ use ethers::{
     providers::Middleware,
     types::{transaction::eip2718::TypedTransaction, Address, Bytes, H160, U256},
 };
-use std::{str::FromStr, time::{SystemTime, UNIX_EPOCH}};
 use std::sync::Arc;
+use std::{
+    str::FromStr,
+    time::{SystemTime, UNIX_EPOCH},
+};
 
 const REACTOR_ADDRESS: &str = "0x00000011F84B9aa48e5f8aA8B9897600006289Be";
 const SWAPROUTER_02_ADDRESS: &str = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";

@@ -1,7 +1,10 @@
-use super::types::{Config, OrderStatus};
+use super::{
+    shared::UniswapXStrategy,
+    types::{Config, OrderStatus},
+};
 use crate::collectors::{
     block_collector::NewBlock,
-    uniswapx_order_collector::{UniswapXOrder, CHAIN_ID},
+    uniswapx_order_collector::UniswapXOrder,
     uniswapx_route_collector::{OrderBatchData, OrderData, PriorityOrderData, RoutedOrder},
 };
 use alloy_primitives::Uint;
@@ -9,18 +12,16 @@ use anyhow::Result;
 use artemis_core::executors::mempool_executor::{GasBidInfo, SubmitTxToMempool};
 use artemis_core::types::Strategy;
 use async_trait::async_trait;
-use bindings_uniswapx::{shared_types::SignedOrder, swap_router_02_executor::SwapRouter02Executor};
+use bindings_uniswapx::shared_types::SignedOrder;
 use ethers::{
-    abi::{ethabi, AbiEncode, Token},
     providers::Middleware,
-    types::{transaction::eip2718::TypedTransaction, Address, Bytes, Filter, H160, U256},
+    types::{Address, Bytes, Filter, U256},
     utils::hex,
 };
 use std::collections::HashMap;
 use std::error::Error;
 use std::str::FromStr;
 use std::sync::Arc;
-use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::{error, info};
 use uniswapx_rs::order::{OrderResolution, PriorityOrder};
@@ -29,7 +30,6 @@ use super::types::{Action, Event};
 
 const DONE_EXPIRY: u64 = 300;
 const REACTOR_ADDRESS: &str = "";
-const EXECUTOR_ADDRESS: &str = "";
 pub const WETH_ADDRESS: &str = "";
 
 #[derive(Debug)]
@@ -91,6 +91,8 @@ impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXPriorityFill<M
     }
 }
 
+impl<M: Middleware + 'static> UniswapXStrategy<M> for UniswapXPriorityFill<M> {}
+
 impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
     fn decode_order(&self, encoded_order: &str) -> Result<PriorityOrder, Box<dyn Error>> {
         let encoded_order = if encoded_order.starts_with("0x") {
@@ -143,8 +145,12 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                 profit
             );
 
+            let signed_orders = self.get_signed_orders(orders.clone()).ok()?;
             return Some(Action::SubmitPublicTx(SubmitTxToMempool {
-                tx: self.build_fill(event).ok()?,
+                tx: self
+                    .build_fill(self.client.clone(), signed_orders, event)
+                    .await
+                    .ok()?,
                 gas_bid_info: Some(GasBidInfo {
                     bid_percentage: self.bid_percentage,
                     total_profit: profit,
@@ -182,12 +188,10 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         None
     }
 
-    // builds a transaction to fill an order
-    fn build_fill(&self, RoutedOrder { request, route }: RoutedOrder) -> Result<TypedTransaction> {
-        let fill_contract =
-            SwapRouter02Executor::new(H160::from_str(EXECUTOR_ADDRESS)?, self.client.clone());
+    /// encode orders into generic signed orders
+    fn get_signed_orders(&self, orders: Vec<OrderData>) -> Result<Vec<SignedOrder>> {
         let mut signed_orders: Vec<SignedOrder> = Vec::new();
-        for batch in request.orders.iter() {
+        for batch in orders.iter() {
             match batch {
                 OrderData::PriorityOrderData(order) => {
                     signed_orders.push(SignedOrder {
@@ -200,13 +204,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                 }
             }
         }
-        // abi encode as [tokens to approve, multicall data]
-        let calldata = ethabi::encode(&[
-            Token::Array(vec![Token::Address(H160::from_str(&request.token_in)?)]),
-            Token::Bytes(Bytes::from_str(&route.method_parameters.calldata)?.encode()),
-        ]);
-        let mut call = fill_contract.execute_batch(signed_orders, Bytes::from(calldata));
-        Ok(call.tx.set_chain_id(CHAIN_ID).clone())
+        Ok(signed_orders)
     }
 
     /// We do not batch orders because priority fee is applied on the transaction level
@@ -349,10 +347,5 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             self.done_orders
                 .insert(order.to_string(), self.last_block_timestamp + DONE_EXPIRY);
         }
-    }
-
-    fn current_timestamp(&self) -> Result<u64> {
-        let start = SystemTime::now();
-        Ok(start.duration_since(UNIX_EPOCH)?.as_secs())
     }
 }
