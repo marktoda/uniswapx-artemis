@@ -1,7 +1,10 @@
-use super::types::{Config, OrderStatus, TokenInTokenOut};
+use super::{
+    shared::{UniswapXStrategy, WETH_ADDRESS},
+    types::{Config, OrderStatus, TokenInTokenOut},
+};
 use crate::collectors::{
     block_collector::NewBlock,
-    uniswapx_order_collector::{UniswapXOrder, CHAIN_ID},
+    uniswapx_order_collector::UniswapXOrder,
     uniswapx_route_collector::{OrderBatchData, OrderData, RoutedOrder, V2DutchOrderData},
 };
 use alloy_primitives::Uint;
@@ -9,20 +12,16 @@ use anyhow::Result;
 use artemis_core::executors::mempool_executor::{GasBidInfo, SubmitTxToMempool};
 use artemis_core::types::Strategy;
 use async_trait::async_trait;
-use bindings_uniswapx::{
-    erc20::ERC20, shared_types::SignedOrder, swap_router_02_executor::SwapRouter02Executor,
-};
+use bindings_uniswapx::shared_types::SignedOrder;
 use ethers::{
-    abi::{ethabi, ParamType, Token},
     providers::Middleware,
-    types::{transaction::eip2718::TypedTransaction, Address, Bytes, Filter, H160, U256},
+    types::{Address, Bytes, Filter, U256},
     utils::hex,
 };
-use std::{collections::HashMap, fmt::Debug};
 use std::error::Error;
 use std::str::FromStr;
 use std::sync::Arc;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::{collections::HashMap, fmt::Debug};
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::{error, info};
 use uniswapx_rs::order::{OrderResolution, V2DutchOrder};
@@ -32,9 +31,6 @@ use super::types::{Action, Event};
 const BLOCK_TIME: u64 = 12;
 const DONE_EXPIRY: u64 = 300;
 const REACTOR_ADDRESS: &str = "0x00000011F84B9aa48e5f8aA8B9897600006289Be";
-const SWAPROUTER_02_ADDRESS: &str = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
-pub const WETH_ADDRESS: &str = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
-pub const EXECUTOR_ADDRESS: &str = "0xa6b19B30593F6e70eabf6c05f9C96d66da65a0A1";
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -95,6 +91,8 @@ impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXUniswapFill<M>
     }
 }
 
+impl<M: Middleware + 'static> UniswapXStrategy<M> for UniswapXUniswapFill<M> {}
+
 impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
     fn decode_order(&self, encoded_order: &str) -> Result<V2DutchOrder, Box<dyn Error>> {
         let encoded_order = if encoded_order.starts_with("0x") {
@@ -147,9 +145,12 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 amount_out_required,
                 profit
             );
-
+            let signed_orders = self.get_signed_orders(orders.clone()).ok()?;
             return Some(Action::SubmitTx(SubmitTxToMempool {
-                tx: self.build_fill(event).await.ok()?,
+                tx: self
+                    .build_fill(self.client.clone(), signed_orders, event)
+                    .await
+                    .ok()?,
                 gas_bid_info: Some(GasBidInfo {
                     bid_percentage: self.bid_percentage,
                     total_profit: profit,
@@ -187,15 +188,10 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         None
     }
 
-    // builds a transaction to fill an order
-    async fn build_fill(
-        &self,
-        RoutedOrder { request, route }: RoutedOrder,
-    ) -> Result<TypedTransaction> {
-        let fill_contract =
-            SwapRouter02Executor::new(H160::from_str(EXECUTOR_ADDRESS)?, self.client.clone());
+    /// encode orders into generic signed orders
+    fn get_signed_orders(&self, orders: Vec<OrderData>) -> Result<Vec<SignedOrder>> {
         let mut signed_orders: Vec<SignedOrder> = Vec::new();
-        for batch in request.orders.iter() {
+        for batch in orders.iter() {
             match batch {
                 OrderData::V2DutchOrderData(order) => {
                     signed_orders.push(SignedOrder {
@@ -208,48 +204,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 }
             }
         }
-
-        let token_in: H160 = H160::from_str(&request.token_in)?;
-        let token_out: H160 = H160::from_str(&request.token_out)?;
-
-        let swaprouter_02_approval = self.get_tokens_to_approve(
-            token_in,
-            EXECUTOR_ADDRESS,
-            SWAPROUTER_02_ADDRESS,
-        ).await?;
-        
-        let reactor_approval = self.get_tokens_to_approve(
-            token_out,
-            EXECUTOR_ADDRESS,
-            REACTOR_ADDRESS,
-        ).await?;
-
-        // Strip off function selector
-        let multicall_bytes = &route.method_parameters.calldata[10..];
-        println!("Multicall bytes: {}", multicall_bytes);
-
-        // Decode multicall into [Uint256, bytes[]] (deadline, multicallData)
-        let decoded_multicall_bytes = ethabi::decode(
-            &[ParamType::Uint(256), ParamType::Array(Box::new(ParamType::Bytes))],
-            &Bytes::from_str(multicall_bytes).ok().expect("Failed to decode multicall bytes"),
-        );
-
-        let decoded_multicall_bytes = match decoded_multicall_bytes {
-            Ok(data) => data[1].clone(), // already in bytes[]
-            Err(e) => {
-                return Err(anyhow::anyhow!("Failed to decode multicall bytes: {}", e));
-            }
-        };
-
-        // abi encode as [tokens to approve to swap router 02, tokens to approve to reactor,  multicall data]
-        //               [address[], address[], bytes[]]
-        let calldata = ethabi::encode(&[
-            Token::Array(swaprouter_02_approval),
-            Token::Array(reactor_approval),
-            decoded_multicall_bytes,
-        ]);
-        let mut call = fill_contract.execute_batch(signed_orders, Bytes::from(calldata));
-        Ok(call.tx.set_chain_id(CHAIN_ID).clone())
+        Ok(signed_orders)
     }
 
     fn get_order_batches(&self) -> HashMap<TokenInTokenOut, OrderBatchData> {
@@ -386,11 +341,6 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         }
     }
 
-    fn current_timestamp(&self) -> Result<u64> {
-        let start = SystemTime::now();
-        Ok(start.duration_since(UNIX_EPOCH)?.as_secs())
-    }
-
     fn get_profit_eth(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
         let quote = U256::from_str_radix(&route.quote, 10).ok()?;
         let amount_out_required =
@@ -410,26 +360,5 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         profit_quote
             .saturating_mul(gas_use_eth)
             .checked_div(U256::from_str_radix(&route.gas_use_estimate_quote, 10).ok()?)
-    }
-
-    async fn get_tokens_to_approve(
-        &self,
-        token: Address,
-        from: &str,
-        to: &str,
-    ) -> Result<Vec<Token>, anyhow::Error> {
-        if token == Address::zero() {
-            return Ok(vec![]);
-        }
-        let token_contract = ERC20::new(token, self.client.clone());
-        let allowance = token_contract
-            .allowance(H160::from_str(from).ok().expect("Error encoding from address"), H160::from_str(to).ok().expect("Error encoding from address"))
-            .await
-            .ok().expect("Failed to get allowance");
-        if allowance < U256::MAX / 2 {
-            Ok(vec![Token::Address(token)])
-        } else {
-            Ok(vec![])
-        }
     }
 }

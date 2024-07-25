@@ -1,4 +1,5 @@
 use crate::collectors::uniswapx_order_collector::CHAIN_ID;
+use crate::strategies::shared::EXECUTOR_ADDRESS;
 use alloy_primitives::Uint;
 use anyhow::Result;
 use reqwest::header::ORIGIN;
@@ -7,7 +8,6 @@ use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::info;
 use uniswapx_rs::order::{PriorityOrder, ResolvedOrder, V2DutchOrder};
 
-use crate::strategies::uniswapx_strategy::EXECUTOR_ADDRESS;
 use artemis_core::types::{Collector, CollectorStream};
 use async_trait::async_trait;
 use futures::lock::Mutex;
