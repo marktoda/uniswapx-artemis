@@ -29,8 +29,9 @@ use uniswapx_rs::order::{OrderResolution, PriorityOrder};
 use super::types::{Action, Event};
 
 const DONE_EXPIRY: u64 = 300;
-const REACTOR_ADDRESS: &str = "";
-pub const WETH_ADDRESS: &str = "";
+// Base addresses
+const REACTOR_ADDRESS: &str = "0x000000001Ec5656dcdB24D90DFa42742738De729";
+pub const WETH_ADDRESS: &str = "0x4200000000000000000000000000000000000006";
 
 #[derive(Debug)]
 #[allow(dead_code)]
