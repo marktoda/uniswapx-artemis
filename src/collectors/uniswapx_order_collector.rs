@@ -9,7 +9,35 @@ use tokio_stream::wrappers::IntervalStream;
 
 static UNISWAPX_API_URL: &str = "https://api.uniswap.org/v2";
 static POLL_INTERVAL_SECS: u64 = 5;
-pub const CHAIN_ID: u64 = 1;
+
+#[derive(Debug, PartialEq, Eq)]
+pub enum OrderType {
+    Dutch,
+    Priority,
+}
+
+impl OrderType {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            OrderType::Dutch => "Dutch_V2",
+            OrderType::Priority => "Priority",
+        }
+    }
+
+    pub fn from_str(s: &str) -> Option<OrderType> {
+        match s {
+            "Dutch_V2" => Some(OrderType::Dutch),
+            "Priority" => Some(OrderType::Priority),
+            _ => None,
+        }
+    }
+}
+
+impl Default for OrderType {
+    fn default() -> Self {
+        OrderType::Dutch
+    }
+}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct UniswapXOrder {
@@ -38,13 +66,17 @@ pub struct UniswapXOrderResponse {
 pub struct UniswapXOrderCollector {
     pub client: Client,
     pub base_url: String,
+    pub chain_id: u64,
+    pub order_type: OrderType,
 }
 
 impl UniswapXOrderCollector {
-    pub fn new() -> Self {
+    pub fn new(chain_id: u64, order_type: OrderType) -> Self {
         Self {
             client: Client::new(),
             base_url: UNISWAPX_API_URL.to_string(),
+            chain_id,
+            order_type,
         }
     }
 }
@@ -56,8 +88,10 @@ impl UniswapXOrderCollector {
 impl Collector<UniswapXOrder> for UniswapXOrderCollector {
     async fn get_event_stream(&self) -> Result<CollectorStream<'_, UniswapXOrder>> {
         let url = format!(
-            "{}/orders?orderStatus=open&chainId={}",
-            self.base_url, CHAIN_ID
+            "{}/orders?orderStatus=open&chainId={}&orderType={}",
+            self.base_url,
+            self.chain_id,
+            self.order_type.as_str()
         );
 
         // stream that polls the UniswapX API every 5 seconds
@@ -94,8 +128,10 @@ impl Collector<UniswapXOrder> for UniswapXOrderCollector {
 mod tests {
     use crate::collectors::uniswapx_order_collector::UniswapXOrderCollector;
     use artemis_core::types::Collector;
+    use ethers::utils::hex;
     use futures::StreamExt;
     use mockito::{Mock, Server, ServerGuard};
+    use uniswapx_rs::order::V2DutchOrder;
 
     async fn get_collector(mock_response: &str) -> (UniswapXOrderCollector, ServerGuard, Mock) {
         let mut server = Server::new_async().await;
@@ -112,6 +148,8 @@ mod tests {
         let res = UniswapXOrderCollector {
             client: reqwest::Client::new(),
             base_url: url.clone(),
+            chain_id: 1,
+            order_type: super::OrderType::Dutch,
         };
 
         (res, server, mock)
@@ -139,5 +177,33 @@ mod tests {
             "0x0ea53d4ce1524dda9d667e6ba2e0bf3e630d72ebc8946f1528e4a693f2b8b2e9"
         );
         mock.assert_async().await;
+    }
+
+    #[tokio::test]
+    async fn decodes_v2_order() {
+        let response = r#"
+{"orders":[{"type":"Dutch_V2","orderStatus":"open","signature":"0x6eb32e7912d333e9c1ab162db02ed1656cdc8fbea2e21e70cd3634e8a3bd85d0582b46cacb584412ef3e035837b005b70f67897969426f9795128ea52de3a8cf1b","encodedOrder":"0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000001000000000000000000000000004449cd34d1eb1fedcf02a1be3834ffde8e6a61800000000000000000000000006982508145454ce325ddbe47a25d4ec3d23119330000000000000000000000000000000000000000000422ca8b0a00a4250000000000000000000000000000000000000000000000000422ca8b0a00a42500000000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000042000000000000000000000000000000011f84b9aa48e5f8aa8b9897600006289be000000000000000000000000c9838bbf85ad068136e8da07021e9e131201901904683298fe8b71446644eba514e387688690bde85b7bcaf8de44455a6aaf7a3000000000000000000000000000000000000000000000000000000000669adac5000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003c330a127f1ec70000000000000000000000000000000000000000000000000034be9ca1484989000000000000000000000000c9838bbf85ad068136e8da07021e9e131201901900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000269fc8de5047000000000000000000000000000000000000000000000000000021d754744fbe000000000000000000000000000000fee13a103a10d593b9ae06b3e05f2e7e1c00000000000000000000000000000000000000000000000000000000669ad9b600000000000000000000000000000000000000000000000000000000669ad9f20000000000000000000000006f1cdbbb4d53d226cf4b917bf768b94acbab61680000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000003c64146542c1fd00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000041d90e87f6f9e84487bfbb5170e856a332769359664c72f90250ee8917baf3a5920e87d331fcf97456e5d4d88761c552a9115569861aa96120b56d882339bbaac91c00000000000000000000000000000000000000000000000000000000000000","chainId":1,"nonce":"1993352701105935839386570705396248068916924096291549856616269381900329515568","orderHash":"0x382f612930c2121ed91fcdc00972f76b4adbef8d111830e1d135ac944a144876","swapper":"0xC9838Bbf85Ad068136E8DA07021E9e1312019019","input":{"token":"0x6982508145454Ce325dDbE47a25d4ec3d2311933","startAmount":"5000000000000000000000000","endAmount":"5000000000000000000000000"},"outputs":[{"token":"0x0000000000000000000000000000000000000000","startAmount":"16944616955649735","endAmount":"14846278718998921","recipient":"0xC9838Bbf85Ad068136E8DA07021E9e1312019019"},{"token":"0x0000000000000000000000000000000000000000","startAmount":"42467711668295","endAmount":"37208718593982","recipient":"0x000000fee13a103A10D593b9AE06b3e05F2E7E1c"}],"cosignerData":{"decayStartTime":1721424310,"decayEndTime":1721424370,"exclusiveFiller":"0x6F1cDbBb4d53d226CF4B917bF768B94acbAB6168","inputOverride":"0","outputOverrides":["16998537363636733","0"]},"cosignature":"0xd90e87f6f9e84487bfbb5170e856a332769359664c72f90250ee8917baf3a5920e87d331fcf97456e5d4d88761c552a9115569861aa96120b56d882339bbaac91c","quoteId":"221f421a-455d-4358-8376-6b4fb0ffb0f1","requestId":"775eea31-3173-4f1c-b7d2-bcd6fbcf2301","createdAt":1721424286}]}        "#;
+        let (collector, _server, _) = get_collector(response).await;
+        // get event stream and parse events
+        let stream = collector.get_event_stream().await.unwrap();
+        let (first_order, _) = stream.into_future().await;
+        assert!(first_order.is_some());
+        assert_eq!(
+            first_order.clone().unwrap().order_hash,
+            "0x382f612930c2121ed91fcdc00972f76b4adbef8d111830e1d135ac944a144876"
+        );
+        let encoded_order = &first_order.unwrap().encoded_order;
+        let encoded_order = if encoded_order.starts_with("0x") {
+            &encoded_order[2..]
+        } else {
+            encoded_order
+        };
+        let order_hex: Vec<u8> = hex::decode(encoded_order).unwrap();
+
+        let result = V2DutchOrder::_decode(&order_hex, false);
+        match result {
+            Err(e) => panic!("Error decoding order: {:?}", e),
+            _ => (),
+        }
     }
 }

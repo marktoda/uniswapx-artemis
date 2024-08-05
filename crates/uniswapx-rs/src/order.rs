@@ -1,5 +1,8 @@
+use std::error::Error;
+
+use alloy_dyn_abi::SolType;
 use alloy_primitives::Uint;
-use alloy_sol_types::{sol, SolType};
+use alloy_sol_types::sol;
 use anyhow::Result;
 
 sol! {
@@ -29,30 +32,78 @@ sol! {
     }
 
     #[derive(Debug)]
-    struct ExclusiveDutchOrder {
-        OrderInfo info;
+    struct CosignerData {
         uint256 decayStartTime;
         uint256 decayEndTime;
         address exclusiveFiller;
         uint256 exclusivityOverrideBps;
-        DutchInput input;
-        DutchOutput[] outputs;
+        uint256 inputAmount;
+        uint256[] outputAmounts;
+    }
+
+    #[derive(Debug)]
+    struct V2DutchOrder {
+        OrderInfo info;
+        address cosigner;
+        DutchInput baseInput;
+        DutchOutput[] baseOutputs;
+        CosignerData cosignerData;
+        bytes cosignature;
+    }
+    
+    #[derive(Debug)]
+    struct PriorityInput {
+        address token;
+        uint256 amount;
+        uint256 mpsPerPriorityFeeWei;
+    }
+
+    #[derive(Debug)]
+    struct PriorityOutput {
+        address token;
+        uint256 amount;
+        uint256 mpsPerPriorityFeeWei;
+        address recipient;
+    }
+
+    #[derive(Debug)]
+    struct PriorityCosignerData {
+        uint256 auctionTargetBlock;
+    }
+
+    #[derive(Debug)]
+    struct PriorityOrder {
+        OrderInfo info;
+        address cosigner;
+        uint256 auctionStartBlock;
+        uint256 baselinePriorityFeeWei;
+        PriorityInput input;
+        PriorityOutput[] outputs;
+        PriorityCosignerData cosignerData;
+        bytes cosignature;
     }
 }
 
-pub fn decode_order(encoded_order: &str) -> Result<ExclusiveDutchOrder> {
-    let encoded_order = if encoded_order.starts_with("0x") {
-        &encoded_order[2..]
-    } else {
-        encoded_order
-    };
-    let order_hex = hex::decode(encoded_order)?;
 
-    Ok(ExclusiveDutchOrder::decode(&order_hex, false)?)
+pub enum Order {
+    V2DutchOrder(V2DutchOrder),
+    PriorityOrder(PriorityOrder),
 }
 
-pub fn encode_order(order: &ExclusiveDutchOrder) -> Vec<u8> {
-    ExclusiveDutchOrder::encode(order)
+impl Order {
+    pub fn resolve(&self, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
+        match self {
+            Order::V2DutchOrder(order) => order.resolve(timestamp),
+            Order::PriorityOrder(order) => order.resolve(priority_fee),
+        }
+    }
+
+    pub fn encode(&self) -> Vec<u8> {
+        match self {
+            Order::V2DutchOrder(order) => order._encode(),
+            Order::PriorityOrder(order) => order._encode(),
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -81,7 +132,15 @@ pub enum OrderResolution {
     Invalid,
 }
 
-impl ExclusiveDutchOrder {
+impl V2DutchOrder {
+    pub fn _decode(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
+        Ok(V2DutchOrder::decode_single(order_hex, validate)?)
+    }
+
+    pub fn _encode(&self) -> Vec<u8> {
+        V2DutchOrder::encode_single(self)
+    }
+
     pub fn resolve(&self, timestamp: u64) -> OrderResolution {
         let timestamp = Uint::from(timestamp);
 
@@ -90,33 +149,34 @@ impl ExclusiveDutchOrder {
         };
 
         // resolve over the decay curve
+        // TODO: apply cosigner logic
 
-        let input = ResolvedInput {
-            token: self.input.token.to_string(),
+        let input: ResolvedInput = ResolvedInput {
+            token: self.baseInput.token.to_string(),
             amount: resolve_decay(
                 timestamp,
-                self.decayStartTime,
-                self.decayEndTime,
-                self.input.startAmount,
-                self.input.endAmount,
+                self.cosignerData.decayStartTime,
+                self.cosignerData.decayEndTime,
+                self.baseInput.startAmount,
+                self.baseInput.endAmount,
             ),
         };
 
         let outputs = self
-            .outputs
+            .baseOutputs
             .iter()
             .map(|output| {
                 let mut amount = resolve_decay(
                     timestamp,
-                    self.decayStartTime,
-                    self.decayEndTime,
+                    self.cosignerData.decayStartTime,
+                    self.cosignerData.decayEndTime,
                     output.startAmount,
                     output.endAmount,
                 );
 
                 // add exclusivity override to amount
-                if self.decayStartTime.gt(&timestamp) && !self.exclusiveFiller.is_zero() {
-                    let exclusivity = self.exclusivityOverrideBps.wrapping_add(Uint::from(10000));
+                if self.cosignerData.decayStartTime.gt(&timestamp) && !self.cosignerData.exclusiveFiller.is_zero() {
+                    let exclusivity = self.cosignerData.exclusivityOverrideBps.wrapping_add(Uint::from(10000));
                     let exclusivity = exclusivity.wrapping_mul(amount);
                     amount = exclusivity.wrapping_div(Uint::from(10000));
                 };
@@ -131,6 +191,49 @@ impl ExclusiveDutchOrder {
 
         OrderResolution::Resolved(ResolvedOrder { input, outputs })
     }
+}
+
+impl PriorityOrder {
+    pub fn _decode(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
+        Ok(PriorityOrder::decode_single(order_hex, validate)?)
+    }
+
+    pub fn _encode(&self) -> Vec<u8> {
+        PriorityOrder::encode_single(self)
+    }
+
+    pub fn resolve(&self, priority_fee: Uint<256, 4>) -> OrderResolution {
+        let input = self.input.scale(priority_fee);
+        let outputs = self
+            .outputs
+            .iter()
+            .map(|output| output.scale(priority_fee))
+            .collect();
+
+        OrderResolution::Resolved(ResolvedOrder { input, outputs })
+    }
+}
+
+impl PriorityInput {
+    pub fn scale(&self, priority_fee: Uint<256, 4>) -> ResolvedInput {
+        let amount = self.amount.wrapping_mul(Uint::from(1e7).wrapping_add(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(1e7));
+        ResolvedInput {
+            token: self.token.to_string(),
+            amount,
+        }
+    }
+}
+
+impl PriorityOutput {
+    pub fn scale(&self, priority_fee: Uint<256, 4>) -> ResolvedOutput {
+        let amount = self.amount.wrapping_mul(Uint::from(1e7).saturating_sub(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(1e7));
+        ResolvedOutput {
+            token: self.token.to_string(),
+            amount,
+            recipient: self.recipient.to_string(),
+        }
+    }
+
 }
 
 fn resolve_decay(
