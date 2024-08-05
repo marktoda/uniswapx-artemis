@@ -6,7 +6,7 @@ use artemis_core::types::{CollectorMap, ExecutorMap};
 use collectors::uniswapx_order_collector::OrderType;
 use collectors::{
     block_collector::BlockCollector,
-    uniswapx_order_collector::{UniswapXOrderCollector, CHAIN_ID},
+    uniswapx_order_collector::UniswapXOrderCollector,
     uniswapx_route_collector::UniswapXRouteCollector,
 };
 use ethers::{
@@ -45,6 +45,10 @@ pub struct Args {
     /// Percentage of profit to pay in gas.
     #[arg(long)]
     pub bid_percentage: u64,
+
+    /// chain id 
+    #[arg(long)]
+    pub chain_id: u64,
 }
 
 #[tokio::main]
@@ -64,6 +68,7 @@ async fn main() -> Result<()> {
     // Set up ethers provider.
     let ws = Ws::connect(args.wss).await?;
     let provider = Provider::new(ws);
+    let chain_id = args.chain_id;
 
     let mevblocker_provider =
         Provider::<Http>::try_from(MEV_BLOCKER).expect("could not instantiate HTTP Provider");
@@ -72,7 +77,7 @@ async fn main() -> Result<()> {
         .private_key
         .parse::<LocalWallet>()
         .unwrap()
-        .with_chain_id(CHAIN_ID);
+        .with_chain_id(chain_id);
     let address = wallet.address();
 
     let provider = Arc::new(provider.nonce_manager(address).with_signer(wallet.clone()));
@@ -95,24 +100,25 @@ async fn main() -> Result<()> {
     let (route_sender, route_receiver) = channel(512);
     let (priority_route_sender, priority_route_receiver) = channel(512);
 
-    let uniswapx_collector = Box::new(UniswapXOrderCollector::new(1, OrderType::Dutch));
+    let uniswapx_collector = Box::new(UniswapXOrderCollector::new(chain_id, OrderType::Dutch));
     let uniswapx_collector =
         CollectorMap::new(uniswapx_collector, |e| Event::UniswapXOrder(Box::new(e)));
     engine.add_collector(Box::new(uniswapx_collector));
 
-    let priority_collector = Box::new(UniswapXOrderCollector::new(1, OrderType::Priority));
+    let priority_collector = Box::new(UniswapXOrderCollector::new(chain_id, OrderType::Priority));
     let priority_collector =
         CollectorMap::new(priority_collector, |e| Event::PriorityOrder(Box::new(e)));
     engine.add_collector(Box::new(priority_collector));
 
     let uniswapx_route_collector =
-        Box::new(UniswapXRouteCollector::new(batch_receiver, route_sender));
+        Box::new(UniswapXRouteCollector::new(chain_id, batch_receiver, route_sender));
     let uniswapx_route_collector = CollectorMap::new(uniswapx_route_collector, |e| {
         Event::UniswapXRoute(Box::new(e))
     });
     engine.add_collector(Box::new(uniswapx_route_collector));
 
     let priority_route_collector = Box::new(UniswapXRouteCollector::new(
+        chain_id,
         priority_batch_receiver,
         priority_route_sender,
     ));

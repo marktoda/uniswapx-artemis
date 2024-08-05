@@ -1,4 +1,3 @@
-use crate::collectors::uniswapx_order_collector::CHAIN_ID;
 use crate::strategies::shared::EXECUTOR_ADDRESS;
 use alloy_primitives::Uint;
 use anyhow::Result;
@@ -150,6 +149,7 @@ pub struct OrderRoute {
 }
 
 pub struct RouteOrderParams {
+    pub chain_id: u64,
     pub token_in: String,
     pub token_out: String,
     pub amount: String,
@@ -171,17 +171,20 @@ pub struct RouteResponse {
 /// [events](Route) which contain the order.
 pub struct UniswapXRouteCollector {
     pub client: Client,
+    pub chain_id: u64,
     pub route_request_receiver: Mutex<Receiver<Vec<OrderBatchData>>>,
     pub route_sender: Sender<RoutedOrder>,
 }
 
 impl UniswapXRouteCollector {
     pub fn new(
+        chain_id: u64,
         route_request_receiver: Receiver<Vec<OrderBatchData>>,
         route_sender: Sender<RoutedOrder>,
     ) -> Self {
         Self {
             client: Client::new(),
+            chain_id,
             route_request_receiver: Mutex::new(route_request_receiver),
             route_sender,
         }
@@ -207,6 +210,7 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
 
                         async move {
                             (batch, route_order(RouteOrderParams {
+                                chain_id: self.chain_id,
                                 token_in: token_in.clone(),
                                 token_out: token_out.clone(),
                                 amount: amount_in.to_string(),
@@ -235,8 +239,8 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
     let query = RoutingApiQuery {
         token_in_address: resolve_address(params.token_in),
         token_out_address: resolve_address(params.token_out),
-        token_in_chain_id: CHAIN_ID,
-        token_out_chain_id: CHAIN_ID,
+        token_in_chain_id: params.chain_id,
+        token_out_chain_id: params.chain_id,
         trade_type: TradeType::ExactIn,
         amount: params.amount,
         recipient: EXECUTOR_ADDRESS.to_string(),

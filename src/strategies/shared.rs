@@ -1,6 +1,4 @@
-use crate::collectors::{
-    uniswapx_order_collector::CHAIN_ID, uniswapx_route_collector::RoutedOrder,
-};
+use crate::collectors::uniswapx_route_collector::RoutedOrder;
 use anyhow::Result;
 use async_trait::async_trait;
 use bindings_uniswapx::{
@@ -31,6 +29,7 @@ pub trait UniswapXStrategy<M: Middleware + 'static> {
         signed_orders: Vec<SignedOrder>,
         RoutedOrder { request, route }: RoutedOrder,
     ) -> Result<TypedTransaction> {
+        let chain_id: U256 = client.get_chainid().await?;
         let fill_contract =
             SwapRouter02Executor::new(H160::from_str(EXECUTOR_ADDRESS)?, client.clone());
 
@@ -79,7 +78,7 @@ pub trait UniswapXStrategy<M: Middleware + 'static> {
             decoded_multicall_bytes,
         ]);
         let mut call = fill_contract.execute_batch(signed_orders, Bytes::from(calldata));
-        Ok(call.tx.set_chain_id(CHAIN_ID).clone())
+        Ok(call.tx.set_chain_id(chain_id.as_u64()).clone())
     }
 
     fn current_timestamp(&self) -> Result<u64> {
