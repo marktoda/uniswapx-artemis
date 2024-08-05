@@ -7,7 +7,7 @@ pub use i_allowance_transfer::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod i_allowance_transfer {
     pub use super::super::shared_types::*;
@@ -576,8 +576,9 @@ pub mod i_allowance_transfer {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static IALLOWANCETRANSFER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static IALLOWANCETRANSFER_ABI: ::ethers::contract::Lazy<
+        ::ethers::core::abi::Abi,
+    > = ::ethers::contract::Lazy::new(__abi);
     pub struct IAllowanceTransfer<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for IAllowanceTransfer<M> {
         fn clone(&self) -> Self {
@@ -609,14 +610,18 @@ pub mod i_allowance_transfer {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                IALLOWANCETRANSFER_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    IALLOWANCETRANSFER_ABI.clone(),
+                    client,
+                ),
+            )
         }
         ///Calls the contract's `DOMAIN_SEPARATOR` (0x3644e515) function
-        pub fn domain_separator(&self) -> ::ethers::contract::builders::ContractCall<M, [u8; 32]> {
+        pub fn domain_separator(
+            &self,
+        ) -> ::ethers::contract::builders::ContractCall<M, [u8; 32]> {
             self.0
                 .method_hash([54, 68, 229, 21], ())
                 .expect("method not found (this should never happen)")
@@ -627,8 +632,10 @@ pub mod i_allowance_transfer {
             user: ::ethers::core::types::Address,
             token: ::ethers::core::types::Address,
             spender: ::ethers::core::types::Address,
-        ) -> ::ethers::contract::builders::ContractCall<M, (::ethers::core::types::U256, u64, u64)>
-        {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            (::ethers::core::types::U256, u64, u64),
+        > {
             self.0
                 .method_hash([146, 125, 161, 5], (user, token, spender))
                 .expect("method not found (this should never happen)")
@@ -711,20 +718,31 @@ pub mod i_allowance_transfer {
         ///Gets the contract's `Approval` event
         pub fn approval_filter(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, ApprovalFilter> {
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            ApprovalFilter,
+        > {
             self.0.event()
         }
         ///Gets the contract's `Lockdown` event
         pub fn lockdown_filter(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, LockdownFilter> {
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            LockdownFilter,
+        > {
             self.0.event()
         }
         ///Gets the contract's `NonceInvalidation` event
         pub fn nonce_invalidation_filter(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, NonceInvalidationFilter>
-        {
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            NonceInvalidationFilter,
+        > {
             self.0.event()
         }
         ///Gets the contract's `Permit` event
@@ -736,15 +754,16 @@ pub mod i_allowance_transfer {
         /// Returns an `Event` builder for all the events of this contract.
         pub fn events(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, IAllowanceTransferEvents>
-        {
-            self.0
-                .event_with_filter(::core::default::Default::default())
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            IAllowanceTransferEvents,
+        > {
+            self.0.event_with_filter(::core::default::Default::default())
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for IAllowanceTransfer<M>
-    {
+    for IAllowanceTransfer<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -754,11 +773,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "AllowanceExpired", abi = "AllowanceExpired(uint256)")]
     pub struct AllowanceExpired {
@@ -769,11 +790,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "ExcessiveInvalidation", abi = "ExcessiveInvalidation()")]
     pub struct ExcessiveInvalidation;
@@ -782,18 +805,29 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "InsufficientAllowance", abi = "InsufficientAllowance(uint256)")]
     pub struct InsufficientAllowance {
         pub amount: ::ethers::core::types::U256,
     }
     ///Container type for all of the contract's custom errors
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum IAllowanceTransferErrors {
         AllowanceExpired(AllowanceExpired),
         ExcessiveInvalidation(ExcessiveInvalidation),
@@ -807,23 +841,24 @@ pub mod i_allowance_transfer {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::RevertString(decoded));
             }
-            if let Ok(decoded) = <AllowanceExpired as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <AllowanceExpired as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::AllowanceExpired(decoded));
             }
-            if let Ok(decoded) =
-                <ExcessiveInvalidation as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <ExcessiveInvalidation as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::ExcessiveInvalidation(decoded));
             }
-            if let Ok(decoded) =
-                <InsufficientAllowance as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <InsufficientAllowance as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::InsufficientAllowance(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -832,7 +867,9 @@ pub mod i_allowance_transfer {
     impl ::ethers::core::abi::AbiEncode for IAllowanceTransferErrors {
         fn encode(self) -> ::std::vec::Vec<u8> {
             match self {
-                Self::AllowanceExpired(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::AllowanceExpired(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::ExcessiveInvalidation(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
@@ -847,17 +884,16 @@ pub mod i_allowance_transfer {
         fn valid_selector(selector: [u8; 4]) -> bool {
             match selector {
                 [0x08, 0xc3, 0x79, 0xa0] => true,
-                _ if selector == <AllowanceExpired as ::ethers::contract::EthError>::selector() => {
+                _ if selector
+                    == <AllowanceExpired as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ if selector
-                    == <ExcessiveInvalidation as ::ethers::contract::EthError>::selector() =>
-                {
+                    == <ExcessiveInvalidation as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ if selector
-                    == <InsufficientAllowance as ::ethers::contract::EthError>::selector() =>
-                {
+                    == <InsufficientAllowance as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ => false,
@@ -868,8 +904,12 @@ pub mod i_allowance_transfer {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
                 Self::AllowanceExpired(element) => ::core::fmt::Display::fmt(element, f),
-                Self::ExcessiveInvalidation(element) => ::core::fmt::Display::fmt(element, f),
-                Self::InsufficientAllowance(element) => ::core::fmt::Display::fmt(element, f),
+                Self::ExcessiveInvalidation(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
+                Self::InsufficientAllowance(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::RevertString(s) => ::core::fmt::Display::fmt(s, f),
             }
         }
@@ -898,11 +938,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthEvent,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "Approval",
@@ -922,11 +964,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthEvent,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(name = "Lockdown", abi = "Lockdown(address,address,address)")]
     pub struct LockdownFilter {
@@ -939,11 +983,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthEvent,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "NonceInvalidation",
@@ -963,11 +1009,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthEvent,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "Permit",
@@ -985,7 +1033,16 @@ pub mod i_allowance_transfer {
         pub nonce: u64,
     }
     ///Container type for all of the contract's events
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum IAllowanceTransferEvents {
         ApprovalFilter(ApprovalFilter),
         LockdownFilter(LockdownFilter),
@@ -1016,7 +1073,9 @@ pub mod i_allowance_transfer {
             match self {
                 Self::ApprovalFilter(element) => ::core::fmt::Display::fmt(element, f),
                 Self::LockdownFilter(element) => ::core::fmt::Display::fmt(element, f),
-                Self::NonceInvalidationFilter(element) => ::core::fmt::Display::fmt(element, f),
+                Self::NonceInvalidationFilter(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::PermitFilter(element) => ::core::fmt::Display::fmt(element, f),
             }
         }
@@ -1046,11 +1105,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "DOMAIN_SEPARATOR", abi = "DOMAIN_SEPARATOR()")]
     pub struct DomainSeparatorCall;
@@ -1059,11 +1120,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "allowance", abi = "allowance(address,address,address)")]
     pub struct AllowanceCall {
@@ -1076,11 +1139,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "approve", abi = "approve(address,address,uint160,uint48)")]
     pub struct ApproveCall {
@@ -1094,11 +1159,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "invalidateNonces",
@@ -1114,11 +1181,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "lockdown", abi = "lockdown((address,address)[])")]
     pub struct LockdownCall {
@@ -1129,11 +1198,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "permit",
@@ -1149,11 +1220,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "permit",
@@ -1169,11 +1242,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "transferFrom",
@@ -1187,11 +1262,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "transferFrom",
@@ -1204,7 +1281,16 @@ pub mod i_allowance_transfer {
         pub token: ::ethers::core::types::Address,
     }
     ///Container type for all of the contract's call
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum IAllowanceTransferCalls {
         DomainSeparator(DomainSeparatorCall),
         Allowance(AllowanceCall),
@@ -1221,40 +1307,49 @@ pub mod i_allowance_transfer {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <DomainSeparatorCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <DomainSeparatorCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::DomainSeparator(decoded));
             }
-            if let Ok(decoded) = <AllowanceCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <AllowanceCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Allowance(decoded));
             }
-            if let Ok(decoded) = <ApproveCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <ApproveCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Approve(decoded));
             }
-            if let Ok(decoded) =
-                <InvalidateNoncesCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <InvalidateNoncesCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::InvalidateNonces(decoded));
             }
-            if let Ok(decoded) = <LockdownCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <LockdownCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Lockdown(decoded));
             }
-            if let Ok(decoded) = <PermitCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <PermitCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Permit(decoded));
             }
-            if let Ok(decoded) =
-                <PermitWithOwnerAndPermitSingleCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <PermitWithOwnerAndPermitSingleCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::PermitWithOwnerAndPermitSingle(decoded));
             }
-            if let Ok(decoded) = <TransferFromCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <TransferFromCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::TransferFrom(decoded));
             }
-            if let Ok(decoded) =
-                <TransferFromWithFromCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <TransferFromWithFromCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::TransferFromWithFrom(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -1263,16 +1358,26 @@ pub mod i_allowance_transfer {
     impl ::ethers::core::abi::AbiEncode for IAllowanceTransferCalls {
         fn encode(self) -> Vec<u8> {
             match self {
-                Self::DomainSeparator(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::Allowance(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::DomainSeparator(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::Allowance(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::Approve(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::InvalidateNonces(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::Lockdown(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::InvalidateNonces(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::Lockdown(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::Permit(element) => ::ethers::core::abi::AbiEncode::encode(element),
                 Self::PermitWithOwnerAndPermitSingle(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::TransferFrom(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::TransferFrom(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::TransferFromWithFrom(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
@@ -1292,7 +1397,9 @@ pub mod i_allowance_transfer {
                     ::core::fmt::Display::fmt(element, f)
                 }
                 Self::TransferFrom(element) => ::core::fmt::Display::fmt(element, f),
-                Self::TransferFromWithFrom(element) => ::core::fmt::Display::fmt(element, f),
+                Self::TransferFromWithFrom(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
             }
         }
     }
@@ -1326,7 +1433,8 @@ pub mod i_allowance_transfer {
             Self::Permit(value)
         }
     }
-    impl ::core::convert::From<PermitWithOwnerAndPermitSingleCall> for IAllowanceTransferCalls {
+    impl ::core::convert::From<PermitWithOwnerAndPermitSingleCall>
+    for IAllowanceTransferCalls {
         fn from(value: PermitWithOwnerAndPermitSingleCall) -> Self {
             Self::PermitWithOwnerAndPermitSingle(value)
         }
@@ -1346,11 +1454,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct DomainSeparatorReturn(pub [u8; 32]);
     ///Container type for all return fields from the `allowance` function with signature `allowance(address,address,address)` and selector `0x927da105`
@@ -1358,11 +1468,13 @@ pub mod i_allowance_transfer {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct AllowanceReturn {
         pub amount: ::ethers::core::types::U256,

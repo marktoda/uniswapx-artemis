@@ -7,7 +7,7 @@ pub use dutch_decay_lib::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod dutch_decay_lib {
     #[allow(deprecated)]
@@ -19,17 +19,23 @@ pub mod dutch_decay_lib {
             errors: ::core::convert::From::from([
                 (
                     ::std::borrow::ToOwned::to_owned("EndTimeBeforeStartTime"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("EndTimeBeforeStartTime",),
-                        inputs: ::std::vec![],
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "EndTimeBeforeStartTime",
+                            ),
+                            inputs: ::std::vec![],
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("IncorrectAmounts"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("IncorrectAmounts"),
-                        inputs: ::std::vec![],
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned("IncorrectAmounts"),
+                            inputs: ::std::vec![],
+                        },
+                    ],
                 ),
             ]),
             receive: false,
@@ -37,18 +43,21 @@ pub mod dutch_decay_lib {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static DUTCHDECAYLIB_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static DUTCHDECAYLIB_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xEC+\xA1\x81\xF2\x19\x82\r\xF3C\0g\xD4\xCB(\x0BO\xD4\x93\xBA3\xB4\t\x14\x94Jk:P\xCD\xA1\xDAdsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xE2\x05\x19\xD3\xBB\xF8b\xEA6l7I\x88\x8B3\xE1ix\xC9x\xA7dok\xE1nC\xE4\xA6\x14\xC8hdsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static DUTCHDECAYLIB_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static DUTCHDECAYLIB_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xEC+\xA1\x81\xF2\x19\x82\r\xF3C\0g\xD4\xCB(\x0BO\xD4\x93\xBA3\xB4\t\x14\x94Jk:P\xCD\xA1\xDAdsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xE2\x05\x19\xD3\xBB\xF8b\xEA6l7I\x88\x8B3\xE1ix\xC9x\xA7dok\xE1nC\xE4\xA6\x14\xC8hdsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static DUTCHDECAYLIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static DUTCHDECAYLIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct DutchDecayLib<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for DutchDecayLib<M> {
         fn clone(&self) -> Self {
@@ -80,11 +89,13 @@ pub mod dutch_decay_lib {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                DUTCHDECAYLIB_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    DUTCHDECAYLIB_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -127,8 +138,7 @@ pub mod dutch_decay_lib {
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for DutchDecayLib<M>
-    {
+    for DutchDecayLib<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -138,11 +148,13 @@ pub mod dutch_decay_lib {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "EndTimeBeforeStartTime", abi = "EndTimeBeforeStartTime()")]
     pub struct EndTimeBeforeStartTime;
@@ -151,16 +163,27 @@ pub mod dutch_decay_lib {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "IncorrectAmounts", abi = "IncorrectAmounts()")]
     pub struct IncorrectAmounts;
     ///Container type for all of the contract's custom errors
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum DutchDecayLibErrors {
         EndTimeBeforeStartTime(EndTimeBeforeStartTime),
         IncorrectAmounts(IncorrectAmounts),
@@ -173,18 +196,19 @@ pub mod dutch_decay_lib {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::RevertString(decoded));
             }
-            if let Ok(decoded) =
-                <EndTimeBeforeStartTime as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <EndTimeBeforeStartTime as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::EndTimeBeforeStartTime(decoded));
             }
-            if let Ok(decoded) = <IncorrectAmounts as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <IncorrectAmounts as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::IncorrectAmounts(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -196,7 +220,9 @@ pub mod dutch_decay_lib {
                 Self::EndTimeBeforeStartTime(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::IncorrectAmounts(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::IncorrectAmounts(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::RevertString(s) => ::ethers::core::abi::AbiEncode::encode(s),
             }
         }
@@ -206,11 +232,11 @@ pub mod dutch_decay_lib {
             match selector {
                 [0x08, 0xc3, 0x79, 0xa0] => true,
                 _ if selector
-                    == <EndTimeBeforeStartTime as ::ethers::contract::EthError>::selector() =>
-                {
+                    == <EndTimeBeforeStartTime as ::ethers::contract::EthError>::selector() => {
                     true
                 }
-                _ if selector == <IncorrectAmounts as ::ethers::contract::EthError>::selector() => {
+                _ if selector
+                    == <IncorrectAmounts as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ => false,
@@ -220,7 +246,9 @@ pub mod dutch_decay_lib {
     impl ::core::fmt::Display for DutchDecayLibErrors {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
-                Self::EndTimeBeforeStartTime(element) => ::core::fmt::Display::fmt(element, f),
+                Self::EndTimeBeforeStartTime(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::IncorrectAmounts(element) => ::core::fmt::Display::fmt(element, f),
                 Self::RevertString(s) => ::core::fmt::Display::fmt(s, f),
             }

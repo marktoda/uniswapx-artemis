@@ -7,7 +7,7 @@ pub use i_reactor::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod i_reactor {
     pub use super::super::shared_types::*;
@@ -18,77 +18,129 @@ pub mod i_reactor {
             functions: ::core::convert::From::from([
                 (
                     ::std::borrow::ToOwned::to_owned("execute"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("execute"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("order"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                ],),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("struct SignedOrder"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillContract"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("contract IReactorCallback",),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillData"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("bytes"),
-                                ),
-                            },
-                        ],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("execute"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("order"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                        ::std::vec![
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                        ],
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("executeBatch"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("executeBatch"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("orders"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Array(
-                                    ::std::boxed::Box::new(
-                                        ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                        ],),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("executeBatch"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("orders"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
+                                        ::std::boxed::Box::new(
+                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                                ::std::vec![
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                ],
+                                            ),
+                                        ),
                                     ),
-                                ),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("struct SignedOrder[]"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillContract"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("contract IReactorCallback",),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillData"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("bytes"),
-                                ),
-                            },
-                        ],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
-                    },],
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder[]"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
+                ),
+                (
+                    ::std::borrow::ToOwned::to_owned("executeBatchWithCallback"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "executeBatchWithCallback",
+                            ),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("orders"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
+                                        ::std::boxed::Box::new(
+                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                                ::std::vec![
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                ],
+                                            ),
+                                        ),
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder[]"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("callbackData"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("bytes"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
+                ),
+                (
+                    ::std::borrow::ToOwned::to_owned("executeWithCallback"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "executeWithCallback",
+                            ),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("order"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                        ::std::vec![
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                        ],
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("callbackData"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("bytes"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
                 ),
             ]),
             events: ::std::collections::BTreeMap::new(),
@@ -98,8 +150,9 @@ pub mod i_reactor {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static IREACTOR_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static IREACTOR_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     pub struct IReactor<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for IReactor<M> {
         fn clone(&self) -> Self {
@@ -119,9 +172,7 @@ pub mod i_reactor {
     }
     impl<M> ::core::fmt::Debug for IReactor<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(IReactor))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(::core::stringify!(IReactor)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> IReactor<M> {
@@ -131,94 +182,176 @@ pub mod i_reactor {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                IREACTOR_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    IREACTOR_ABI.clone(),
+                    client,
+                ),
+            )
         }
-        ///Calls the contract's `execute` (0x05afc977) function
+        ///Calls the contract's `execute` (0x3f62192e) function
         pub fn execute(
             &self,
             order: SignedOrder,
-            fill_contract: ::ethers::core::types::Address,
-            fill_data: ::ethers::core::types::Bytes,
         ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
-                .method_hash([5, 175, 201, 119], (order, fill_contract, fill_data))
+                .method_hash([63, 98, 25, 46], (order,))
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `executeBatch` (0x6f1d5f51) function
+        ///Calls the contract's `executeBatch` (0x0d7a16c3) function
         pub fn execute_batch(
             &self,
             orders: ::std::vec::Vec<SignedOrder>,
-            fill_contract: ::ethers::core::types::Address,
-            fill_data: ::ethers::core::types::Bytes,
         ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
-                .method_hash([111, 29, 95, 81], (orders, fill_contract, fill_data))
+                .method_hash([13, 122, 22, 195], orders)
+                .expect("method not found (this should never happen)")
+        }
+        ///Calls the contract's `executeBatchWithCallback` (0x13fb72c7) function
+        pub fn execute_batch_with_callback(
+            &self,
+            orders: ::std::vec::Vec<SignedOrder>,
+            callback_data: ::ethers::core::types::Bytes,
+        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
+            self.0
+                .method_hash([19, 251, 114, 199], (orders, callback_data))
+                .expect("method not found (this should never happen)")
+        }
+        ///Calls the contract's `executeWithCallback` (0x0d335884) function
+        pub fn execute_with_callback(
+            &self,
+            order: SignedOrder,
+            callback_data: ::ethers::core::types::Bytes,
+        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
+            self.0
+                .method_hash([13, 51, 88, 132], (order, callback_data))
                 .expect("method not found (this should never happen)")
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for IReactor<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for IReactor<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
     }
-    ///Container type for all input parameters for the `execute` function with signature `execute((bytes,bytes),address,bytes)` and selector `0x05afc977`
+    ///Container type for all input parameters for the `execute` function with signature `execute((bytes,bytes))` and selector `0x3f62192e`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
-    #[ethcall(name = "execute", abi = "execute((bytes,bytes),address,bytes)")]
+    #[ethcall(name = "execute", abi = "execute((bytes,bytes))")]
     pub struct ExecuteCall {
         pub order: SignedOrder,
-        pub fill_contract: ::ethers::core::types::Address,
-        pub fill_data: ::ethers::core::types::Bytes,
     }
-    ///Container type for all input parameters for the `executeBatch` function with signature `executeBatch((bytes,bytes)[],address,bytes)` and selector `0x6f1d5f51`
+    ///Container type for all input parameters for the `executeBatch` function with signature `executeBatch((bytes,bytes)[])` and selector `0x0d7a16c3`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
-    #[ethcall(
-        name = "executeBatch",
-        abi = "executeBatch((bytes,bytes)[],address,bytes)"
-    )]
+    #[ethcall(name = "executeBatch", abi = "executeBatch((bytes,bytes)[])")]
     pub struct ExecuteBatchCall {
         pub orders: ::std::vec::Vec<SignedOrder>,
-        pub fill_contract: ::ethers::core::types::Address,
-        pub fill_data: ::ethers::core::types::Bytes,
+    }
+    ///Container type for all input parameters for the `executeBatchWithCallback` function with signature `executeBatchWithCallback((bytes,bytes)[],bytes)` and selector `0x13fb72c7`
+    #[derive(
+        Clone,
+        ::ethers::contract::EthCall,
+        ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
+        Default,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
+    #[ethcall(
+        name = "executeBatchWithCallback",
+        abi = "executeBatchWithCallback((bytes,bytes)[],bytes)"
+    )]
+    pub struct ExecuteBatchWithCallbackCall {
+        pub orders: ::std::vec::Vec<SignedOrder>,
+        pub callback_data: ::ethers::core::types::Bytes,
+    }
+    ///Container type for all input parameters for the `executeWithCallback` function with signature `executeWithCallback((bytes,bytes),bytes)` and selector `0x0d335884`
+    #[derive(
+        Clone,
+        ::ethers::contract::EthCall,
+        ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
+        Default,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
+    #[ethcall(
+        name = "executeWithCallback",
+        abi = "executeWithCallback((bytes,bytes),bytes)"
+    )]
+    pub struct ExecuteWithCallbackCall {
+        pub order: SignedOrder,
+        pub callback_data: ::ethers::core::types::Bytes,
     }
     ///Container type for all of the contract's call
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum IReactorCalls {
         Execute(ExecuteCall),
         ExecuteBatch(ExecuteBatchCall),
+        ExecuteBatchWithCallback(ExecuteBatchWithCallbackCall),
+        ExecuteWithCallback(ExecuteWithCallbackCall),
     }
     impl ::ethers::core::abi::AbiDecode for IReactorCalls {
         fn decode(
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) = <ExecuteCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <ExecuteCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Execute(decoded));
             }
-            if let Ok(decoded) = <ExecuteBatchCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <ExecuteBatchCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::ExecuteBatch(decoded));
+            }
+            if let Ok(decoded) = <ExecuteBatchWithCallbackCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
+                return Ok(Self::ExecuteBatchWithCallback(decoded));
+            }
+            if let Ok(decoded) = <ExecuteWithCallbackCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
+                return Ok(Self::ExecuteWithCallback(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
         }
@@ -227,7 +360,15 @@ pub mod i_reactor {
         fn encode(self) -> Vec<u8> {
             match self {
                 Self::Execute(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::ExecuteBatch(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::ExecuteBatch(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::ExecuteBatchWithCallback(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::ExecuteWithCallback(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
             }
         }
     }
@@ -236,6 +377,12 @@ pub mod i_reactor {
             match self {
                 Self::Execute(element) => ::core::fmt::Display::fmt(element, f),
                 Self::ExecuteBatch(element) => ::core::fmt::Display::fmt(element, f),
+                Self::ExecuteBatchWithCallback(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
+                Self::ExecuteWithCallback(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
             }
         }
     }
@@ -247,6 +394,16 @@ pub mod i_reactor {
     impl ::core::convert::From<ExecuteBatchCall> for IReactorCalls {
         fn from(value: ExecuteBatchCall) -> Self {
             Self::ExecuteBatch(value)
+        }
+    }
+    impl ::core::convert::From<ExecuteBatchWithCallbackCall> for IReactorCalls {
+        fn from(value: ExecuteBatchWithCallbackCall) -> Self {
+            Self::ExecuteBatchWithCallback(value)
+        }
+    }
+    impl ::core::convert::From<ExecuteWithCallbackCall> for IReactorCalls {
+        fn from(value: ExecuteWithCallbackCall) -> Self {
+            Self::ExecuteWithCallback(value)
         }
     }
 }

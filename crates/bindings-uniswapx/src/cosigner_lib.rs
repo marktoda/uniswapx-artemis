@@ -1,4 +1,4 @@
-pub use std_style::*;
+pub use cosigner_lib::*;
 /// This module was auto-generated with ethers-rs Abigen.
 /// More information at: <https://github.com/gakonst/ethers-rs>
 #[allow(
@@ -7,69 +7,84 @@ pub use std_style::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
-pub mod std_style {
+pub mod cosigner_lib {
     #[allow(deprecated)]
     fn __abi() -> ::ethers::core::abi::Abi {
         ::ethers::core::abi::ethabi::Contract {
             constructor: ::core::option::Option::None,
             functions: ::std::collections::BTreeMap::new(),
             events: ::std::collections::BTreeMap::new(),
-            errors: ::std::collections::BTreeMap::new(),
+            errors: ::core::convert::From::from([
+                (
+                    ::std::borrow::ToOwned::to_owned("InvalidCosignature"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned("InvalidCosignature"),
+                            inputs: ::std::vec![],
+                        },
+                    ],
+                ),
+            ]),
             receive: false,
             fallback: false,
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static STDSTYLE_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static COSIGNERLIB_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xE1dX\x1Amv^7\xCC\xC8\x9D\x7Fn\xF5\x17^\x14\x94\x0E\xD7\xB9\xBD\xE3'@\xCCi\xBD\xEF|CydsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 ^t\xC0\"7\xE4\xD5q\xE2\x9CC-cy\x13\x04!\x1FZ\x1A\xD2\x1C-By\xF1\x91\x88\xED;=\xBBdsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static STDSTYLE_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static COSIGNERLIB_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \xE1dX\x1Amv^7\xCC\xC8\x9D\x7Fn\xF5\x17^\x14\x94\x0E\xD7\xB9\xBD\xE3'@\xCCi\xBD\xEF|CydsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 ^t\xC0\"7\xE4\xD5q\xE2\x9CC-cy\x13\x04!\x1FZ\x1A\xD2\x1C-By\xF1\x91\x88\xED;=\xBBdsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static STDSTYLE_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
-    pub struct StdStyle<M>(::ethers::contract::Contract<M>);
-    impl<M> ::core::clone::Clone for StdStyle<M> {
+    pub static COSIGNERLIB_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
+    pub struct CosignerLib<M>(::ethers::contract::Contract<M>);
+    impl<M> ::core::clone::Clone for CosignerLib<M> {
         fn clone(&self) -> Self {
             Self(::core::clone::Clone::clone(&self.0))
         }
     }
-    impl<M> ::core::ops::Deref for StdStyle<M> {
+    impl<M> ::core::ops::Deref for CosignerLib<M> {
         type Target = ::ethers::contract::Contract<M>;
         fn deref(&self) -> &Self::Target {
             &self.0
         }
     }
-    impl<M> ::core::ops::DerefMut for StdStyle<M> {
+    impl<M> ::core::ops::DerefMut for CosignerLib<M> {
         fn deref_mut(&mut self) -> &mut Self::Target {
             &mut self.0
         }
     }
-    impl<M> ::core::fmt::Debug for StdStyle<M> {
+    impl<M> ::core::fmt::Debug for CosignerLib<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(StdStyle))
+            f.debug_tuple(::core::stringify!(CosignerLib))
                 .field(&self.address())
                 .finish()
         }
     }
-    impl<M: ::ethers::providers::Middleware> StdStyle<M> {
+    impl<M: ::ethers::providers::Middleware> CosignerLib<M> {
         /// Creates a new contract instance with the specified `ethers` client at
         /// `address`. The contract derefs to a `ethers::Contract` object.
         pub fn new<T: Into<::ethers::core::types::Address>>(
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                STDSTYLE_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    COSIGNERLIB_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -102,8 +117,8 @@ pub mod std_style {
             ::ethers::contract::ContractError<M>,
         > {
             let factory = ::ethers::contract::ContractFactory::new(
-                STDSTYLE_ABI.clone(),
-                STDSTYLE_BYTECODE.clone().into(),
+                COSIGNERLIB_ABI.clone(),
+                COSIGNERLIB_BYTECODE.clone().into(),
                 client,
             );
             let deployer = factory.deploy(constructor_args)?;
@@ -111,9 +126,25 @@ pub mod std_style {
             Ok(deployer)
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for StdStyle<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for CosignerLib<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
     }
+    ///Custom Error type `InvalidCosignature` with signature `InvalidCosignature()` and selector `0xd7815be1`
+    #[derive(
+        Clone,
+        ::ethers::contract::EthError,
+        ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
+        Default,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
+    #[etherror(name = "InvalidCosignature", abi = "InvalidCosignature()")]
+    pub struct InvalidCosignature;
 }

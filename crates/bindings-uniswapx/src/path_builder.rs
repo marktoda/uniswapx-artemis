@@ -7,7 +7,7 @@ pub use path_builder::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod path_builder {
     #[allow(deprecated)]
@@ -22,18 +22,21 @@ pub mod path_builder {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static PATHBUILDER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static PATHBUILDER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 Zns\x96\xF1\x1F\xB2U:\xD3\xDA,\xEF\x99C\x8C6\xA6\x9C\xB8W\x12\xD2+p\xA2\xCE\xEE0\xDF\xEE\x07dsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 g1\xF2\xC8_\xBC\xFF\x7F\xA5\xDC\xACo_\xB0?S|<\xEE\xA4f\x11Q1\xF7\x13\x16\x8E\x8E&\x84\x14dsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static PATHBUILDER_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static PATHBUILDER_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 Zns\x96\xF1\x1F\xB2U:\xD3\xDA,\xEF\x99C\x8C6\xA6\x9C\xB8W\x12\xD2+p\xA2\xCE\xEE0\xDF\xEE\x07dsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 g1\xF2\xC8_\xBC\xFF\x7F\xA5\xDC\xACo_\xB0?S|<\xEE\xA4f\x11Q1\xF7\x13\x16\x8E\x8E&\x84\x14dsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static PATHBUILDER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static PATHBUILDER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct PathBuilder<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for PathBuilder<M> {
         fn clone(&self) -> Self {
@@ -65,11 +68,13 @@ pub mod path_builder {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                PATHBUILDER_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    PATHBUILDER_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -111,7 +116,8 @@ pub mod path_builder {
             Ok(deployer)
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for PathBuilder<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for PathBuilder<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }

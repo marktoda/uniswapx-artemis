@@ -7,7 +7,7 @@ pub use path::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod path {
     #[allow(deprecated)]
@@ -22,18 +22,21 @@ pub mod path {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static PATH_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static PATH_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x17m{\xFA\x99\x05-H_\x93\xB2\xF9\xF1\xFF\x88\x07X\xD6-a\xD5\x91T\xFE<\x91\xA1\xC7\x86\x9F\xB0\x93dsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`V`7`\x0B\x82\x82\x829\x80Q`\0\x1A`s\x14`*WcNH{q`\xE0\x1B`\0R`\0`\x04R`$`\0\xFD[0`\0R`s\x81S\x82\x81\xF3\xFEs\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x93\t\xAE\\\xBFH\x18\x96]\xA5\xD3-\xD1\t\xCBk\xD42\xBE7\xDA\xAD1\x0B*\xF8J/\xE5\x15\x85\xE5dsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static PATH_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static PATH_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x17m{\xFA\x99\x05-H_\x93\xB2\xF9\xF1\xFF\x88\x07X\xD6-a\xD5\x91T\xFE<\x91\xA1\xC7\x86\x9F\xB0\x93dsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"s\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x000\x14`\x80`@R`\0\x80\xFD\xFE\xA2dipfsX\"\x12 \x93\t\xAE\\\xBFH\x18\x96]\xA5\xD3-\xD1\t\xCBk\xD42\xBE7\xDA\xAD1\x0B*\xF8J/\xE5\x15\x85\xE5dsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static PATH_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static PATH_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct Path<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for Path<M> {
         fn clone(&self) -> Self {
@@ -53,9 +56,7 @@ pub mod path {
     }
     impl<M> ::core::fmt::Debug for Path<M> {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-            f.debug_tuple(::core::stringify!(Path))
-                .field(&self.address())
-                .finish()
+            f.debug_tuple(::core::stringify!(Path)).field(&self.address()).finish()
         }
     }
     impl<M: ::ethers::providers::Middleware> Path<M> {
@@ -65,11 +66,13 @@ pub mod path {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                PATH_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    PATH_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -111,7 +114,8 @@ pub mod path {
             Ok(deployer)
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for Path<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for Path<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }

@@ -7,45 +7,51 @@ pub use mock_swapper::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod mock_swapper {
     #[allow(deprecated)]
     fn __abi() -> ::ethers::core::abi::Abi {
         ::ethers::core::abi::ethabi::Contract {
             constructor: ::core::option::Option::None,
-            functions: ::core::convert::From::from([(
-                ::std::borrow::ToOwned::to_owned("approve"),
-                ::std::vec![::ethers::core::abi::ethabi::Function {
-                    name: ::std::borrow::ToOwned::to_owned("approve"),
-                    inputs: ::std::vec![
-                        ::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("token"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },
-                        ::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("to"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },
-                        ::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("amount"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("uint256"),
-                            ),
+            functions: ::core::convert::From::from([
+                (
+                    ::std::borrow::ToOwned::to_owned("approve"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("approve"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("token"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("to"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("amount"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
                         },
                     ],
-                    outputs: ::std::vec![],
-                    constant: ::core::option::Option::None,
-                    state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                },],
-            )]),
+                ),
+            ]),
             events: ::std::collections::BTreeMap::new(),
             errors: ::std::collections::BTreeMap::new(),
             receive: false,
@@ -53,18 +59,21 @@ pub mod mock_swapper {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static MOCKSWAPPER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static MOCKSWAPPER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[Pa\x01\xA8\x80a\0 `\09`\0\xF3\xFE`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0+W`\x005`\xE0\x1C\x80c\xE1\xF2\x1Cg\x14a\x000W[`\0\x80\xFD[a\0Ca\0>6`\x04a\x01\rV[a\0EV[\0[`@Q\x7F\t^\xA7\xB3\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x81\x16`\x04\x83\x01R`$\x82\x01\x83\x90R\x84\x16\x90c\t^\xA7\xB3\x90`D\x01` `@Q\x80\x83\x03\x81`\0\x87Z\xF1\x15\x80\x15a\0\xBAW=`\0\x80>=`\0\xFD[PPPP`@Q=`\x1F\x19`\x1F\x82\x01\x16\x82\x01\x80`@RP\x81\x01\x90a\0\xDE\x91\x90a\x01IV[PPPPV[\x805s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x01\x08W`\0\x80\xFD[\x91\x90PV[`\0\x80`\0``\x84\x86\x03\x12\x15a\x01\"W`\0\x80\xFD[a\x01+\x84a\0\xE4V[\x92Pa\x019` \x85\x01a\0\xE4V[\x91P`@\x84\x015\x90P\x92P\x92P\x92V[`\0` \x82\x84\x03\x12\x15a\x01[W`\0\x80\xFD[\x81Q\x80\x15\x15\x81\x14a\x01kW`\0\x80\xFD[\x93\x92PPPV\xFE\xA2dipfsX\"\x12 \xF4\x9A]\x92\xFBj\xD3\xB2\xA9_\x9E\x1A\xB8\x90\xA0\xF7r.\xD4\x1E\x89\xAE\xB1|\xBB\x1A\xCFx\xD9\x19\xAA\xF1dsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[Pa\x01\xA8\x80a\0 `\09`\0\xF3\xFE`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0+W`\x005`\xE0\x1C\x80c\xE1\xF2\x1Cg\x14a\x000W[`\0\x80\xFD[a\0Ca\0>6`\x04a\x01\rV[a\0EV[\0[`@Q\x7F\t^\xA7\xB3\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x81\x16`\x04\x83\x01R`$\x82\x01\x83\x90R\x84\x16\x90c\t^\xA7\xB3\x90`D\x01` `@Q\x80\x83\x03\x81`\0\x87Z\xF1\x15\x80\x15a\0\xBAW=`\0\x80>=`\0\xFD[PPPP`@Q=`\x1F\x19`\x1F\x82\x01\x16\x82\x01\x80`@RP\x81\x01\x90a\0\xDE\x91\x90a\x01IV[PPPPV[\x805s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x01\x08W`\0\x80\xFD[\x91\x90PV[`\0\x80`\0``\x84\x86\x03\x12\x15a\x01\"W`\0\x80\xFD[a\x01+\x84a\0\xE4V[\x92Pa\x019` \x85\x01a\0\xE4V[\x91P`@\x84\x015\x90P\x92P\x92P\x92V[`\0` \x82\x84\x03\x12\x15a\x01[W`\0\x80\xFD[\x81Q\x80\x15\x15\x81\x14a\x01kW`\0\x80\xFD[\x93\x92PPPV\xFE\xA2dipfsX\"\x12 G\x98\r`\x12\x97\xFF\xF2\xB6\x07\xD4\xE7\xB4P\xDC\xA8ZO1<\xEFxk\x9B\xF4S\x06\x1F\xF8\xD8\xD7\xF1dsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static MOCKSWAPPER_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static MOCKSWAPPER_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0+W`\x005`\xE0\x1C\x80c\xE1\xF2\x1Cg\x14a\x000W[`\0\x80\xFD[a\0Ca\0>6`\x04a\x01\rV[a\0EV[\0[`@Q\x7F\t^\xA7\xB3\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x81\x16`\x04\x83\x01R`$\x82\x01\x83\x90R\x84\x16\x90c\t^\xA7\xB3\x90`D\x01` `@Q\x80\x83\x03\x81`\0\x87Z\xF1\x15\x80\x15a\0\xBAW=`\0\x80>=`\0\xFD[PPPP`@Q=`\x1F\x19`\x1F\x82\x01\x16\x82\x01\x80`@RP\x81\x01\x90a\0\xDE\x91\x90a\x01IV[PPPPV[\x805s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x01\x08W`\0\x80\xFD[\x91\x90PV[`\0\x80`\0``\x84\x86\x03\x12\x15a\x01\"W`\0\x80\xFD[a\x01+\x84a\0\xE4V[\x92Pa\x019` \x85\x01a\0\xE4V[\x91P`@\x84\x015\x90P\x92P\x92P\x92V[`\0` \x82\x84\x03\x12\x15a\x01[W`\0\x80\xFD[\x81Q\x80\x15\x15\x81\x14a\x01kW`\0\x80\xFD[\x93\x92PPPV\xFE\xA2dipfsX\"\x12 \xF4\x9A]\x92\xFBj\xD3\xB2\xA9_\x9E\x1A\xB8\x90\xA0\xF7r.\xD4\x1E\x89\xAE\xB1|\xBB\x1A\xCFx\xD9\x19\xAA\xF1dsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R4\x80\x15a\0\x10W`\0\x80\xFD[P`\x046\x10a\0+W`\x005`\xE0\x1C\x80c\xE1\xF2\x1Cg\x14a\x000W[`\0\x80\xFD[a\0Ca\0>6`\x04a\x01\rV[a\0EV[\0[`@Q\x7F\t^\xA7\xB3\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x81\x16`\x04\x83\x01R`$\x82\x01\x83\x90R\x84\x16\x90c\t^\xA7\xB3\x90`D\x01` `@Q\x80\x83\x03\x81`\0\x87Z\xF1\x15\x80\x15a\0\xBAW=`\0\x80>=`\0\xFD[PPPP`@Q=`\x1F\x19`\x1F\x82\x01\x16\x82\x01\x80`@RP\x81\x01\x90a\0\xDE\x91\x90a\x01IV[PPPPV[\x805s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x01\x08W`\0\x80\xFD[\x91\x90PV[`\0\x80`\0``\x84\x86\x03\x12\x15a\x01\"W`\0\x80\xFD[a\x01+\x84a\0\xE4V[\x92Pa\x019` \x85\x01a\0\xE4V[\x91P`@\x84\x015\x90P\x92P\x92P\x92V[`\0` \x82\x84\x03\x12\x15a\x01[W`\0\x80\xFD[\x81Q\x80\x15\x15\x81\x14a\x01kW`\0\x80\xFD[\x93\x92PPPV\xFE\xA2dipfsX\"\x12 G\x98\r`\x12\x97\xFF\xF2\xB6\x07\xD4\xE7\xB4P\xDC\xA8ZO1<\xEFxk\x9B\xF4S\x06\x1F\xF8\xD8\xD7\xF1dsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static MOCKSWAPPER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static MOCKSWAPPER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct MockSwapper<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for MockSwapper<M> {
         fn clone(&self) -> Self {
@@ -96,11 +105,13 @@ pub mod mock_swapper {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                MOCKSWAPPER_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    MOCKSWAPPER_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -153,7 +164,8 @@ pub mod mock_swapper {
                 .expect("method not found (this should never happen)")
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for MockSwapper<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for MockSwapper<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -163,11 +175,13 @@ pub mod mock_swapper {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "approve", abi = "approve(address,address,uint256)")]
     pub struct ApproveCall {

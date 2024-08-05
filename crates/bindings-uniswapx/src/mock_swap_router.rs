@@ -7,7 +7,7 @@ pub use mock_swap_router::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod mock_swap_router {
     pub use super::super::shared_types::*;
@@ -15,146 +15,186 @@ pub mod mock_swap_router {
     fn __abi() -> ::ethers::core::abi::Abi {
         ::ethers::core::abi::ethabi::Contract {
             constructor: ::core::option::Option::Some(::ethers::core::abi::ethabi::Constructor {
-                inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                    name: ::std::borrow::ToOwned::to_owned("wethAddress"),
-                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                    internal_type: ::core::option::Option::Some(::std::borrow::ToOwned::to_owned(
-                        "address"
-                    ),),
-                },],
+                inputs: ::std::vec![
+                    ::ethers::core::abi::ethabi::Param {
+                        name: ::std::borrow::ToOwned::to_owned("wethAddress"),
+                        kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                        internal_type: ::core::option::Option::Some(
+                            ::std::borrow::ToOwned::to_owned("address"),
+                        ),
+                    },
+                ],
             }),
             functions: ::core::convert::From::from([
                 (
                     ::std::borrow::ToOwned::to_owned("SWAP_RATE_GRANULARITY"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("SWAP_RATE_GRANULARITY",),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("uint256"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "SWAP_RATE_GRANULARITY",
                             ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
+                            inputs: ::std::vec![],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("WETH9"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("WETH9"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("WETH9"),
+                            inputs: ::std::vec![],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("exactInput"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("exactInput"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("params"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                ::ethers::core::abi::ethabi::ParamType::Address,
-                                ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                                ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
-                            ],),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned(
-                                    "struct IUniV3SwapRouter.ExactInputParams",
-                                ),
-                            ),
-                        },],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("amountOut"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("uint256"),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("exactInput"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("params"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                        ::std::vec![
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                            ::ethers::core::abi::ethabi::ParamType::Address,
+                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
+                                            ::ethers::core::abi::ethabi::ParamType::Uint(256usize),
+                                        ],
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct ExactInputParams"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("amountOut"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("multicall"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("multicall"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::string::String::new(),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("uint256"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("data"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Array(
-                                    ::std::boxed::Box::new(
-                                        ::ethers::core::abi::ethabi::ParamType::Bytes,
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("multicall"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
                                     ),
-                                ),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("bytes[]"),
-                                ),
-                            },
-                        ],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("results"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Array(
-                                ::std::boxed::Box::new(
-                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                ),
-                            ),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("bytes[]"),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
-                    },],
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("data"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
+                                        ::std::boxed::Box::new(
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                        ),
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("bytes[]"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("results"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
+                                        ::std::boxed::Box::new(
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                        ),
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("bytes[]"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("setSwapRate"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("setSwapRate"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("newRate"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("uint256"),
-                            ),
-                        },],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("setSwapRate"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("newRate"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("swapRate"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("swapRate"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("uint256"),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("swapRate"),
+                            inputs: ::std::vec![],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
+                        },
+                    ],
                 ),
             ]),
             events: ::std::collections::BTreeMap::new(),
@@ -164,18 +204,21 @@ pub mod mock_swap_router {
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static MOCKSWAPROUTER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static MOCKSWAPROUTER_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     #[rustfmt::skip]
-    const __BYTECODE: &[u8] = b"`\xA0`@Ra'\x10`\0U4\x80\x15a\0\x16W`\0\x80\xFD[P`@Qa\x10\x038\x03\x80a\x10\x03\x839\x81\x01`@\x81\x90Ra\x005\x91a\0FV[`\x01`\x01`\xA0\x1B\x03\x16`\x80Ra\0vV[`\0` \x82\x84\x03\x12\x15a\0XW`\0\x80\xFD[\x81Q`\x01`\x01`\xA0\x1B\x03\x81\x16\x81\x14a\0oW`\0\x80\xFD[\x93\x92PPPV[`\x80Qa\x0Fsa\0\x90`\09`\0`|\x01Ra\x0Fs`\0\xF3\xFE`\x80`@R`\x046\x10a\0eW`\x005`\xE0\x1C\x80cwr\xE9\x04\x11a\0CW\x80cwr\xE9\x04\x14a\x01\x0CW\x80c\xB8X\x18?\x14a\x01\"W\x80c\xF4\xCD\xE4i\x14a\x01BW`\0\x80\xFD[\x80cJ\xA4\xA4\xFC\x14a\0jW\x80cZ\xE4\x01\xDC\x14a\0\xC8W\x80ci\x85\x18\xE5\x14a\0\xE8W[`\0\x80\xFD[4\x80\x15a\0vW`\0\x80\xFD[Pa\0\x9E\x7F\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81V[`@Qs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x90\x91\x16\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[a\0\xDBa\0\xD66`\x04a\n\xA8V[a\x01dV[`@Qa\0\xBF\x91\x90a\x0B\x95V[4\x80\x15a\0\xF4W`\0\x80\xFD[Pa\0\xFE`\0T\x81V[`@Q\x90\x81R` \x01a\0\xBFV[4\x80\x15a\x01\x18W`\0\x80\xFD[Pa\0\xFEa'\x10\x81V[4\x80\x15a\x01.W`\0\x80\xFD[Pa\0\xFEa\x01=6`\x04a\x0C\x15V[a\x02\xE0V[4\x80\x15a\x01NW`\0\x80\xFD[Pa\x01ba\x01]6`\x04a\x0CWV[`\0UV[\0[``\x81g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x01\x7FWa\x01\x7Fa\x0CpV[`@Q\x90\x80\x82R\x80` \x02` \x01\x82\x01`@R\x80\x15a\x01\xB2W\x81` \x01[``\x81R` \x01\x90`\x01\x90\x03\x90\x81a\x01\x9DW\x90P[P\x90P`\0[\x82\x81\x10\x15a\x02\xD8W`\0\x800\x86\x86\x85\x81\x81\x10a\x01\xD6Wa\x01\xD6a\x0C\x9FV[\x90P` \x02\x81\x01\x90a\x01\xE8\x91\x90a\x0C\xCEV[`@Qa\x01\xF6\x92\x91\x90a\r:V[`\0`@Q\x80\x83\x03\x81\x85Z\xF4\x91PP=\x80`\0\x81\x14a\x021W`@Q\x91P`\x1F\x19`?=\x01\x16\x82\x01`@R=\x82R=`\0` \x84\x01>a\x026V[``\x91P[P\x91P\x91P\x81a\x02\xA5W`D\x81Q\x10\x15a\x02OW`\0\x80\xFD[`\x04\x81\x01\x90P\x80\x80` \x01\x90Q\x81\x01\x90a\x02i\x91\x90a\rJV[`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R`\x04\x01a\x02\x9C\x91\x90a\x0E\x15V[`@Q\x80\x91\x03\x90\xFD[\x80\x84\x84\x81Q\x81\x10a\x02\xB8Wa\x02\xB8a\x0C\x9FV[` \x02` \x01\x01\x81\x90RPPP\x80\x80a\x02\xD0\x90a\x0EWV[\x91PPa\x01\xB8V[P\x93\x92PPPV[`\0\x80a\x02\xED\x83\x80a\x0C\xCEV[\x80\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x93\x92\x91\x90\x81\x81R` \x01\x83\x83\x80\x82\x847`\0\x92\x01\x82\x90RP\x93\x94Pa\x03/\x92P\x84\x91Pa\x04O\x90PV[PP\x90P[a\x03=\x82a\x04\x8BV[\x15a\x03RWa\x03K\x82a\x04\xC5V[\x91Pa\x034V[`\0a\x03]\x83a\x04OV[P\x91PPa'\x10`\0T\x86`@\x015a\x03v\x91\x90a\x0E\x8FV[a\x03\x80\x91\x90a\x0E\xA6V[\x93P\x84``\x015\x84\x10\x15a\x03\xF0W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x13`$\x82\x01R\x7FToo little received\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x04\x16s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x1630`@\x89\x015a\x04\xFCV[a\x04Ga\x04)`@\x87\x01` \x88\x01a\x0E\xE1V[s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x16\x90\x86a\x05\xEEV[PPP\x91\x90PV[`\0\x80\x80a\x04]\x84\x82a\x06\xC3V[\x92Pa\x04j\x84`\x14a\x07\xC7V[\x90Pa\x04\x82a\x04{`\x03`\x14a\x0F\x17V[\x85\x90a\x06\xC3V[\x91P\x91\x93\x90\x92PV[`\0a\x04\x99`\x03`\x14a\x0F\x17V[`\x14a\x04\xA6`\x03\x82a\x0F\x17V[a\x04\xB0\x91\x90a\x0F\x17V[a\x04\xBA\x91\x90a\x0F\x17V[\x82Q\x10\x15\x90P\x91\x90PV[``a\x04\xF6a\x04\xD6`\x03`\x14a\x0F\x17V[a\x04\xE2`\x03`\x14a\x0F\x17V[\x84Qa\x04\xEE\x91\x90a\x0F*V[\x84\x91\x90a\x08\xBBV[\x92\x91PPV[`\0`@Q\x7F#\xB8r\xDD\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x85\x16`\x04\x82\x01Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`$\x82\x01R\x82`D\x82\x01R` `\0`d\x83`\0\x8AZ\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x05\xE7W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FTRANSFER_FROM_FAILED\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPPV[`\0`@Q\x7F\xA9\x05\x9C\xBB\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`\x04\x82\x01R\x82`$\x82\x01R` `\0`D\x83`\0\x89Z\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x06\xBDW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0F`$\x82\x01R\x7FTRANSFER_FAILED\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPV[`\0\x81a\x06\xD1\x81`\x14a\x0F\x17V[\x10\x15a\x079W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x12`$\x82\x01R\x7FtoAddress_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x07D\x82`\x14a\x0F\x17V[\x83Q\x10\x15a\x07\xAEW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x15`$\x82\x01R\x7FtoAddress_outOfBounds\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01` \x01Ql\x01\0\0\0\0\0\0\0\0\0\0\0\0\x90\x04\x90V[`\0\x81a\x07\xD5\x81`\x03a\x0F\x17V[\x10\x15a\x08=W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7FtoUint24_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x08H\x82`\x03a\x0F\x17V[\x83Q\x10\x15a\x08\xB2W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FtoUint24_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01`\x03\x01Q\x90V[``\x81a\x08\xC9\x81`\x1Fa\x0F\x17V[\x10\x15a\t1W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[\x82a\t<\x83\x82a\x0F\x17V[\x10\x15a\t\xA4W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\t\xAE\x82\x84a\x0F\x17V[\x84Q\x10\x15a\n\x18W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7Fslice_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[``\x82\x15\x80\x15a\n7W`@Q\x91P`\0\x82R` \x82\x01`@Ra\n\x9FV[`@Q\x91P`\x1F\x84\x16\x80\x15` \x02\x81\x84\x01\x01\x85\x81\x01\x87\x83\x15` \x02\x84\x8B\x01\x01\x01[\x81\x83\x10\x15a\npW\x80Q\x83R` \x92\x83\x01\x92\x01a\nXV[PP\x85\x84R`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16`@RP[P\x94\x93PPPPV[`\0\x80`\0`@\x84\x86\x03\x12\x15a\n\xBDW`\0\x80\xFD[\x835\x92P` \x84\x015g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\n\xDCW`\0\x80\xFD[\x81\x86\x01\x91P\x86`\x1F\x83\x01\x12a\n\xF0W`\0\x80\xFD[\x815\x81\x81\x11\x15a\n\xFFW`\0\x80\xFD[\x87` \x82`\x05\x1B\x85\x01\x01\x11\x15a\x0B\x14W`\0\x80\xFD[` \x83\x01\x94P\x80\x93PPPP\x92P\x92P\x92V[`\0[\x83\x81\x10\x15a\x0BBW\x81\x81\x01Q\x83\x82\x01R` \x01a\x0B*V[PP`\0\x91\x01RV[`\0\x81Q\x80\x84Ra\x0Bc\x81` \x86\x01` \x86\x01a\x0B'V[`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16\x92\x90\x92\x01` \x01\x92\x91PPV[`\0` \x80\x83\x01\x81\x84R\x80\x85Q\x80\x83R`@\x86\x01\x91P`@\x81`\x05\x1B\x87\x01\x01\x92P\x83\x87\x01`\0[\x82\x81\x10\x15a\x0C\x08W\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xC0\x88\x86\x03\x01\x84Ra\x0B\xF6\x85\x83Qa\x0BKV[\x94P\x92\x85\x01\x92\x90\x85\x01\x90`\x01\x01a\x0B\xBCV[P\x92\x97\x96PPPPPPPV[`\0` \x82\x84\x03\x12\x15a\x0C'W`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x0C>W`\0\x80\xFD[\x82\x01`\x80\x81\x85\x03\x12\x15a\x0CPW`\0\x80\xFD[\x93\x92PPPV[`\0` \x82\x84\x03\x12\x15a\x0CiW`\0\x80\xFD[P5\x91\x90PV[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`A`\x04R`$`\0\xFD[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`2`\x04R`$`\0\xFD[`\0\x80\x835\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE1\x846\x03\x01\x81\x12a\r\x03W`\0\x80\xFD[\x83\x01\x805\x91Pg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x82\x11\x15a\r\x1EW`\0\x80\xFD[` \x01\x91P6\x81\x90\x03\x82\x13\x15a\r3W`\0\x80\xFD[\x92P\x92\x90PV[\x81\x83\x827`\0\x91\x01\x90\x81R\x91\x90PV[`\0` \x82\x84\x03\x12\x15a\r\\W`\0\x80\xFD[\x81Qg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\rtW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\r\x88W`\0\x80\xFD[\x81Q\x81\x81\x11\x15a\r\x9AWa\r\x9Aa\x0CpV[`@Q`\x1F\x82\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\r\xE0Wa\r\xE0a\x0CpV[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\r\xF9W`\0\x80\xFD[a\x0E\n\x83` \x83\x01` \x88\x01a\x0B'V[\x97\x96PPPPPPPV[` \x81R`\0a\x0CP` \x83\x01\x84a\x0BKV[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x11`\x04R`$`\0\xFD[`\0\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x82\x03a\x0E\x88Wa\x0E\x88a\x0E(V[P`\x01\x01\x90V[\x80\x82\x02\x81\x15\x82\x82\x04\x84\x14\x17a\x04\xF6Wa\x04\xF6a\x0E(V[`\0\x82a\x0E\xDCW\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x12`\x04R`$`\0\xFD[P\x04\x90V[`\0` \x82\x84\x03\x12\x15a\x0E\xF3W`\0\x80\xFD[\x815s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x0CPW`\0\x80\xFD[\x80\x82\x01\x80\x82\x11\x15a\x04\xF6Wa\x04\xF6a\x0E(V[\x81\x81\x03\x81\x81\x11\x15a\x04\xF6Wa\x04\xF6a\x0E(V\xFE\xA2dipfsX\"\x12 \xC55 \x9F\x8C\xF3M!X\x0F\x0B\xCB\xD1\xF3\xCAo\xDAXV\xE6\xED!X@\xFA\x0B\xF6\xE1J\x9AoEdsolcC\0\x08\x13\x003";
+    const __BYTECODE: &[u8] = b"`\xA0`@Ra'\x10`\0U4\x80\x15a\0\x16W`\0\x80\xFD[P`@Qa\x0F\xC28\x03\x80a\x0F\xC2\x839\x81\x01`@\x81\x90Ra\x005\x91a\0FV[`\x01`\x01`\xA0\x1B\x03\x16`\x80Ra\0vV[`\0` \x82\x84\x03\x12\x15a\0XW`\0\x80\xFD[\x81Q`\x01`\x01`\xA0\x1B\x03\x81\x16\x81\x14a\0oW`\0\x80\xFD[\x93\x92PPPV[`\x80Qa\x0F2a\0\x90`\09`\0`|\x01Ra\x0F2`\0\xF3\xFE`\x80`@R`\x046\x10a\0eW`\x005`\xE0\x1C\x80cwr\xE9\x04\x11a\0CW\x80cwr\xE9\x04\x14a\x01\x0CW\x80c\xB8X\x18?\x14a\x01\"W\x80c\xF4\xCD\xE4i\x14a\x01BW`\0\x80\xFD[\x80cJ\xA4\xA4\xFC\x14a\0jW\x80cZ\xE4\x01\xDC\x14a\0\xC8W\x80ci\x85\x18\xE5\x14a\0\xE8W[`\0\x80\xFD[4\x80\x15a\0vW`\0\x80\xFD[Pa\0\x9E\x7F\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81V[`@Qs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x90\x91\x16\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[a\0\xDBa\0\xD66`\x04a\n\x9DV[a\x01dV[`@Qa\0\xBF\x91\x90a\x0B\x8AV[4\x80\x15a\0\xF4W`\0\x80\xFD[Pa\0\xFE`\0T\x81V[`@Q\x90\x81R` \x01a\0\xBFV[4\x80\x15a\x01\x18W`\0\x80\xFD[Pa\0\xFEa'\x10\x81V[4\x80\x15a\x01.W`\0\x80\xFD[Pa\0\xFEa\x01=6`\x04a\x0C\x0CV[a\x02\xD5V[4\x80\x15a\x01NW`\0\x80\xFD[Pa\x01ba\x01]6`\x04a\x0CNV[`\0UV[\0[``\x81g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x01\x7FWa\x01\x7Fa\x0CgV[`@Q\x90\x80\x82R\x80` \x02` \x01\x82\x01`@R\x80\x15a\x01\xB2W\x81` \x01[``\x81R` \x01\x90`\x01\x90\x03\x90\x81a\x01\x9DW\x90P[P\x90P`\0[\x82\x81\x10\x15a\x02\xCDW`\0\x800\x86\x86\x85\x81\x81\x10a\x01\xD6Wa\x01\xD6a\x0C\x96V[\x90P` \x02\x81\x01\x90a\x01\xE8\x91\x90a\x0C\xC5V[`@Qa\x01\xF6\x92\x91\x90a\r1V[`\0`@Q\x80\x83\x03\x81\x85Z\xF4\x91PP=\x80`\0\x81\x14a\x021W`@Q\x91P`\x1F\x19`?=\x01\x16\x82\x01`@R=\x82R=`\0` \x84\x01>a\x026V[``\x91P[P\x91P\x91P\x81a\x02\xA5W`D\x81Q\x10\x15a\x02OW`\0\x80\xFD[`\x04\x81\x01\x90P\x80\x80` \x01\x90Q\x81\x01\x90a\x02i\x91\x90a\rAV[`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R`\x04\x01a\x02\x9C\x91\x90a\x0E\x0CV[`@Q\x80\x91\x03\x90\xFD[\x80\x84\x84\x81Q\x81\x10a\x02\xB8Wa\x02\xB8a\x0C\x96V[` \x90\x81\x02\x91\x90\x91\x01\x01RPP`\x01\x01a\x01\xB8V[P\x93\x92PPPV[`\0\x80a\x02\xE2\x83\x80a\x0C\xC5V[\x80\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x93\x92\x91\x90\x81\x81R` \x01\x83\x83\x80\x82\x847`\0\x92\x01\x82\x90RP\x93\x94Pa\x03$\x92P\x84\x91Pa\x04D\x90PV[PP\x90P[a\x032\x82a\x04\x80V[\x15a\x03GWa\x03@\x82a\x04\xBAV[\x91Pa\x03)V[`\0a\x03R\x83a\x04DV[P\x91PPa'\x10`\0T\x86`@\x015a\x03k\x91\x90a\x0ENV[a\x03u\x91\x90a\x0EeV[\x93P\x84``\x015\x84\x10\x15a\x03\xE5W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x13`$\x82\x01R\x7FToo little received\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x04\x0Bs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x1630`@\x89\x015a\x04\xF1V[a\x04<a\x04\x1E`@\x87\x01` \x88\x01a\x0E\xA0V[s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x16\x90\x86a\x05\xE3V[PPP\x91\x90PV[`\0\x80\x80a\x04R\x84\x82a\x06\xB8V[\x92Pa\x04_\x84`\x14a\x07\xBCV[\x90Pa\x04wa\x04p`\x03`\x14a\x0E\xD6V[\x85\x90a\x06\xB8V[\x91P\x91\x93\x90\x92PV[`\0a\x04\x8E`\x03`\x14a\x0E\xD6V[`\x14a\x04\x9B`\x03\x82a\x0E\xD6V[a\x04\xA5\x91\x90a\x0E\xD6V[a\x04\xAF\x91\x90a\x0E\xD6V[\x82Q\x10\x15\x90P\x91\x90PV[``a\x04\xEBa\x04\xCB`\x03`\x14a\x0E\xD6V[a\x04\xD7`\x03`\x14a\x0E\xD6V[\x84Qa\x04\xE3\x91\x90a\x0E\xE9V[\x84\x91\x90a\x08\xB0V[\x92\x91PPV[`\0`@Q\x7F#\xB8r\xDD\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x85\x16`\x04\x82\x01Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`$\x82\x01R\x82`D\x82\x01R` `\0`d\x83`\0\x8AZ\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x05\xDCW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FTRANSFER_FROM_FAILED\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPPV[`\0`@Q\x7F\xA9\x05\x9C\xBB\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`\x04\x82\x01R\x82`$\x82\x01R` `\0`D\x83`\0\x89Z\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x06\xB2W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0F`$\x82\x01R\x7FTRANSFER_FAILED\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPV[`\0\x81a\x06\xC6\x81`\x14a\x0E\xD6V[\x10\x15a\x07.W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x12`$\x82\x01R\x7FtoAddress_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x079\x82`\x14a\x0E\xD6V[\x83Q\x10\x15a\x07\xA3W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x15`$\x82\x01R\x7FtoAddress_outOfBounds\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01` \x01Ql\x01\0\0\0\0\0\0\0\0\0\0\0\0\x90\x04\x90V[`\0\x81a\x07\xCA\x81`\x03a\x0E\xD6V[\x10\x15a\x082W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7FtoUint24_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x08=\x82`\x03a\x0E\xD6V[\x83Q\x10\x15a\x08\xA7W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FtoUint24_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01`\x03\x01Q\x90V[``\x81a\x08\xBE\x81`\x1Fa\x0E\xD6V[\x10\x15a\t&W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[\x82a\t1\x83\x82a\x0E\xD6V[\x10\x15a\t\x99W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\t\xA3\x82\x84a\x0E\xD6V[\x84Q\x10\x15a\n\rW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7Fslice_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[``\x82\x15\x80\x15a\n,W`@Q\x91P`\0\x82R` \x82\x01`@Ra\n\x94V[`@Q\x91P`\x1F\x84\x16\x80\x15` \x02\x81\x84\x01\x01\x85\x81\x01\x87\x83\x15` \x02\x84\x8B\x01\x01\x01[\x81\x83\x10\x15a\neW\x80Q\x83R` \x92\x83\x01\x92\x01a\nMV[PP\x85\x84R`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16`@RP[P\x94\x93PPPPV[`\0\x80`\0`@\x84\x86\x03\x12\x15a\n\xB2W`\0\x80\xFD[\x835\x92P` \x84\x015g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\n\xD1W`\0\x80\xFD[\x81\x86\x01\x91P\x86`\x1F\x83\x01\x12a\n\xE5W`\0\x80\xFD[\x815\x81\x81\x11\x15a\n\xF4W`\0\x80\xFD[\x87` \x82`\x05\x1B\x85\x01\x01\x11\x15a\x0B\tW`\0\x80\xFD[` \x83\x01\x94P\x80\x93PPPP\x92P\x92P\x92V[`\0[\x83\x81\x10\x15a\x0B7W\x81\x81\x01Q\x83\x82\x01R` \x01a\x0B\x1FV[PP`\0\x91\x01RV[`\0\x81Q\x80\x84Ra\x0BX\x81` \x86\x01` \x86\x01a\x0B\x1CV[`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16\x92\x90\x92\x01` \x01\x92\x91PPV[`\0` \x80\x83\x01` \x84R\x80\x85Q\x80\x83R`@\x86\x01\x91P`@\x81`\x05\x1B\x87\x01\x01\x92P` \x87\x01`\0[\x82\x81\x10\x15a\x0B\xFFW\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xC0\x88\x86\x03\x01\x84Ra\x0B\xED\x85\x83Qa\x0B@V[\x94P\x92\x85\x01\x92\x90\x85\x01\x90`\x01\x01a\x0B\xB3V[P\x92\x97\x96PPPPPPPV[`\0` \x82\x84\x03\x12\x15a\x0C\x1EW`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x0C5W`\0\x80\xFD[\x82\x01`\x80\x81\x85\x03\x12\x15a\x0CGW`\0\x80\xFD[\x93\x92PPPV[`\0` \x82\x84\x03\x12\x15a\x0C`W`\0\x80\xFD[P5\x91\x90PV[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`A`\x04R`$`\0\xFD[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`2`\x04R`$`\0\xFD[`\0\x80\x835\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE1\x846\x03\x01\x81\x12a\x0C\xFAW`\0\x80\xFD[\x83\x01\x805\x91Pg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x82\x11\x15a\r\x15W`\0\x80\xFD[` \x01\x91P6\x81\x90\x03\x82\x13\x15a\r*W`\0\x80\xFD[\x92P\x92\x90PV[\x81\x83\x827`\0\x91\x01\x90\x81R\x91\x90PV[`\0` \x82\x84\x03\x12\x15a\rSW`\0\x80\xFD[\x81Qg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\rkW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\r\x7FW`\0\x80\xFD[\x81Q\x81\x81\x11\x15a\r\x91Wa\r\x91a\x0CgV[`@Q`\x1F\x82\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\r\xD7Wa\r\xD7a\x0CgV[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\r\xF0W`\0\x80\xFD[a\x0E\x01\x83` \x83\x01` \x88\x01a\x0B\x1CV[\x97\x96PPPPPPPV[` \x81R`\0a\x0CG` \x83\x01\x84a\x0B@V[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x11`\x04R`$`\0\xFD[\x80\x82\x02\x81\x15\x82\x82\x04\x84\x14\x17a\x04\xEBWa\x04\xEBa\x0E\x1FV[`\0\x82a\x0E\x9BW\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x12`\x04R`$`\0\xFD[P\x04\x90V[`\0` \x82\x84\x03\x12\x15a\x0E\xB2W`\0\x80\xFD[\x815s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x0CGW`\0\x80\xFD[\x80\x82\x01\x80\x82\x11\x15a\x04\xEBWa\x04\xEBa\x0E\x1FV[\x81\x81\x03\x81\x81\x11\x15a\x04\xEBWa\x04\xEBa\x0E\x1FV\xFE\xA2dipfsX\"\x12 \xEA\x94^7\xFE\xD8\xDF\x0CS\xDE\xE16\xE5\x98\xAA\xE9\xE6\x03EB\x9E\x8A\n\xFD;1`\x8C\xB3\x87Z\x01dsolcC\0\x08\x18\x003";
     /// The bytecode of the contract.
-    pub static MOCKSWAPROUTER_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__BYTECODE);
+    pub static MOCKSWAPROUTER_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __BYTECODE,
+    );
     #[rustfmt::skip]
-    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R`\x046\x10a\0eW`\x005`\xE0\x1C\x80cwr\xE9\x04\x11a\0CW\x80cwr\xE9\x04\x14a\x01\x0CW\x80c\xB8X\x18?\x14a\x01\"W\x80c\xF4\xCD\xE4i\x14a\x01BW`\0\x80\xFD[\x80cJ\xA4\xA4\xFC\x14a\0jW\x80cZ\xE4\x01\xDC\x14a\0\xC8W\x80ci\x85\x18\xE5\x14a\0\xE8W[`\0\x80\xFD[4\x80\x15a\0vW`\0\x80\xFD[Pa\0\x9E\x7F\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81V[`@Qs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x90\x91\x16\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[a\0\xDBa\0\xD66`\x04a\n\xA8V[a\x01dV[`@Qa\0\xBF\x91\x90a\x0B\x95V[4\x80\x15a\0\xF4W`\0\x80\xFD[Pa\0\xFE`\0T\x81V[`@Q\x90\x81R` \x01a\0\xBFV[4\x80\x15a\x01\x18W`\0\x80\xFD[Pa\0\xFEa'\x10\x81V[4\x80\x15a\x01.W`\0\x80\xFD[Pa\0\xFEa\x01=6`\x04a\x0C\x15V[a\x02\xE0V[4\x80\x15a\x01NW`\0\x80\xFD[Pa\x01ba\x01]6`\x04a\x0CWV[`\0UV[\0[``\x81g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x01\x7FWa\x01\x7Fa\x0CpV[`@Q\x90\x80\x82R\x80` \x02` \x01\x82\x01`@R\x80\x15a\x01\xB2W\x81` \x01[``\x81R` \x01\x90`\x01\x90\x03\x90\x81a\x01\x9DW\x90P[P\x90P`\0[\x82\x81\x10\x15a\x02\xD8W`\0\x800\x86\x86\x85\x81\x81\x10a\x01\xD6Wa\x01\xD6a\x0C\x9FV[\x90P` \x02\x81\x01\x90a\x01\xE8\x91\x90a\x0C\xCEV[`@Qa\x01\xF6\x92\x91\x90a\r:V[`\0`@Q\x80\x83\x03\x81\x85Z\xF4\x91PP=\x80`\0\x81\x14a\x021W`@Q\x91P`\x1F\x19`?=\x01\x16\x82\x01`@R=\x82R=`\0` \x84\x01>a\x026V[``\x91P[P\x91P\x91P\x81a\x02\xA5W`D\x81Q\x10\x15a\x02OW`\0\x80\xFD[`\x04\x81\x01\x90P\x80\x80` \x01\x90Q\x81\x01\x90a\x02i\x91\x90a\rJV[`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R`\x04\x01a\x02\x9C\x91\x90a\x0E\x15V[`@Q\x80\x91\x03\x90\xFD[\x80\x84\x84\x81Q\x81\x10a\x02\xB8Wa\x02\xB8a\x0C\x9FV[` \x02` \x01\x01\x81\x90RPPP\x80\x80a\x02\xD0\x90a\x0EWV[\x91PPa\x01\xB8V[P\x93\x92PPPV[`\0\x80a\x02\xED\x83\x80a\x0C\xCEV[\x80\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x93\x92\x91\x90\x81\x81R` \x01\x83\x83\x80\x82\x847`\0\x92\x01\x82\x90RP\x93\x94Pa\x03/\x92P\x84\x91Pa\x04O\x90PV[PP\x90P[a\x03=\x82a\x04\x8BV[\x15a\x03RWa\x03K\x82a\x04\xC5V[\x91Pa\x034V[`\0a\x03]\x83a\x04OV[P\x91PPa'\x10`\0T\x86`@\x015a\x03v\x91\x90a\x0E\x8FV[a\x03\x80\x91\x90a\x0E\xA6V[\x93P\x84``\x015\x84\x10\x15a\x03\xF0W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x13`$\x82\x01R\x7FToo little received\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x04\x16s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x1630`@\x89\x015a\x04\xFCV[a\x04Ga\x04)`@\x87\x01` \x88\x01a\x0E\xE1V[s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x16\x90\x86a\x05\xEEV[PPP\x91\x90PV[`\0\x80\x80a\x04]\x84\x82a\x06\xC3V[\x92Pa\x04j\x84`\x14a\x07\xC7V[\x90Pa\x04\x82a\x04{`\x03`\x14a\x0F\x17V[\x85\x90a\x06\xC3V[\x91P\x91\x93\x90\x92PV[`\0a\x04\x99`\x03`\x14a\x0F\x17V[`\x14a\x04\xA6`\x03\x82a\x0F\x17V[a\x04\xB0\x91\x90a\x0F\x17V[a\x04\xBA\x91\x90a\x0F\x17V[\x82Q\x10\x15\x90P\x91\x90PV[``a\x04\xF6a\x04\xD6`\x03`\x14a\x0F\x17V[a\x04\xE2`\x03`\x14a\x0F\x17V[\x84Qa\x04\xEE\x91\x90a\x0F*V[\x84\x91\x90a\x08\xBBV[\x92\x91PPV[`\0`@Q\x7F#\xB8r\xDD\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x85\x16`\x04\x82\x01Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`$\x82\x01R\x82`D\x82\x01R` `\0`d\x83`\0\x8AZ\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x05\xE7W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FTRANSFER_FROM_FAILED\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPPV[`\0`@Q\x7F\xA9\x05\x9C\xBB\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`\x04\x82\x01R\x82`$\x82\x01R` `\0`D\x83`\0\x89Z\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x06\xBDW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0F`$\x82\x01R\x7FTRANSFER_FAILED\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPV[`\0\x81a\x06\xD1\x81`\x14a\x0F\x17V[\x10\x15a\x079W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x12`$\x82\x01R\x7FtoAddress_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x07D\x82`\x14a\x0F\x17V[\x83Q\x10\x15a\x07\xAEW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x15`$\x82\x01R\x7FtoAddress_outOfBounds\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01` \x01Ql\x01\0\0\0\0\0\0\0\0\0\0\0\0\x90\x04\x90V[`\0\x81a\x07\xD5\x81`\x03a\x0F\x17V[\x10\x15a\x08=W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7FtoUint24_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x08H\x82`\x03a\x0F\x17V[\x83Q\x10\x15a\x08\xB2W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FtoUint24_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01`\x03\x01Q\x90V[``\x81a\x08\xC9\x81`\x1Fa\x0F\x17V[\x10\x15a\t1W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[\x82a\t<\x83\x82a\x0F\x17V[\x10\x15a\t\xA4W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\t\xAE\x82\x84a\x0F\x17V[\x84Q\x10\x15a\n\x18W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7Fslice_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[``\x82\x15\x80\x15a\n7W`@Q\x91P`\0\x82R` \x82\x01`@Ra\n\x9FV[`@Q\x91P`\x1F\x84\x16\x80\x15` \x02\x81\x84\x01\x01\x85\x81\x01\x87\x83\x15` \x02\x84\x8B\x01\x01\x01[\x81\x83\x10\x15a\npW\x80Q\x83R` \x92\x83\x01\x92\x01a\nXV[PP\x85\x84R`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16`@RP[P\x94\x93PPPPV[`\0\x80`\0`@\x84\x86\x03\x12\x15a\n\xBDW`\0\x80\xFD[\x835\x92P` \x84\x015g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\n\xDCW`\0\x80\xFD[\x81\x86\x01\x91P\x86`\x1F\x83\x01\x12a\n\xF0W`\0\x80\xFD[\x815\x81\x81\x11\x15a\n\xFFW`\0\x80\xFD[\x87` \x82`\x05\x1B\x85\x01\x01\x11\x15a\x0B\x14W`\0\x80\xFD[` \x83\x01\x94P\x80\x93PPPP\x92P\x92P\x92V[`\0[\x83\x81\x10\x15a\x0BBW\x81\x81\x01Q\x83\x82\x01R` \x01a\x0B*V[PP`\0\x91\x01RV[`\0\x81Q\x80\x84Ra\x0Bc\x81` \x86\x01` \x86\x01a\x0B'V[`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16\x92\x90\x92\x01` \x01\x92\x91PPV[`\0` \x80\x83\x01\x81\x84R\x80\x85Q\x80\x83R`@\x86\x01\x91P`@\x81`\x05\x1B\x87\x01\x01\x92P\x83\x87\x01`\0[\x82\x81\x10\x15a\x0C\x08W\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xC0\x88\x86\x03\x01\x84Ra\x0B\xF6\x85\x83Qa\x0BKV[\x94P\x92\x85\x01\x92\x90\x85\x01\x90`\x01\x01a\x0B\xBCV[P\x92\x97\x96PPPPPPPV[`\0` \x82\x84\x03\x12\x15a\x0C'W`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x0C>W`\0\x80\xFD[\x82\x01`\x80\x81\x85\x03\x12\x15a\x0CPW`\0\x80\xFD[\x93\x92PPPV[`\0` \x82\x84\x03\x12\x15a\x0CiW`\0\x80\xFD[P5\x91\x90PV[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`A`\x04R`$`\0\xFD[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`2`\x04R`$`\0\xFD[`\0\x80\x835\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE1\x846\x03\x01\x81\x12a\r\x03W`\0\x80\xFD[\x83\x01\x805\x91Pg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x82\x11\x15a\r\x1EW`\0\x80\xFD[` \x01\x91P6\x81\x90\x03\x82\x13\x15a\r3W`\0\x80\xFD[\x92P\x92\x90PV[\x81\x83\x827`\0\x91\x01\x90\x81R\x91\x90PV[`\0` \x82\x84\x03\x12\x15a\r\\W`\0\x80\xFD[\x81Qg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\rtW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\r\x88W`\0\x80\xFD[\x81Q\x81\x81\x11\x15a\r\x9AWa\r\x9Aa\x0CpV[`@Q`\x1F\x82\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\r\xE0Wa\r\xE0a\x0CpV[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\r\xF9W`\0\x80\xFD[a\x0E\n\x83` \x83\x01` \x88\x01a\x0B'V[\x97\x96PPPPPPPV[` \x81R`\0a\x0CP` \x83\x01\x84a\x0BKV[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x11`\x04R`$`\0\xFD[`\0\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x82\x03a\x0E\x88Wa\x0E\x88a\x0E(V[P`\x01\x01\x90V[\x80\x82\x02\x81\x15\x82\x82\x04\x84\x14\x17a\x04\xF6Wa\x04\xF6a\x0E(V[`\0\x82a\x0E\xDCW\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x12`\x04R`$`\0\xFD[P\x04\x90V[`\0` \x82\x84\x03\x12\x15a\x0E\xF3W`\0\x80\xFD[\x815s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x0CPW`\0\x80\xFD[\x80\x82\x01\x80\x82\x11\x15a\x04\xF6Wa\x04\xF6a\x0E(V[\x81\x81\x03\x81\x81\x11\x15a\x04\xF6Wa\x04\xF6a\x0E(V\xFE\xA2dipfsX\"\x12 \xC55 \x9F\x8C\xF3M!X\x0F\x0B\xCB\xD1\xF3\xCAo\xDAXV\xE6\xED!X@\xFA\x0B\xF6\xE1J\x9AoEdsolcC\0\x08\x13\x003";
+    const __DEPLOYED_BYTECODE: &[u8] = b"`\x80`@R`\x046\x10a\0eW`\x005`\xE0\x1C\x80cwr\xE9\x04\x11a\0CW\x80cwr\xE9\x04\x14a\x01\x0CW\x80c\xB8X\x18?\x14a\x01\"W\x80c\xF4\xCD\xE4i\x14a\x01BW`\0\x80\xFD[\x80cJ\xA4\xA4\xFC\x14a\0jW\x80cZ\xE4\x01\xDC\x14a\0\xC8W\x80ci\x85\x18\xE5\x14a\0\xE8W[`\0\x80\xFD[4\x80\x15a\0vW`\0\x80\xFD[Pa\0\x9E\x7F\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81V[`@Qs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x90\x91\x16\x81R` \x01[`@Q\x80\x91\x03\x90\xF3[a\0\xDBa\0\xD66`\x04a\n\x9DV[a\x01dV[`@Qa\0\xBF\x91\x90a\x0B\x8AV[4\x80\x15a\0\xF4W`\0\x80\xFD[Pa\0\xFE`\0T\x81V[`@Q\x90\x81R` \x01a\0\xBFV[4\x80\x15a\x01\x18W`\0\x80\xFD[Pa\0\xFEa'\x10\x81V[4\x80\x15a\x01.W`\0\x80\xFD[Pa\0\xFEa\x01=6`\x04a\x0C\x0CV[a\x02\xD5V[4\x80\x15a\x01NW`\0\x80\xFD[Pa\x01ba\x01]6`\x04a\x0CNV[`\0UV[\0[``\x81g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x01\x7FWa\x01\x7Fa\x0CgV[`@Q\x90\x80\x82R\x80` \x02` \x01\x82\x01`@R\x80\x15a\x01\xB2W\x81` \x01[``\x81R` \x01\x90`\x01\x90\x03\x90\x81a\x01\x9DW\x90P[P\x90P`\0[\x82\x81\x10\x15a\x02\xCDW`\0\x800\x86\x86\x85\x81\x81\x10a\x01\xD6Wa\x01\xD6a\x0C\x96V[\x90P` \x02\x81\x01\x90a\x01\xE8\x91\x90a\x0C\xC5V[`@Qa\x01\xF6\x92\x91\x90a\r1V[`\0`@Q\x80\x83\x03\x81\x85Z\xF4\x91PP=\x80`\0\x81\x14a\x021W`@Q\x91P`\x1F\x19`?=\x01\x16\x82\x01`@R=\x82R=`\0` \x84\x01>a\x026V[``\x91P[P\x91P\x91P\x81a\x02\xA5W`D\x81Q\x10\x15a\x02OW`\0\x80\xFD[`\x04\x81\x01\x90P\x80\x80` \x01\x90Q\x81\x01\x90a\x02i\x91\x90a\rAV[`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R`\x04\x01a\x02\x9C\x91\x90a\x0E\x0CV[`@Q\x80\x91\x03\x90\xFD[\x80\x84\x84\x81Q\x81\x10a\x02\xB8Wa\x02\xB8a\x0C\x96V[` \x90\x81\x02\x91\x90\x91\x01\x01RPP`\x01\x01a\x01\xB8V[P\x93\x92PPPV[`\0\x80a\x02\xE2\x83\x80a\x0C\xC5V[\x80\x80`\x1F\x01` \x80\x91\x04\x02` \x01`@Q\x90\x81\x01`@R\x80\x93\x92\x91\x90\x81\x81R` \x01\x83\x83\x80\x82\x847`\0\x92\x01\x82\x90RP\x93\x94Pa\x03$\x92P\x84\x91Pa\x04D\x90PV[PP\x90P[a\x032\x82a\x04\x80V[\x15a\x03GWa\x03@\x82a\x04\xBAV[\x91Pa\x03)V[`\0a\x03R\x83a\x04DV[P\x91PPa'\x10`\0T\x86`@\x015a\x03k\x91\x90a\x0ENV[a\x03u\x91\x90a\x0EeV[\x93P\x84``\x015\x84\x10\x15a\x03\xE5W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x13`$\x82\x01R\x7FToo little received\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x04\x0Bs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x1630`@\x89\x015a\x04\xF1V[a\x04<a\x04\x1E`@\x87\x01` \x88\x01a\x0E\xA0V[s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x83\x16\x90\x86a\x05\xE3V[PPP\x91\x90PV[`\0\x80\x80a\x04R\x84\x82a\x06\xB8V[\x92Pa\x04_\x84`\x14a\x07\xBCV[\x90Pa\x04wa\x04p`\x03`\x14a\x0E\xD6V[\x85\x90a\x06\xB8V[\x91P\x91\x93\x90\x92PV[`\0a\x04\x8E`\x03`\x14a\x0E\xD6V[`\x14a\x04\x9B`\x03\x82a\x0E\xD6V[a\x04\xA5\x91\x90a\x0E\xD6V[a\x04\xAF\x91\x90a\x0E\xD6V[\x82Q\x10\x15\x90P\x91\x90PV[``a\x04\xEBa\x04\xCB`\x03`\x14a\x0E\xD6V[a\x04\xD7`\x03`\x14a\x0E\xD6V[\x84Qa\x04\xE3\x91\x90a\x0E\xE9V[\x84\x91\x90a\x08\xB0V[\x92\x91PPV[`\0`@Q\x7F#\xB8r\xDD\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x85\x16`\x04\x82\x01Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`$\x82\x01R\x82`D\x82\x01R` `\0`d\x83`\0\x8AZ\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x05\xDCW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FTRANSFER_FROM_FAILED\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPPV[`\0`@Q\x7F\xA9\x05\x9C\xBB\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81Rs\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x84\x16`\x04\x82\x01R\x82`$\x82\x01R` `\0`D\x83`\0\x89Z\xF1=\x15`\x1F=\x11`\x01`\0Q\x14\x16\x17\x16\x91PP\x80a\x06\xB2W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0F`$\x82\x01R\x7FTRANSFER_FAILED\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[PPPPV[`\0\x81a\x06\xC6\x81`\x14a\x0E\xD6V[\x10\x15a\x07.W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x12`$\x82\x01R\x7FtoAddress_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x079\x82`\x14a\x0E\xD6V[\x83Q\x10\x15a\x07\xA3W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x15`$\x82\x01R\x7FtoAddress_outOfBounds\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01` \x01Ql\x01\0\0\0\0\0\0\0\0\0\0\0\0\x90\x04\x90V[`\0\x81a\x07\xCA\x81`\x03a\x0E\xD6V[\x10\x15a\x082W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7FtoUint24_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\x08=\x82`\x03a\x0E\xD6V[\x83Q\x10\x15a\x08\xA7W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x14`$\x82\x01R\x7FtoUint24_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[P\x01`\x03\x01Q\x90V[``\x81a\x08\xBE\x81`\x1Fa\x0E\xD6V[\x10\x15a\t&W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[\x82a\t1\x83\x82a\x0E\xD6V[\x10\x15a\t\x99W`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x0E`$\x82\x01R\x7Fslice_overflow\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[a\t\xA3\x82\x84a\x0E\xD6V[\x84Q\x10\x15a\n\rW`@Q\x7F\x08\xC3y\xA0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\x81R` `\x04\x82\x01R`\x11`$\x82\x01R\x7Fslice_outOfBounds\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`D\x82\x01R`d\x01a\x02\x9CV[``\x82\x15\x80\x15a\n,W`@Q\x91P`\0\x82R` \x82\x01`@Ra\n\x94V[`@Q\x91P`\x1F\x84\x16\x80\x15` \x02\x81\x84\x01\x01\x85\x81\x01\x87\x83\x15` \x02\x84\x8B\x01\x01\x01[\x81\x83\x10\x15a\neW\x80Q\x83R` \x92\x83\x01\x92\x01a\nMV[PP\x85\x84R`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16`@RP[P\x94\x93PPPPV[`\0\x80`\0`@\x84\x86\x03\x12\x15a\n\xB2W`\0\x80\xFD[\x835\x92P` \x84\x015g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\n\xD1W`\0\x80\xFD[\x81\x86\x01\x91P\x86`\x1F\x83\x01\x12a\n\xE5W`\0\x80\xFD[\x815\x81\x81\x11\x15a\n\xF4W`\0\x80\xFD[\x87` \x82`\x05\x1B\x85\x01\x01\x11\x15a\x0B\tW`\0\x80\xFD[` \x83\x01\x94P\x80\x93PPPP\x92P\x92P\x92V[`\0[\x83\x81\x10\x15a\x0B7W\x81\x81\x01Q\x83\x82\x01R` \x01a\x0B\x1FV[PP`\0\x91\x01RV[`\0\x81Q\x80\x84Ra\x0BX\x81` \x86\x01` \x86\x01a\x0B\x1CV[`\x1F\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x16\x92\x90\x92\x01` \x01\x92\x91PPV[`\0` \x80\x83\x01` \x84R\x80\x85Q\x80\x83R`@\x86\x01\x91P`@\x81`\x05\x1B\x87\x01\x01\x92P` \x87\x01`\0[\x82\x81\x10\x15a\x0B\xFFW\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xC0\x88\x86\x03\x01\x84Ra\x0B\xED\x85\x83Qa\x0B@V[\x94P\x92\x85\x01\x92\x90\x85\x01\x90`\x01\x01a\x0B\xB3V[P\x92\x97\x96PPPPPPPV[`\0` \x82\x84\x03\x12\x15a\x0C\x1EW`\0\x80\xFD[\x815g\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x11\x15a\x0C5W`\0\x80\xFD[\x82\x01`\x80\x81\x85\x03\x12\x15a\x0CGW`\0\x80\xFD[\x93\x92PPPV[`\0` \x82\x84\x03\x12\x15a\x0C`W`\0\x80\xFD[P5\x91\x90PV[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`A`\x04R`$`\0\xFD[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`2`\x04R`$`\0\xFD[`\0\x80\x835\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE1\x846\x03\x01\x81\x12a\x0C\xFAW`\0\x80\xFD[\x83\x01\x805\x91Pg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x82\x11\x15a\r\x15W`\0\x80\xFD[` \x01\x91P6\x81\x90\x03\x82\x13\x15a\r*W`\0\x80\xFD[\x92P\x92\x90PV[\x81\x83\x827`\0\x91\x01\x90\x81R\x91\x90PV[`\0` \x82\x84\x03\x12\x15a\rSW`\0\x80\xFD[\x81Qg\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x80\x82\x11\x15a\rkW`\0\x80\xFD[\x81\x84\x01\x91P\x84`\x1F\x83\x01\x12a\r\x7FW`\0\x80\xFD[\x81Q\x81\x81\x11\x15a\r\x91Wa\r\x91a\x0CgV[`@Q`\x1F\x82\x01\x7F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xE0\x90\x81\x16`?\x01\x16\x81\x01\x90\x83\x82\x11\x81\x83\x10\x17\x15a\r\xD7Wa\r\xD7a\x0CgV[\x81`@R\x82\x81R\x87` \x84\x87\x01\x01\x11\x15a\r\xF0W`\0\x80\xFD[a\x0E\x01\x83` \x83\x01` \x88\x01a\x0B\x1CV[\x97\x96PPPPPPPV[` \x81R`\0a\x0CG` \x83\x01\x84a\x0B@V[\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x11`\x04R`$`\0\xFD[\x80\x82\x02\x81\x15\x82\x82\x04\x84\x14\x17a\x04\xEBWa\x04\xEBa\x0E\x1FV[`\0\x82a\x0E\x9BW\x7FNH{q\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0`\0R`\x12`\x04R`$`\0\xFD[P\x04\x90V[`\0` \x82\x84\x03\x12\x15a\x0E\xB2W`\0\x80\xFD[\x815s\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x81\x16\x81\x14a\x0CGW`\0\x80\xFD[\x80\x82\x01\x80\x82\x11\x15a\x04\xEBWa\x04\xEBa\x0E\x1FV[\x81\x81\x03\x81\x81\x11\x15a\x04\xEBWa\x04\xEBa\x0E\x1FV\xFE\xA2dipfsX\"\x12 \xEA\x94^7\xFE\xD8\xDF\x0CS\xDE\xE16\xE5\x98\xAA\xE9\xE6\x03EB\x9E\x8A\n\xFD;1`\x8C\xB3\x87Z\x01dsolcC\0\x08\x18\x003";
     /// The deployed bytecode of the contract.
-    pub static MOCKSWAPROUTER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes =
-        ::ethers::core::types::Bytes::from_static(__DEPLOYED_BYTECODE);
+    pub static MOCKSWAPROUTER_DEPLOYED_BYTECODE: ::ethers::core::types::Bytes = ::ethers::core::types::Bytes::from_static(
+        __DEPLOYED_BYTECODE,
+    );
     pub struct MockSwapRouter<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for MockSwapRouter<M> {
         fn clone(&self) -> Self {
@@ -207,11 +250,13 @@ pub mod mock_swap_router {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                MOCKSWAPROUTER_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    MOCKSWAPROUTER_ABI.clone(),
+                    client,
+                ),
+            )
         }
         /// Constructs the general purpose `Deployer` instance based on the provided constructor arguments and sends it.
         /// Returns a new instance of a deployer that returns an instance of this contract after sending the transaction
@@ -263,7 +308,10 @@ pub mod mock_swap_router {
         ///Calls the contract's `WETH9` (0x4aa4a4fc) function
         pub fn weth9(
             &self,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::ethers::core::types::Address> {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            ::ethers::core::types::Address,
+        > {
             self.0
                 .method_hash([74, 164, 164, 252], ())
                 .expect("method not found (this should never happen)")
@@ -309,8 +357,7 @@ pub mod mock_swap_router {
         }
     }
     impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
-        for MockSwapRouter<M>
-    {
+    for MockSwapRouter<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
@@ -320,11 +367,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "SWAP_RATE_GRANULARITY", abi = "SWAP_RATE_GRANULARITY()")]
     pub struct SwapRateGranularityCall;
@@ -333,11 +382,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "WETH9", abi = "WETH9()")]
     pub struct Weth9Call;
@@ -346,16 +397,15 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
-    #[ethcall(
-        name = "exactInput",
-        abi = "exactInput((bytes,address,uint256,uint256))"
-    )]
+    #[ethcall(name = "exactInput", abi = "exactInput((bytes,address,uint256,uint256))")]
     pub struct ExactInputCall {
         pub params: ExactInputParams,
     }
@@ -364,11 +414,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "multicall", abi = "multicall(uint256,bytes[])")]
     pub struct MulticallCall {
@@ -380,11 +432,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "setSwapRate", abi = "setSwapRate(uint256)")]
     pub struct SetSwapRateCall {
@@ -395,16 +449,27 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "swapRate", abi = "swapRate()")]
     pub struct SwapRateCall;
     ///Container type for all of the contract's call
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum MockSwapRouterCalls {
         SwapRateGranularity(SwapRateGranularityCall),
         Weth9(Weth9Call),
@@ -418,24 +483,34 @@ pub mod mock_swap_router {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <SwapRateGranularityCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <SwapRateGranularityCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::SwapRateGranularity(decoded));
             }
-            if let Ok(decoded) = <Weth9Call as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <Weth9Call as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Weth9(decoded));
             }
-            if let Ok(decoded) = <ExactInputCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <ExactInputCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::ExactInput(decoded));
             }
-            if let Ok(decoded) = <MulticallCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <MulticallCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Multicall(decoded));
             }
-            if let Ok(decoded) = <SetSwapRateCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <SetSwapRateCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::SetSwapRate(decoded));
             }
-            if let Ok(decoded) = <SwapRateCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <SwapRateCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::SwapRate(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -448,17 +523,27 @@ pub mod mock_swap_router {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
                 Self::Weth9(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::ExactInput(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::Multicall(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::SetSwapRate(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::SwapRate(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::ExactInput(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::Multicall(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::SetSwapRate(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::SwapRate(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
             }
         }
     }
     impl ::core::fmt::Display for MockSwapRouterCalls {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
-                Self::SwapRateGranularity(element) => ::core::fmt::Display::fmt(element, f),
+                Self::SwapRateGranularity(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::Weth9(element) => ::core::fmt::Display::fmt(element, f),
                 Self::ExactInput(element) => ::core::fmt::Display::fmt(element, f),
                 Self::Multicall(element) => ::core::fmt::Display::fmt(element, f),
@@ -502,11 +587,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct SwapRateGranularityReturn(pub ::ethers::core::types::U256);
     ///Container type for all return fields from the `WETH9` function with signature `WETH9()` and selector `0x4aa4a4fc`
@@ -514,11 +601,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct Weth9Return(pub ::ethers::core::types::Address);
     ///Container type for all return fields from the `exactInput` function with signature `exactInput((bytes,address,uint256,uint256))` and selector `0xb858183f`
@@ -526,11 +615,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct ExactInputReturn {
         pub amount_out: ::ethers::core::types::U256,
@@ -540,11 +631,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct MulticallReturn {
         pub results: ::std::vec::Vec<::ethers::core::types::Bytes>,
@@ -554,11 +647,13 @@ pub mod mock_swap_router {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct SwapRateReturn(pub ::ethers::core::types::U256);
 }

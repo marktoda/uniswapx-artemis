@@ -7,7 +7,7 @@ pub use base_reactor::*;
     clippy::upper_case_acronyms,
     clippy::type_complexity,
     dead_code,
-    non_camel_case_types
+    non_camel_case_types,
 )]
 pub mod base_reactor {
     pub use super::super::shared_types::*;
@@ -17,359 +17,425 @@ pub mod base_reactor {
             constructor: ::core::option::Option::None,
             functions: ::core::convert::From::from([
                 (
-                    ::std::borrow::ToOwned::to_owned("DIRECT_FILL"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("DIRECT_FILL"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("contract IReactorCallback",),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
-                ),
-                (
                     ::std::borrow::ToOwned::to_owned("execute"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("execute"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("order"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                ],),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("struct SignedOrder"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillContract"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("contract IReactorCallback",),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillData"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("bytes"),
-                                ),
-                            },
-                        ],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("execute"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("order"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                        ::std::vec![
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                        ],
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("executeBatch"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("executeBatch"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("orders"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Array(
-                                    ::std::boxed::Box::new(
-                                        ::ethers::core::abi::ethabi::ParamType::Tuple(::std::vec![
-                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                        ],),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("executeBatch"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("orders"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
+                                        ::std::boxed::Box::new(
+                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                                ::std::vec![
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                ],
+                                            ),
+                                        ),
                                     ),
-                                ),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("struct SignedOrder[]"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillContract"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("contract IReactorCallback",),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("fillData"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("bytes"),
-                                ),
-                            },
-                        ],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
-                    },],
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder[]"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
+                ),
+                (
+                    ::std::borrow::ToOwned::to_owned("executeBatchWithCallback"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "executeBatchWithCallback",
+                            ),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("orders"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Array(
+                                        ::std::boxed::Box::new(
+                                            ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                                ::std::vec![
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                    ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                                ],
+                                            ),
+                                        ),
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder[]"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("callbackData"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("bytes"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
+                ),
+                (
+                    ::std::borrow::ToOwned::to_owned("executeWithCallback"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "executeWithCallback",
+                            ),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("order"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Tuple(
+                                        ::std::vec![
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                            ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                        ],
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("struct SignedOrder"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("callbackData"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Bytes,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("bytes"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::Payable,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("feeController"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("feeController"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("contract IProtocolFeeController",),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("feeController"),
+                            inputs: ::std::vec![],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned(
+                                            "contract IProtocolFeeController",
+                                        ),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("owner"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("owner"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("owner"),
+                            inputs: ::std::vec![],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("permit2"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("permit2"),
-                        inputs: ::std::vec![],
-                        outputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::string::String::new(),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("contract IPermit2"),
-                            ),
-                        },],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("permit2"),
+                            inputs: ::std::vec![],
+                            outputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::string::String::new(),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("contract IPermit2"),
+                                    ),
+                                },
+                            ],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::View,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("setProtocolFeeController"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("setProtocolFeeController",),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("_newFeeController"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "setProtocolFeeController",
                             ),
-                        },],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                    },],
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("_newFeeController"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("transferOwnership"),
-                    ::std::vec![::ethers::core::abi::ethabi::Function {
-                        name: ::std::borrow::ToOwned::to_owned("transferOwnership"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("newOwner"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                        outputs: ::std::vec![],
-                        constant: ::core::option::Option::None,
-                        state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Function {
+                            name: ::std::borrow::ToOwned::to_owned("transferOwnership"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("newOwner"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                            ],
+                            outputs: ::std::vec![],
+                            constant: ::core::option::Option::None,
+                            state_mutability: ::ethers::core::abi::ethabi::StateMutability::NonPayable,
+                        },
+                    ],
                 ),
             ]),
             events: ::core::convert::From::from([
                 (
                     ::std::borrow::ToOwned::to_owned("Fill"),
-                    ::std::vec![::ethers::core::abi::ethabi::Event {
-                        name: ::std::borrow::ToOwned::to_owned("Fill"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("orderHash"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::FixedBytes(32usize,),
-                                indexed: true,
-                            },
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("filler"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: true,
-                            },
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("swapper"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: true,
-                            },
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("nonce"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                                indexed: false,
-                            },
-                        ],
-                        anonymous: false,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Event {
+                            name: ::std::borrow::ToOwned::to_owned("Fill"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("orderHash"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::FixedBytes(
+                                        32usize,
+                                    ),
+                                    indexed: true,
+                                },
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("filler"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    indexed: true,
+                                },
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("swapper"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    indexed: true,
+                                },
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("nonce"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
+                                    indexed: false,
+                                },
+                            ],
+                            anonymous: false,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("OwnershipTransferred"),
-                    ::std::vec![::ethers::core::abi::ethabi::Event {
-                        name: ::std::borrow::ToOwned::to_owned("OwnershipTransferred",),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("user"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: true,
-                            },
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("newOwner"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: true,
-                            },
-                        ],
-                        anonymous: false,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Event {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "OwnershipTransferred",
+                            ),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("user"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    indexed: true,
+                                },
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("newOwner"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    indexed: true,
+                                },
+                            ],
+                            anonymous: false,
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("ProtocolFeeControllerSet"),
-                    ::std::vec![::ethers::core::abi::ethabi::Event {
-                        name: ::std::borrow::ToOwned::to_owned("ProtocolFeeControllerSet",),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("oldFeeController"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: false,
-                            },
-                            ::ethers::core::abi::ethabi::EventParam {
-                                name: ::std::borrow::ToOwned::to_owned("newFeeController"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                indexed: false,
-                            },
-                        ],
-                        anonymous: false,
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::Event {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "ProtocolFeeControllerSet",
+                            ),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("oldFeeController"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    indexed: false,
+                                },
+                                ::ethers::core::abi::ethabi::EventParam {
+                                    name: ::std::borrow::ToOwned::to_owned("newFeeController"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    indexed: false,
+                                },
+                            ],
+                            anonymous: false,
+                        },
+                    ],
                 ),
             ]),
             errors: ::core::convert::From::from([
                 (
-                    ::std::borrow::ToOwned::to_owned("DeadlinePassed"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("DeadlinePassed"),
-                        inputs: ::std::vec![],
-                    },],
-                ),
-                (
                     ::std::borrow::ToOwned::to_owned("DuplicateFeeOutput"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("DuplicateFeeOutput"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("duplicateToken"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned("DuplicateFeeOutput"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("duplicateToken"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                            ],
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("FeeTooLarge"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("FeeTooLarge"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("token"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("address"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("amount"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("uint256"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("recipient"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("address"),
-                                ),
-                            },
-                        ],
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned("FeeTooLarge"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("token"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("amount"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Uint(
+                                        256usize,
+                                    ),
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("uint256"),
+                                    ),
+                                },
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("recipient"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                            ],
+                        },
+                    ],
                 ),
                 (
-                    ::std::borrow::ToOwned::to_owned("InsufficientEth"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("InsufficientEth"),
-                        inputs: ::std::vec![],
-                    },],
-                ),
-                (
-                    ::std::borrow::ToOwned::to_owned("InsufficientOutput"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("InsufficientOutput"),
-                        inputs: ::std::vec![
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("actualBalance"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("uint256"),
-                                ),
-                            },
-                            ::ethers::core::abi::ethabi::Param {
-                                name: ::std::borrow::ToOwned::to_owned("expectedBalance"),
-                                kind: ::ethers::core::abi::ethabi::ParamType::Uint(256usize,),
-                                internal_type: ::core::option::Option::Some(
-                                    ::std::borrow::ToOwned::to_owned("uint256"),
-                                ),
-                            },
-                        ],
-                    },],
+                    ::std::borrow::ToOwned::to_owned("InputAndOutputFees"),
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned("InputAndOutputFees"),
+                            inputs: ::std::vec![],
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("InvalidFeeToken"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("InvalidFeeToken"),
-                        inputs: ::std::vec![::ethers::core::abi::ethabi::Param {
-                            name: ::std::borrow::ToOwned::to_owned("feeToken"),
-                            kind: ::ethers::core::abi::ethabi::ParamType::Address,
-                            internal_type: ::core::option::Option::Some(
-                                ::std::borrow::ToOwned::to_owned("address"),
-                            ),
-                        },],
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned("InvalidFeeToken"),
+                            inputs: ::std::vec![
+                                ::ethers::core::abi::ethabi::Param {
+                                    name: ::std::borrow::ToOwned::to_owned("feeToken"),
+                                    kind: ::ethers::core::abi::ethabi::ParamType::Address,
+                                    internal_type: ::core::option::Option::Some(
+                                        ::std::borrow::ToOwned::to_owned("address"),
+                                    ),
+                                },
+                            ],
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("InvalidReactor"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("InvalidReactor"),
-                        inputs: ::std::vec![],
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned("InvalidReactor"),
+                            inputs: ::std::vec![],
+                        },
+                    ],
                 ),
                 (
                     ::std::borrow::ToOwned::to_owned("NativeTransferFailed"),
-                    ::std::vec![::ethers::core::abi::ethabi::AbiError {
-                        name: ::std::borrow::ToOwned::to_owned("NativeTransferFailed",),
-                        inputs: ::std::vec![],
-                    },],
+                    ::std::vec![
+                        ::ethers::core::abi::ethabi::AbiError {
+                            name: ::std::borrow::ToOwned::to_owned(
+                                "NativeTransferFailed",
+                            ),
+                            inputs: ::std::vec![],
+                        },
+                    ],
                 ),
             ]),
-            receive: false,
+            receive: true,
             fallback: false,
         }
     }
     ///The parsed JSON ABI of the contract.
-    pub static BASEREACTOR_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> =
-        ::ethers::contract::Lazy::new(__abi);
+    pub static BASEREACTOR_ABI: ::ethers::contract::Lazy<::ethers::core::abi::Abi> = ::ethers::contract::Lazy::new(
+        __abi,
+    );
     pub struct BaseReactor<M>(::ethers::contract::Contract<M>);
     impl<M> ::core::clone::Clone for BaseReactor<M> {
         fn clone(&self) -> Self {
@@ -401,46 +467,59 @@ pub mod base_reactor {
             address: T,
             client: ::std::sync::Arc<M>,
         ) -> Self {
-            Self(::ethers::contract::Contract::new(
-                address.into(),
-                BASEREACTOR_ABI.clone(),
-                client,
-            ))
+            Self(
+                ::ethers::contract::Contract::new(
+                    address.into(),
+                    BASEREACTOR_ABI.clone(),
+                    client,
+                ),
+            )
         }
-        ///Calls the contract's `DIRECT_FILL` (0xfccbcaaf) function
-        pub fn direct_fill(
-            &self,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::ethers::core::types::Address> {
-            self.0
-                .method_hash([252, 203, 202, 175], ())
-                .expect("method not found (this should never happen)")
-        }
-        ///Calls the contract's `execute` (0x05afc977) function
+        ///Calls the contract's `execute` (0x3f62192e) function
         pub fn execute(
             &self,
             order: SignedOrder,
-            fill_contract: ::ethers::core::types::Address,
-            fill_data: ::ethers::core::types::Bytes,
         ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
-                .method_hash([5, 175, 201, 119], (order, fill_contract, fill_data))
+                .method_hash([63, 98, 25, 46], (order,))
                 .expect("method not found (this should never happen)")
         }
-        ///Calls the contract's `executeBatch` (0x6f1d5f51) function
+        ///Calls the contract's `executeBatch` (0x0d7a16c3) function
         pub fn execute_batch(
             &self,
             orders: ::std::vec::Vec<SignedOrder>,
-            fill_contract: ::ethers::core::types::Address,
-            fill_data: ::ethers::core::types::Bytes,
         ) -> ::ethers::contract::builders::ContractCall<M, ()> {
             self.0
-                .method_hash([111, 29, 95, 81], (orders, fill_contract, fill_data))
+                .method_hash([13, 122, 22, 195], orders)
+                .expect("method not found (this should never happen)")
+        }
+        ///Calls the contract's `executeBatchWithCallback` (0x13fb72c7) function
+        pub fn execute_batch_with_callback(
+            &self,
+            orders: ::std::vec::Vec<SignedOrder>,
+            callback_data: ::ethers::core::types::Bytes,
+        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
+            self.0
+                .method_hash([19, 251, 114, 199], (orders, callback_data))
+                .expect("method not found (this should never happen)")
+        }
+        ///Calls the contract's `executeWithCallback` (0x0d335884) function
+        pub fn execute_with_callback(
+            &self,
+            order: SignedOrder,
+            callback_data: ::ethers::core::types::Bytes,
+        ) -> ::ethers::contract::builders::ContractCall<M, ()> {
+            self.0
+                .method_hash([13, 51, 88, 132], (order, callback_data))
                 .expect("method not found (this should never happen)")
         }
         ///Calls the contract's `feeController` (0x6999b377) function
         pub fn fee_controller(
             &self,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::ethers::core::types::Address> {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            ::ethers::core::types::Address,
+        > {
             self.0
                 .method_hash([105, 153, 179, 119], ())
                 .expect("method not found (this should never happen)")
@@ -448,7 +527,10 @@ pub mod base_reactor {
         ///Calls the contract's `owner` (0x8da5cb5b) function
         pub fn owner(
             &self,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::ethers::core::types::Address> {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            ::ethers::core::types::Address,
+        > {
             self.0
                 .method_hash([141, 165, 203, 91], ())
                 .expect("method not found (this should never happen)")
@@ -456,7 +538,10 @@ pub mod base_reactor {
         ///Calls the contract's `permit2` (0x12261ee7) function
         pub fn permit_2(
             &self,
-        ) -> ::ethers::contract::builders::ContractCall<M, ::ethers::core::types::Address> {
+        ) -> ::ethers::contract::builders::ContractCall<
+            M,
+            ::ethers::core::types::Address,
+        > {
             self.0
                 .method_hash([18, 38, 30, 231], ())
                 .expect("method not found (this should never happen)")
@@ -488,8 +573,11 @@ pub mod base_reactor {
         ///Gets the contract's `OwnershipTransferred` event
         pub fn ownership_transferred_filter(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, OwnershipTransferredFilter>
-        {
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            OwnershipTransferredFilter,
+        > {
             self.0.event()
         }
         ///Gets the contract's `ProtocolFeeControllerSet` event
@@ -505,40 +593,32 @@ pub mod base_reactor {
         /// Returns an `Event` builder for all the events of this contract.
         pub fn events(
             &self,
-        ) -> ::ethers::contract::builders::Event<::std::sync::Arc<M>, M, BaseReactorEvents>
-        {
-            self.0
-                .event_with_filter(::core::default::Default::default())
+        ) -> ::ethers::contract::builders::Event<
+            ::std::sync::Arc<M>,
+            M,
+            BaseReactorEvents,
+        > {
+            self.0.event_with_filter(::core::default::Default::default())
         }
     }
-    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>> for BaseReactor<M> {
+    impl<M: ::ethers::providers::Middleware> From<::ethers::contract::Contract<M>>
+    for BaseReactor<M> {
         fn from(contract: ::ethers::contract::Contract<M>) -> Self {
             Self::new(contract.address(), contract.client())
         }
     }
-    ///Custom Error type `DeadlinePassed` with signature `DeadlinePassed()` and selector `0x70f65caa`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthError,
-        ::ethers::contract::EthDisplay,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-    )]
-    #[etherror(name = "DeadlinePassed", abi = "DeadlinePassed()")]
-    pub struct DeadlinePassed;
     ///Custom Error type `DuplicateFeeOutput` with signature `DuplicateFeeOutput(address)` and selector `0xfff08303`
     #[derive(
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "DuplicateFeeOutput", abi = "DuplicateFeeOutput(address)")]
     pub struct DuplicateFeeOutput {
@@ -549,11 +629,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "FeeTooLarge", abi = "FeeTooLarge(address,uint256,address)")]
     pub struct FeeTooLarge {
@@ -561,48 +643,33 @@ pub mod base_reactor {
         pub amount: ::ethers::core::types::U256,
         pub recipient: ::ethers::core::types::Address,
     }
-    ///Custom Error type `InsufficientEth` with signature `InsufficientEth()` and selector `0xa01a9df6`
+    ///Custom Error type `InputAndOutputFees` with signature `InputAndOutputFees()` and selector `0xedc7e2e4`
     #[derive(
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
-    #[etherror(name = "InsufficientEth", abi = "InsufficientEth()")]
-    pub struct InsufficientEth;
-    ///Custom Error type `InsufficientOutput` with signature `InsufficientOutput(uint256,uint256)` and selector `0x2c19b8b8`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthError,
-        ::ethers::contract::EthDisplay,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-    )]
-    #[etherror(
-        name = "InsufficientOutput",
-        abi = "InsufficientOutput(uint256,uint256)"
-    )]
-    pub struct InsufficientOutput {
-        pub actual_balance: ::ethers::core::types::U256,
-        pub expected_balance: ::ethers::core::types::U256,
-    }
+    #[etherror(name = "InputAndOutputFees", abi = "InputAndOutputFees()")]
+    pub struct InputAndOutputFees;
     ///Custom Error type `InvalidFeeToken` with signature `InvalidFeeToken(address)` and selector `0xeddf07f5`
     #[derive(
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "InvalidFeeToken", abi = "InvalidFeeToken(address)")]
     pub struct InvalidFeeToken {
@@ -613,11 +680,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "InvalidReactor", abi = "InvalidReactor()")]
     pub struct InvalidReactor;
@@ -626,22 +695,31 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthError,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[etherror(name = "NativeTransferFailed", abi = "NativeTransferFailed()")]
     pub struct NativeTransferFailed;
     ///Container type for all of the contract's custom errors
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum BaseReactorErrors {
-        DeadlinePassed(DeadlinePassed),
         DuplicateFeeOutput(DuplicateFeeOutput),
         FeeTooLarge(FeeTooLarge),
-        InsufficientEth(InsufficientEth),
-        InsufficientOutput(InsufficientOutput),
+        InputAndOutputFees(InputAndOutputFees),
         InvalidFeeToken(InvalidFeeToken),
         InvalidReactor(InvalidReactor),
         NativeTransferFailed(NativeTransferFailed),
@@ -654,39 +732,39 @@ pub mod base_reactor {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) =
-                <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <::std::string::String as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::RevertString(decoded));
             }
-            if let Ok(decoded) = <DeadlinePassed as ::ethers::core::abi::AbiDecode>::decode(data) {
-                return Ok(Self::DeadlinePassed(decoded));
-            }
-            if let Ok(decoded) =
-                <DuplicateFeeOutput as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <DuplicateFeeOutput as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::DuplicateFeeOutput(decoded));
             }
-            if let Ok(decoded) = <FeeTooLarge as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <FeeTooLarge as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::FeeTooLarge(decoded));
             }
-            if let Ok(decoded) = <InsufficientEth as ::ethers::core::abi::AbiDecode>::decode(data) {
-                return Ok(Self::InsufficientEth(decoded));
+            if let Ok(decoded) = <InputAndOutputFees as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
+                return Ok(Self::InputAndOutputFees(decoded));
             }
-            if let Ok(decoded) =
-                <InsufficientOutput as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
-                return Ok(Self::InsufficientOutput(decoded));
-            }
-            if let Ok(decoded) = <InvalidFeeToken as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <InvalidFeeToken as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::InvalidFeeToken(decoded));
             }
-            if let Ok(decoded) = <InvalidReactor as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <InvalidReactor as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::InvalidReactor(decoded));
             }
-            if let Ok(decoded) =
-                <NativeTransferFailed as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <NativeTransferFailed as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::NativeTransferFailed(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -695,17 +773,21 @@ pub mod base_reactor {
     impl ::ethers::core::abi::AbiEncode for BaseReactorErrors {
         fn encode(self) -> ::std::vec::Vec<u8> {
             match self {
-                Self::DeadlinePassed(element) => ::ethers::core::abi::AbiEncode::encode(element),
                 Self::DuplicateFeeOutput(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::FeeTooLarge(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::InsufficientEth(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::InsufficientOutput(element) => {
+                Self::FeeTooLarge(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::InvalidFeeToken(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::InvalidReactor(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::InputAndOutputFees(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::InvalidFeeToken(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::InvalidReactor(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::NativeTransferFailed(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
@@ -717,32 +799,26 @@ pub mod base_reactor {
         fn valid_selector(selector: [u8; 4]) -> bool {
             match selector {
                 [0x08, 0xc3, 0x79, 0xa0] => true,
-                _ if selector == <DeadlinePassed as ::ethers::contract::EthError>::selector() => {
+                _ if selector
+                    == <DuplicateFeeOutput as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ if selector
-                    == <DuplicateFeeOutput as ::ethers::contract::EthError>::selector() =>
-                {
-                    true
-                }
-                _ if selector == <FeeTooLarge as ::ethers::contract::EthError>::selector() => true,
-                _ if selector == <InsufficientEth as ::ethers::contract::EthError>::selector() => {
+                    == <FeeTooLarge as ::ethers::contract::EthError>::selector() => true,
+                _ if selector
+                    == <InputAndOutputFees as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ if selector
-                    == <InsufficientOutput as ::ethers::contract::EthError>::selector() =>
-                {
-                    true
-                }
-                _ if selector == <InvalidFeeToken as ::ethers::contract::EthError>::selector() => {
-                    true
-                }
-                _ if selector == <InvalidReactor as ::ethers::contract::EthError>::selector() => {
+                    == <InvalidFeeToken as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ if selector
-                    == <NativeTransferFailed as ::ethers::contract::EthError>::selector() =>
-                {
+                    == <InvalidReactor as ::ethers::contract::EthError>::selector() => {
+                    true
+                }
+                _ if selector
+                    == <NativeTransferFailed as ::ethers::contract::EthError>::selector() => {
                     true
                 }
                 _ => false,
@@ -752,14 +828,18 @@ pub mod base_reactor {
     impl ::core::fmt::Display for BaseReactorErrors {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
-                Self::DeadlinePassed(element) => ::core::fmt::Display::fmt(element, f),
-                Self::DuplicateFeeOutput(element) => ::core::fmt::Display::fmt(element, f),
+                Self::DuplicateFeeOutput(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::FeeTooLarge(element) => ::core::fmt::Display::fmt(element, f),
-                Self::InsufficientEth(element) => ::core::fmt::Display::fmt(element, f),
-                Self::InsufficientOutput(element) => ::core::fmt::Display::fmt(element, f),
+                Self::InputAndOutputFees(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::InvalidFeeToken(element) => ::core::fmt::Display::fmt(element, f),
                 Self::InvalidReactor(element) => ::core::fmt::Display::fmt(element, f),
-                Self::NativeTransferFailed(element) => ::core::fmt::Display::fmt(element, f),
+                Self::NativeTransferFailed(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::RevertString(s) => ::core::fmt::Display::fmt(s, f),
             }
         }
@@ -767,11 +847,6 @@ pub mod base_reactor {
     impl ::core::convert::From<::std::string::String> for BaseReactorErrors {
         fn from(value: String) -> Self {
             Self::RevertString(value)
-        }
-    }
-    impl ::core::convert::From<DeadlinePassed> for BaseReactorErrors {
-        fn from(value: DeadlinePassed) -> Self {
-            Self::DeadlinePassed(value)
         }
     }
     impl ::core::convert::From<DuplicateFeeOutput> for BaseReactorErrors {
@@ -784,14 +859,9 @@ pub mod base_reactor {
             Self::FeeTooLarge(value)
         }
     }
-    impl ::core::convert::From<InsufficientEth> for BaseReactorErrors {
-        fn from(value: InsufficientEth) -> Self {
-            Self::InsufficientEth(value)
-        }
-    }
-    impl ::core::convert::From<InsufficientOutput> for BaseReactorErrors {
-        fn from(value: InsufficientOutput) -> Self {
-            Self::InsufficientOutput(value)
+    impl ::core::convert::From<InputAndOutputFees> for BaseReactorErrors {
+        fn from(value: InputAndOutputFees) -> Self {
+            Self::InputAndOutputFees(value)
         }
     }
     impl ::core::convert::From<InvalidFeeToken> for BaseReactorErrors {
@@ -813,11 +883,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthEvent,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(name = "Fill", abi = "Fill(bytes32,address,address,uint256)")]
     pub struct FillFilter {
@@ -833,11 +905,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthEvent,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "OwnershipTransferred",
@@ -853,11 +927,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthEvent,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethevent(
         name = "ProtocolFeeControllerSet",
@@ -868,7 +944,16 @@ pub mod base_reactor {
         pub new_fee_controller: ::ethers::core::types::Address,
     }
     ///Container type for all of the contract's events
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum BaseReactorEvents {
         FillFilter(FillFilter),
         OwnershipTransferredFilter(OwnershipTransferredFilter),
@@ -894,7 +979,9 @@ pub mod base_reactor {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
                 Self::FillFilter(element) => ::core::fmt::Display::fmt(element, f),
-                Self::OwnershipTransferredFilter(element) => ::core::fmt::Display::fmt(element, f),
+                Self::OwnershipTransferredFilter(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::ProtocolFeeControllerSetFilter(element) => {
                     ::core::fmt::Display::fmt(element, f)
                 }
@@ -916,66 +1003,94 @@ pub mod base_reactor {
             Self::ProtocolFeeControllerSetFilter(value)
         }
     }
-    ///Container type for all input parameters for the `DIRECT_FILL` function with signature `DIRECT_FILL()` and selector `0xfccbcaaf`
+    ///Container type for all input parameters for the `execute` function with signature `execute((bytes,bytes))` and selector `0x3f62192e`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
-    #[ethcall(name = "DIRECT_FILL", abi = "DIRECT_FILL()")]
-    pub struct DirectFillCall;
-    ///Container type for all input parameters for the `execute` function with signature `execute((bytes,bytes),address,bytes)` and selector `0x05afc977`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthCall,
-        ::ethers::contract::EthDisplay,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-    )]
-    #[ethcall(name = "execute", abi = "execute((bytes,bytes),address,bytes)")]
+    #[ethcall(name = "execute", abi = "execute((bytes,bytes))")]
     pub struct ExecuteCall {
         pub order: SignedOrder,
-        pub fill_contract: ::ethers::core::types::Address,
-        pub fill_data: ::ethers::core::types::Bytes,
     }
-    ///Container type for all input parameters for the `executeBatch` function with signature `executeBatch((bytes,bytes)[],address,bytes)` and selector `0x6f1d5f51`
+    ///Container type for all input parameters for the `executeBatch` function with signature `executeBatch((bytes,bytes)[])` and selector `0x0d7a16c3`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
-    #[ethcall(
-        name = "executeBatch",
-        abi = "executeBatch((bytes,bytes)[],address,bytes)"
-    )]
+    #[ethcall(name = "executeBatch", abi = "executeBatch((bytes,bytes)[])")]
     pub struct ExecuteBatchCall {
         pub orders: ::std::vec::Vec<SignedOrder>,
-        pub fill_contract: ::ethers::core::types::Address,
-        pub fill_data: ::ethers::core::types::Bytes,
+    }
+    ///Container type for all input parameters for the `executeBatchWithCallback` function with signature `executeBatchWithCallback((bytes,bytes)[],bytes)` and selector `0x13fb72c7`
+    #[derive(
+        Clone,
+        ::ethers::contract::EthCall,
+        ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
+        Default,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
+    #[ethcall(
+        name = "executeBatchWithCallback",
+        abi = "executeBatchWithCallback((bytes,bytes)[],bytes)"
+    )]
+    pub struct ExecuteBatchWithCallbackCall {
+        pub orders: ::std::vec::Vec<SignedOrder>,
+        pub callback_data: ::ethers::core::types::Bytes,
+    }
+    ///Container type for all input parameters for the `executeWithCallback` function with signature `executeWithCallback((bytes,bytes),bytes)` and selector `0x0d335884`
+    #[derive(
+        Clone,
+        ::ethers::contract::EthCall,
+        ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
+        Default,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
+    #[ethcall(
+        name = "executeWithCallback",
+        abi = "executeWithCallback((bytes,bytes),bytes)"
+    )]
+    pub struct ExecuteWithCallbackCall {
+        pub order: SignedOrder,
+        pub callback_data: ::ethers::core::types::Bytes,
     }
     ///Container type for all input parameters for the `feeController` function with signature `feeController()` and selector `0x6999b377`
     #[derive(
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "feeController", abi = "feeController()")]
     pub struct FeeControllerCall;
@@ -984,11 +1099,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "owner", abi = "owner()")]
     pub struct OwnerCall;
@@ -997,11 +1114,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "permit2", abi = "permit2()")]
     pub struct Permit2Call;
@@ -1010,11 +1129,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(
         name = "setProtocolFeeController",
@@ -1028,22 +1149,34 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthCall,
         ::ethers::contract::EthDisplay,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     #[ethcall(name = "transferOwnership", abi = "transferOwnership(address)")]
     pub struct TransferOwnershipCall {
         pub new_owner: ::ethers::core::types::Address,
     }
     ///Container type for all of the contract's call
-    #[derive(Clone, ::ethers::contract::EthAbiType, Debug, PartialEq, Eq, Hash)]
+    #[derive(
+        Clone,
+        ::ethers::contract::EthAbiType,
+        serde::Serialize,
+        serde::Deserialize,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash
+    )]
     pub enum BaseReactorCalls {
-        DirectFill(DirectFillCall),
         Execute(ExecuteCall),
         ExecuteBatch(ExecuteBatchCall),
+        ExecuteBatchWithCallback(ExecuteBatchWithCallbackCall),
+        ExecuteWithCallback(ExecuteWithCallbackCall),
         FeeController(FeeControllerCall),
         Owner(OwnerCall),
         Permit2(Permit2Call),
@@ -1055,34 +1188,49 @@ pub mod base_reactor {
             data: impl AsRef<[u8]>,
         ) -> ::core::result::Result<Self, ::ethers::core::abi::AbiError> {
             let data = data.as_ref();
-            if let Ok(decoded) = <DirectFillCall as ::ethers::core::abi::AbiDecode>::decode(data) {
-                return Ok(Self::DirectFill(decoded));
-            }
-            if let Ok(decoded) = <ExecuteCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <ExecuteCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Execute(decoded));
             }
-            if let Ok(decoded) = <ExecuteBatchCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <ExecuteBatchCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::ExecuteBatch(decoded));
             }
-            if let Ok(decoded) = <FeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <ExecuteBatchWithCallbackCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
+                return Ok(Self::ExecuteBatchWithCallback(decoded));
+            }
+            if let Ok(decoded) = <ExecuteWithCallbackCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
+                return Ok(Self::ExecuteWithCallback(decoded));
+            }
+            if let Ok(decoded) = <FeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::FeeController(decoded));
             }
-            if let Ok(decoded) = <OwnerCall as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <OwnerCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Owner(decoded));
             }
-            if let Ok(decoded) = <Permit2Call as ::ethers::core::abi::AbiDecode>::decode(data) {
+            if let Ok(decoded) = <Permit2Call as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::Permit2(decoded));
             }
-            if let Ok(decoded) =
-                <SetProtocolFeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <SetProtocolFeeControllerCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::SetProtocolFeeController(decoded));
             }
-            if let Ok(decoded) =
-                <TransferOwnershipCall as ::ethers::core::abi::AbiDecode>::decode(data)
-            {
+            if let Ok(decoded) = <TransferOwnershipCall as ::ethers::core::abi::AbiDecode>::decode(
+                data,
+            ) {
                 return Ok(Self::TransferOwnership(decoded));
             }
             Err(::ethers::core::abi::Error::InvalidData.into())
@@ -1091,36 +1239,49 @@ pub mod base_reactor {
     impl ::ethers::core::abi::AbiEncode for BaseReactorCalls {
         fn encode(self) -> Vec<u8> {
             match self {
-                Self::DirectFill(element) => ::ethers::core::abi::AbiEncode::encode(element),
                 Self::Execute(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::ExecuteBatch(element) => ::ethers::core::abi::AbiEncode::encode(element),
-                Self::FeeController(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::ExecuteBatch(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::ExecuteBatchWithCallback(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::ExecuteWithCallback(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
+                Self::FeeController(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
                 Self::Owner(element) => ::ethers::core::abi::AbiEncode::encode(element),
                 Self::Permit2(element) => ::ethers::core::abi::AbiEncode::encode(element),
                 Self::SetProtocolFeeController(element) => {
                     ::ethers::core::abi::AbiEncode::encode(element)
                 }
-                Self::TransferOwnership(element) => ::ethers::core::abi::AbiEncode::encode(element),
+                Self::TransferOwnership(element) => {
+                    ::ethers::core::abi::AbiEncode::encode(element)
+                }
             }
         }
     }
     impl ::core::fmt::Display for BaseReactorCalls {
         fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
             match self {
-                Self::DirectFill(element) => ::core::fmt::Display::fmt(element, f),
                 Self::Execute(element) => ::core::fmt::Display::fmt(element, f),
                 Self::ExecuteBatch(element) => ::core::fmt::Display::fmt(element, f),
+                Self::ExecuteBatchWithCallback(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
+                Self::ExecuteWithCallback(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::FeeController(element) => ::core::fmt::Display::fmt(element, f),
                 Self::Owner(element) => ::core::fmt::Display::fmt(element, f),
                 Self::Permit2(element) => ::core::fmt::Display::fmt(element, f),
-                Self::SetProtocolFeeController(element) => ::core::fmt::Display::fmt(element, f),
+                Self::SetProtocolFeeController(element) => {
+                    ::core::fmt::Display::fmt(element, f)
+                }
                 Self::TransferOwnership(element) => ::core::fmt::Display::fmt(element, f),
             }
-        }
-    }
-    impl ::core::convert::From<DirectFillCall> for BaseReactorCalls {
-        fn from(value: DirectFillCall) -> Self {
-            Self::DirectFill(value)
         }
     }
     impl ::core::convert::From<ExecuteCall> for BaseReactorCalls {
@@ -1131,6 +1292,16 @@ pub mod base_reactor {
     impl ::core::convert::From<ExecuteBatchCall> for BaseReactorCalls {
         fn from(value: ExecuteBatchCall) -> Self {
             Self::ExecuteBatch(value)
+        }
+    }
+    impl ::core::convert::From<ExecuteBatchWithCallbackCall> for BaseReactorCalls {
+        fn from(value: ExecuteBatchWithCallbackCall) -> Self {
+            Self::ExecuteBatchWithCallback(value)
+        }
+    }
+    impl ::core::convert::From<ExecuteWithCallbackCall> for BaseReactorCalls {
+        fn from(value: ExecuteWithCallbackCall) -> Self {
+            Self::ExecuteWithCallback(value)
         }
     }
     impl ::core::convert::From<FeeControllerCall> for BaseReactorCalls {
@@ -1158,28 +1329,18 @@ pub mod base_reactor {
             Self::TransferOwnership(value)
         }
     }
-    ///Container type for all return fields from the `DIRECT_FILL` function with signature `DIRECT_FILL()` and selector `0xfccbcaaf`
-    #[derive(
-        Clone,
-        ::ethers::contract::EthAbiType,
-        ::ethers::contract::EthAbiCodec,
-        Default,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-    )]
-    pub struct DirectFillReturn(pub ::ethers::core::types::Address);
     ///Container type for all return fields from the `feeController` function with signature `feeController()` and selector `0x6999b377`
     #[derive(
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct FeeControllerReturn(pub ::ethers::core::types::Address);
     ///Container type for all return fields from the `owner` function with signature `owner()` and selector `0x8da5cb5b`
@@ -1187,11 +1348,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct OwnerReturn(pub ::ethers::core::types::Address);
     ///Container type for all return fields from the `permit2` function with signature `permit2()` and selector `0x12261ee7`
@@ -1199,11 +1362,13 @@ pub mod base_reactor {
         Clone,
         ::ethers::contract::EthAbiType,
         ::ethers::contract::EthAbiCodec,
+        serde::Serialize,
+        serde::Deserialize,
         Default,
         Debug,
         PartialEq,
         Eq,
-        Hash,
+        Hash
     )]
     pub struct Permit2Return(pub ::ethers::core::types::Address);
 }
