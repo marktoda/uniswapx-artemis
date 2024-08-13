@@ -46,6 +46,10 @@ pub struct Args {
     #[arg(long)]
     pub bid_percentage: u64,
 
+    /// Private key for sending txs.
+    #[arg(long)]
+    pub executor_address: String,
+
     /// chain id 
     #[arg(long)]
     pub chain_id: u64,
@@ -111,7 +115,7 @@ async fn main() -> Result<()> {
     engine.add_collector(Box::new(priority_collector));
 
     let uniswapx_route_collector =
-        Box::new(UniswapXRouteCollector::new(chain_id, batch_receiver, route_sender));
+        Box::new(UniswapXRouteCollector::new(chain_id, batch_receiver, route_sender, args.executor_address.clone()));
     let uniswapx_route_collector = CollectorMap::new(uniswapx_route_collector, |e| {
         Event::UniswapXRoute(Box::new(e))
     });
@@ -121,6 +125,7 @@ async fn main() -> Result<()> {
         chain_id,
         priority_batch_receiver,
         priority_route_sender,
+        args.executor_address.clone(),
     ));
     let priority_route_collector = CollectorMap::new(priority_route_collector, |e| {
         Event::UniswapXRoute(Box::new(e))
@@ -129,6 +134,7 @@ async fn main() -> Result<()> {
 
     let config = Config {
         bid_percentage: args.bid_percentage,
+        executor_address: args.executor_address,
     };
 
     let uniswapx_strategy = UniswapXUniswapFill::new(

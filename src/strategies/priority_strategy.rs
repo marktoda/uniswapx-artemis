@@ -38,6 +38,8 @@ pub const WETH_ADDRESS: &str = "0x4200000000000000000000000000000000000006";
 pub struct UniswapXPriorityFill<M> {
     /// Ethers client.
     client: Arc<M>,
+    /// executor address
+    executor_address: String,
     /// Amount of profits to bid in gas
     bid_percentage: u64,
     last_block_number: u64,
@@ -61,6 +63,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
 
         Self {
             client,
+            executor_address: config.executor_address,
             bid_percentage: config.bid_percentage,
             last_block_number: 0,
             last_block_timestamp: 0,
@@ -149,7 +152,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             let signed_orders = self.get_signed_orders(orders.clone()).ok()?;
             return Some(Action::SubmitPublicTx(SubmitTxToMempool {
                 tx: self
-                    .build_fill(self.client.clone(), signed_orders, event)
+                    .build_fill(self.client.clone(), &self.executor_address, signed_orders, event)
                     .await
                     .ok()?,
                 gas_bid_info: Some(GasBidInfo {

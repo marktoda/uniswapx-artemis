@@ -25,6 +25,7 @@ pub enum Action {
 #[derive(Debug, Clone)]
 pub struct Config {
     pub bid_percentage: u64,
+    pub executor_address: String
 }
 
 #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]

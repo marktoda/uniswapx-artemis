@@ -1,4 +1,3 @@
-use crate::strategies::shared::EXECUTOR_ADDRESS;
 use alloy_primitives::Uint;
 use anyhow::Result;
 use reqwest::header::ORIGIN;
@@ -153,6 +152,7 @@ pub struct RouteOrderParams {
     pub token_in: String,
     pub token_out: String,
     pub amount: String,
+    pub recipient: String,
 }
 
 #[derive(Clone, Debug)]
@@ -174,6 +174,7 @@ pub struct UniswapXRouteCollector {
     pub chain_id: u64,
     pub route_request_receiver: Mutex<Receiver<Vec<OrderBatchData>>>,
     pub route_sender: Sender<RoutedOrder>,
+    pub executor_address: String,
 }
 
 impl UniswapXRouteCollector {
@@ -181,12 +182,14 @@ impl UniswapXRouteCollector {
         chain_id: u64,
         route_request_receiver: Receiver<Vec<OrderBatchData>>,
         route_sender: Sender<RoutedOrder>,
+        executor_address: String
     ) -> Self {
         Self {
             client: Client::new(),
             chain_id,
             route_request_receiver: Mutex::new(route_request_receiver),
             route_sender,
+            executor_address
         }
     }
 }
@@ -214,6 +217,7 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
                                 token_in: token_in.clone(),
                                 token_out: token_out.clone(),
                                 amount: amount_in.to_string(),
+                                recipient: self.executor_address.clone(),
                             }).await)
                         }
                     }).collect();
@@ -243,7 +247,7 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
         token_out_chain_id: params.chain_id,
         trade_type: TradeType::ExactIn,
         amount: params.amount,
-        recipient: EXECUTOR_ADDRESS.to_string(),
+        recipient: params.recipient,
         slippage_tolerance: SLIPPAGE_TOLERANCE.to_string(),
         enable_universal_router: false,
         deadline: DEADLINE,

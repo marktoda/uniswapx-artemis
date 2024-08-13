@@ -18,7 +18,6 @@ use std::{
 const REACTOR_ADDRESS: &str = "0x00000011F84B9aa48e5f8aA8B9897600006289Be";
 const SWAPROUTER_02_ADDRESS: &str = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45";
 pub const WETH_ADDRESS: &str = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
-pub const EXECUTOR_ADDRESS: &str = "0xa6b19B30593F6e70eabf6c05f9C96d66da65a0A1";
 
 #[async_trait]
 pub trait UniswapXStrategy<M: Middleware + 'static> {
@@ -26,12 +25,13 @@ pub trait UniswapXStrategy<M: Middleware + 'static> {
     async fn build_fill(
         &self,
         client: Arc<M>,
+        executor_address: &str,
         signed_orders: Vec<SignedOrder>,
         RoutedOrder { request, route }: RoutedOrder,
     ) -> Result<TypedTransaction> {
         let chain_id: U256 = client.get_chainid().await?;
         let fill_contract =
-            SwapRouter02Executor::new(H160::from_str(EXECUTOR_ADDRESS)?, client.clone());
+            SwapRouter02Executor::new(H160::from_str(executor_address)?, client.clone());
 
         let token_in: H160 = H160::from_str(&request.token_in)?;
         let token_out: H160 = H160::from_str(&request.token_out)?;
@@ -40,13 +40,13 @@ pub trait UniswapXStrategy<M: Middleware + 'static> {
             .get_tokens_to_approve(
                 client.clone(),
                 token_in,
-                EXECUTOR_ADDRESS,
+                &executor_address,
                 SWAPROUTER_02_ADDRESS,
             )
             .await?;
 
         let reactor_approval = self
-            .get_tokens_to_approve(client.clone(), token_out, EXECUTOR_ADDRESS, REACTOR_ADDRESS)
+            .get_tokens_to_approve(client.clone(), token_out, &executor_address, REACTOR_ADDRESS)
             .await?;
 
         // Strip off function selector
