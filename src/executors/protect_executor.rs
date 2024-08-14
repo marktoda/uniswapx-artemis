@@ -8,7 +8,7 @@ use anyhow::{Context, Result};
 use artemis_core::executors::mempool_executor::SubmitTxToMempool;
 use artemis_core::types::Executor;
 use async_trait::async_trait;
-use ethers::providers::Middleware;
+use ethers::{providers::Middleware, types::U256};
 
 /// An executor that sends transactions to the mempool.
 pub struct ProtectExecutor<M, N> {
@@ -35,7 +35,6 @@ where
 {
     /// Send a transaction to the mempool.
     async fn execute(&self, mut action: SubmitTxToMempool) -> Result<()> {
-        info!("Executing tx {:?}", action.tx);
         let gas_usage_result = self
             .client
             .estimate_gas(&action.tx, None)
@@ -60,6 +59,9 @@ where
                 .context("Error getting gas price: {}")?;
         }
         action.tx.set_gas_price(bid_gas_price);
+        // set max_priority_fee_per_gas to be 0
+        action.tx.as_eip1559_mut().unwrap().max_priority_fee_per_gas = Some(U256::from(50));
+        info!("Executing tx {:?}", action.tx);
         self.sender_client.send_transaction(action.tx, None).await?;
         Ok(())
     }

@@ -105,7 +105,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         };
         let order_hex: Vec<u8> = hex::decode(encoded_order)?;
 
-        Ok(V2DutchOrder::_decode(&order_hex, false)?)
+        Ok(V2DutchOrder::decode_inner(&order_hex, false)?)
     }
 
     // Process new orders as they come in.
@@ -198,7 +198,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             match batch {
                 OrderData::V2DutchOrderData(order) => {
                     signed_orders.push(SignedOrder {
-                        order: Bytes::from(order.order._encode()),
+                        order: Bytes::from(order.order.encode_inner()),
                         sig: Bytes::from_str(&order.signature)?,
                     });
                 }

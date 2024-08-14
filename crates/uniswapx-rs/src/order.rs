@@ -94,14 +94,14 @@ impl Order {
     pub fn resolve(&self, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
         match self {
             Order::V2DutchOrder(order) => order.resolve(timestamp),
-            Order::PriorityOrder(order) => order.resolve(priority_fee),
+            Order::PriorityOrder(order) => order.resolve(timestamp, priority_fee),
         }
     }
 
     pub fn encode(&self) -> Vec<u8> {
         match self {
-            Order::V2DutchOrder(order) => order._encode(),
-            Order::PriorityOrder(order) => order._encode(),
+            Order::V2DutchOrder(order) => order.encode_inner(),
+            Order::PriorityOrder(order) => order.encode_inner(),
         }
     }
 }
@@ -133,11 +133,11 @@ pub enum OrderResolution {
 }
 
 impl V2DutchOrder {
-    pub fn _decode(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
+    pub fn decode_inner(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
         Ok(V2DutchOrder::decode_single(order_hex, validate)?)
     }
 
-    pub fn _encode(&self) -> Vec<u8> {
+    pub fn encode_inner(&self) -> Vec<u8> {
         V2DutchOrder::encode_single(self)
     }
 
@@ -194,15 +194,21 @@ impl V2DutchOrder {
 }
 
 impl PriorityOrder {
-    pub fn _decode(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
+    pub fn decode_inner(order_hex: &[u8], validate: bool) -> Result<Self, Box<dyn Error>> {
         Ok(PriorityOrder::decode_single(order_hex, validate)?)
     }
 
-    pub fn _encode(&self) -> Vec<u8> {
+    pub fn encode_inner(&self) -> Vec<u8> {
         PriorityOrder::encode_single(self)
     }
 
-    pub fn resolve(&self, priority_fee: Uint<256, 4>) -> OrderResolution {
+    pub fn resolve(&self, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
+        let timestamp = Uint::from(timestamp);
+
+        if self.info.deadline.lt(&timestamp) {
+            return OrderResolution::Expired;
+        };
+
         let input = self.input.scale(priority_fee);
         let outputs = self
             .outputs

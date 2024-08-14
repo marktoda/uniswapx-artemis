@@ -200,7 +200,7 @@ mod tests {
         };
         let order_hex: Vec<u8> = hex::decode(encoded_order).unwrap();
 
-        let result = V2DutchOrder::_decode(&order_hex, false);
+        let result = V2DutchOrder::decode_inner(&order_hex, false);
         match result {
             Err(e) => panic!("Error decoding order: {:?}", e),
             _ => (),

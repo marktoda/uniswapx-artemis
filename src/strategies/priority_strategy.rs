@@ -2,11 +2,11 @@ use super::{
     shared::UniswapXStrategy,
     types::{Config, OrderStatus},
 };
-use crate::collectors::{
+use crate::{collectors::{
     block_collector::NewBlock,
     uniswapx_order_collector::UniswapXOrder,
     uniswapx_route_collector::{OrderBatchData, OrderData, PriorityOrderData, RoutedOrder},
-};
+}, strategies::types::SubmitTxToMempoolWithAdvancedProfitCalculation};
 use alloy_primitives::Uint;
 use anyhow::Result;
 use artemis_core::executors::mempool_executor::{GasBidInfo, SubmitTxToMempool};
@@ -28,10 +28,47 @@ use uniswapx_rs::order::{OrderResolution, PriorityOrder};
 
 use super::types::{Action, Event};
 
+const BLOCK_TIME: u64 = 2;
 const DONE_EXPIRY: u64 = 300;
 // Base addresses
 const REACTOR_ADDRESS: &str = "0x000000001Ec5656dcdB24D90DFa42742738De729";
 pub const WETH_ADDRESS: &str = "0x4200000000000000000000000000000000000006";
+
+#[derive(Debug, Clone)]
+pub struct ProfitCalculation {
+    // amount of quote token we can get
+    quote: U256,
+    // amount of quote token needed to fill the order
+    amount_out_required: U256,
+}
+
+impl ProfitCalculation {
+    pub fn new(quote: U256, amount_out_required: U256) -> Self {
+        Self {
+            quote,
+            amount_out_required,
+        }
+    }
+
+    pub fn calculate_priority_fee(&self, bid_percentage: u64) -> Option<U256> {
+        let mps = U256::from(10_000_000);
+
+        if self.quote.le(&self.amount_out_required) {
+            return None;
+        }
+        
+        let profit_quote = self.quote.saturating_sub(self.amount_out_required);
+
+        let mps_of_improvement = profit_quote
+            .saturating_mul(mps)
+            .checked_div(self.amount_out_required)?;
+        info!("mps_of_improvement: {}", mps_of_improvement);
+        let priority_fee = mps_of_improvement
+            .checked_mul(U256::from(bid_percentage))?
+            .checked_div(U256::from(100))?;
+        return Some(priority_fee);
+    }
+}
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -106,7 +143,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         };
         let order_hex = hex::decode(encoded_order)?;
 
-        Ok(PriorityOrder::_decode(&order_hex, false)?)
+        Ok(PriorityOrder::decode_inner(&order_hex, false)?)
     }
 
     async fn process_order_event(&mut self, event: UniswapXOrder) -> Option<Action> {
@@ -140,25 +177,27 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             ..
         } = &event.request;
 
-        if let Some(profit) = self.get_profit_eth(&event) {
+        if let Some(profit) = self.get_profit_calculation(&event) {
             info!(
-                "Sending trade: num trades: {} routed quote: {}, batch needs: {}, profit: {} wei",
+                "Sending trade: num trades: {} routed quote: {}, batch needs: {}",
                 orders.len(),
                 event.route.quote,
                 amount_out_required,
-                profit
             );
 
             let signed_orders = self.get_signed_orders(orders.clone()).ok()?;
-            return Some(Action::SubmitPublicTx(SubmitTxToMempool {
-                tx: self
-                    .build_fill(self.client.clone(), &self.executor_address, signed_orders, event)
-                    .await
-                    .ok()?,
-                gas_bid_info: Some(GasBidInfo {
-                    bid_percentage: self.bid_percentage,
-                    total_profit: profit,
-                }),
+            return Some(Action::SubmitPublicTx(SubmitTxToMempoolWithAdvancedProfitCalculation {
+                execution: SubmitTxToMempool {
+                    tx: self
+                        .build_fill(self.client.clone(), &self.executor_address, signed_orders, event)
+                        .await
+                        .ok()?,
+                    gas_bid_info: Some(GasBidInfo {
+                        bid_percentage: self.bid_percentage,
+                        total_profit: U256::from(0),
+                    }),
+                },
+                profit_calculation: profit,
             }));
         }
 
@@ -199,7 +238,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             match batch {
                 OrderData::PriorityOrderData(order) => {
                     signed_orders.push(SignedOrder {
-                        order: Bytes::from(order.order._encode()),
+                        order: Bytes::from(order.order.encode_inner()),
                         sig: Bytes::from_str(&order.signature)?,
                     });
                 }
@@ -264,29 +303,24 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
     ///     - we have to bid at least the base fee
     ///     - the priority fee set for the transaction is essentially total_profit_eth - base_fee
     ///     - at 100% bid_percentage, our priority fee is total_profit_eth and thus gives the maximum amount to the user
-    fn get_profit_eth(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<U256> {
+    fn get_profit_calculation(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<ProfitCalculation> {
         let quote = U256::from_str_radix(&route.quote, 10).ok()?;
         let amount_out_required =
             U256::from_str_radix(&request.amount_out_required.to_string(), 10).ok()?;
         if quote.le(&amount_out_required) {
             return None;
         }
-        let profit_quote = quote.saturating_sub(amount_out_required);
 
-        if request.token_out.to_lowercase() == WETH_ADDRESS.to_lowercase() {
-            return Some(profit_quote);
-        }
-
-        let gas_use_eth = U256::from_str_radix(&route.gas_use_estimate, 10)
-            .ok()?
-            .saturating_mul(U256::from_str_radix(&route.gas_price_wei, 10).ok()?);
-        profit_quote
-            .saturating_mul(gas_use_eth)
-            .checked_div(U256::from_str_radix(&route.gas_use_estimate_quote, 10).ok()?)
+        return Some({
+            ProfitCalculation {
+                quote,
+                amount_out_required,
+            }
+        })
     }
 
     fn update_order_state(&mut self, order: PriorityOrder, signature: String, order_hash: String) {
-        let resolved = order.resolve(Uint::from(0));
+        let resolved = order.resolve( self.last_block_timestamp + BLOCK_TIME, Uint::from(0));
         let order_status: OrderStatus = match resolved {
             OrderResolution::Expired => OrderStatus::Done,
             OrderResolution::Invalid => OrderStatus::Done,

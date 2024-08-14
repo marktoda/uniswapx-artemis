@@ -15,6 +15,7 @@ use ethers::{
     signers::{LocalWallet, Signer},
 };
 use executors::protect_executor::ProtectExecutor;
+use executors::public_1559_executor::Public1559Executor;
 use std::sync::Arc;
 use strategies::priority_strategy::UniswapXPriorityFill;
 use strategies::{
@@ -158,7 +159,7 @@ async fn main() -> Result<()> {
         mevblocker_provider.clone(),
     ));
 
-    let public_tx_executor = Box::new(ProtectExecutor::new(provider.clone(), provider.clone()));
+    let public_tx_executor = Box::new(Public1559Executor::new(provider.clone(), provider.clone()));
 
     let protect_executor = ExecutorMap::new(protect_executor, |action| match action {
         Action::SubmitTx(tx) => Some(tx),
@@ -167,7 +168,7 @@ async fn main() -> Result<()> {
     });
 
     let public_tx_executor = ExecutorMap::new(public_tx_executor, |action| match action {
-        Action::SubmitPublicTx(tx) => Some(tx),
+        Action::SubmitPublicTx(execution) => Some(execution),
         // No op for protected transactions
         _ => None,
     });
