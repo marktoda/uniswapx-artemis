@@ -5,7 +5,7 @@ use crate::collectors::{
 use artemis_core::executors::mempool_executor::SubmitTxToMempool;
 use uniswapx_rs::order::ResolvedOrder;
 
-use super::priority_strategy::ProfitCalculation;
+use super::priority_strategy::ExecutionMetadata;
 
 /// Core Event enum for the current strategy.
 #[derive(Debug, Clone)]
@@ -17,16 +17,16 @@ pub enum Event {
 }
 
 #[derive(Debug, Clone)]
-pub struct SubmitTxToMempoolWithAdvancedProfitCalculation {
+pub struct SubmitTxToMempoolWithExecutionMetadata {
     pub execution: SubmitTxToMempool,
-    pub profit_calculation: ProfitCalculation,
+    pub metadata: ExecutionMetadata,
 }
 
 /// Core Action enum for the current strategy.
 #[derive(Debug, Clone)]
 pub enum Action {
     SubmitTx(SubmitTxToMempool),
-    SubmitPublicTx(SubmitTxToMempoolWithAdvancedProfitCalculation),
+    SubmitPublicTx(SubmitTxToMempoolWithExecutionMetadata),
 }
 
 /// Configuration for variables we need to pass to the strategy.

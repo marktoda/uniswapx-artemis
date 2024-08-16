@@ -317,6 +317,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             OrderResolution::Expired => OrderStatus::Done,
             OrderResolution::Invalid => OrderStatus::Done,
             OrderResolution::Resolved(resolved_order) => OrderStatus::Open(resolved_order),
+            _ => OrderStatus::Done
         };
 
         match order_status {

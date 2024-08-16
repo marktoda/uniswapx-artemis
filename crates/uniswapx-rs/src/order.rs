@@ -91,10 +91,10 @@ pub enum Order {
 }
 
 impl Order {
-    pub fn resolve(&self, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
+    pub fn resolve(&self, block_number: u64, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
         match self {
             Order::V2DutchOrder(order) => order.resolve(timestamp),
-            Order::PriorityOrder(order) => order.resolve(timestamp, priority_fee),
+            Order::PriorityOrder(order) => order.resolve(block_number, timestamp, priority_fee),
         }
     }
 
@@ -130,6 +130,7 @@ pub enum OrderResolution {
     Resolved(ResolvedOrder),
     Expired,
     Invalid,
+    NotFillableYet(ResolvedOrder)
 }
 
 impl V2DutchOrder {
@@ -202,7 +203,7 @@ impl PriorityOrder {
         PriorityOrder::encode_single(self)
     }
 
-    pub fn resolve(&self, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
+    pub fn resolve(&self, block_number: u64, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
         let timestamp = Uint::from(timestamp);
 
         if self.info.deadline.lt(&timestamp) {
@@ -215,6 +216,10 @@ impl PriorityOrder {
             .iter()
             .map(|output| output.scale(priority_fee))
             .collect();
+
+        if self.cosignerData.auctionTargetBlock.lt(&Uint::from(block_number)) {
+            return OrderResolution::NotFillableYet(ResolvedOrder { input, outputs });
+        };
 
         OrderResolution::Resolved(ResolvedOrder { input, outputs })
     }
