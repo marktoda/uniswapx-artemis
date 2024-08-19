@@ -157,6 +157,12 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             .ok()?;
 
         self.update_order_state(order, event.signature, event.order_hash);
+        // try to send immediately
+        self.batch_sender
+            .send(self.get_order_batches())
+            .await
+            .ok()?;
+
         None
     }
 
@@ -224,10 +230,10 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         self.update_open_orders();
         self.prune_done_orders();
 
-        self.batch_sender
-            .send(self.get_order_batches())
-            .await
-            .ok()?;
+        // self.batch_sender
+        //     .send(self.get_order_batches())
+        //     .await
+        //     .ok()?;
 
         None
     }
@@ -325,13 +331,16 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         let order_status: OrderStatus = match resolved {
             OrderResolution::Expired => OrderStatus::Done,
             OrderResolution::Invalid => OrderStatus::Done,
-            OrderResolution::NotFillableYet(resolved_order) => OrderStatus::Open(resolved_order), // TODO: gracefully handle this, currently this will cause a revert if we try to fill too earlty
+            OrderResolution::NotFillableYet => OrderStatus::NotFillableYet, // TODO: gracefully handle this, currently this will cause a revert if we try to fill too earlty
             OrderResolution::Resolved(resolved_order) => OrderStatus::Open(resolved_order),
         };
 
         match order_status {
             OrderStatus::Done => {
                 self.mark_as_done(&order_hash);
+            }
+            OrderStatus::NotFillableYet => {
+                info!("Order not fillable yet, skipping: {}", order_hash);
             }
             OrderStatus::Open(resolved_order) => {
                 if self.done_orders.contains_key(&order_hash) {

@@ -37,9 +37,11 @@ where
             .client
             .estimate_gas(&action.execution.tx, None)
             .await
-            .context("Error estimating gas usage: {}");
+            .unwrap_or_else(|err| {
+                info!("Error estimating gas: {}", err);
+                U256::from(1_000_000)
+            });
         info!("Gas Usage {:?}", gas_usage_result);
-        // let gas_usage = gas_usage_result?;
 
         let bid_priority_fee;
         let base_fee: U256 = self
@@ -57,6 +59,7 @@ where
         }
         action.execution.tx.as_eip1559_mut().unwrap().max_fee_per_gas = Some(base_fee);
         action.execution.tx.as_eip1559_mut().unwrap().max_priority_fee_per_gas = bid_priority_fee;
+        action.execution.tx.set_gas(U256::from(1_000_000));
         info!("Executing tx {:?}", action.execution.tx);
         self.sender_client.send_transaction(action.execution.tx, None).await?;
         Ok(())

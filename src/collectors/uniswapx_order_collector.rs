@@ -8,7 +8,7 @@ use tokio::time::Duration;
 use tokio_stream::wrappers::IntervalStream;
 
 static UNISWAPX_API_URL: &str = "https://api.uniswap.org/v2";
-static POLL_INTERVAL_SECS: u64 = 5;
+static POLL_INTERVAL_SECS: u64 = 1;
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum OrderType {

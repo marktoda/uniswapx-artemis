@@ -45,5 +45,6 @@ pub struct TokenInTokenOut {
 #[derive(Debug, Clone)]
 pub enum OrderStatus {
     Open(ResolvedOrder),
+    NotFillableYet,
     Done,
 }

@@ -342,6 +342,8 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                     },
                 );
             }
+            // Noop
+            _ => {}
         }
     }
 
