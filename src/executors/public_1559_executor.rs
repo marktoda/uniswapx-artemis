@@ -59,7 +59,7 @@ where
         }
         action.execution.tx.as_eip1559_mut().unwrap().max_fee_per_gas = Some(base_fee);
         action.execution.tx.as_eip1559_mut().unwrap().max_priority_fee_per_gas = bid_priority_fee;
-        action.execution.tx.set_gas(U256::from(1_000_000));
+        action.execution.tx.set_gas(gas_usage_result);
         info!("Executing tx {:?}", action.execution.tx);
         self.sender_client.send_transaction(action.execution.tx, None).await?;
         Ok(())

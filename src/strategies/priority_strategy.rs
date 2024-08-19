@@ -230,10 +230,10 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         self.update_open_orders();
         self.prune_done_orders();
 
-        // self.batch_sender
-        //     .send(self.get_order_batches())
-        //     .await
-        //     .ok()?;
+        self.batch_sender
+            .send(self.get_order_batches())
+            .await
+            .ok()?;
 
         None
     }
