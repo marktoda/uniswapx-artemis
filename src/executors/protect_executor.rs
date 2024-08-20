@@ -60,7 +60,11 @@ where
         }
         action.tx.set_gas_price(bid_gas_price);
         // set max_priority_fee_per_gas to be 0
-        action.tx.as_eip1559_mut().unwrap().max_priority_fee_per_gas = Some(U256::from(50));
+        let eip1559_tx = action.tx.as_eip1559_mut();
+        if let Some(eip1559_tx) = eip1559_tx {
+            eip1559_tx.max_priority_fee_per_gas = Some(U256::zero());
+        }
+
         info!("Executing tx {:?}", action.tx);
         self.sender_client.send_transaction(action.tx, None).await?;
         Ok(())

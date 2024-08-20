@@ -267,7 +267,7 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
         .await?)
 }
 
-// our routing provider requires that "ETH" be used instead of the zero address
+// The Uniswap routing API requires that "ETH" be used instead of the zero address
 fn resolve_address(token: String) -> String {
     if token == "0x0000000000000000000000000000000000000000" {
         return "ETH".to_string();

@@ -57,9 +57,15 @@ where
         } else {
             bid_priority_fee = Some(U256::from(50));
         }
-        action.execution.tx.as_eip1559_mut().unwrap().max_fee_per_gas = Some(base_fee);
-        action.execution.tx.as_eip1559_mut().unwrap().max_priority_fee_per_gas = bid_priority_fee;
+
+        let eip1559_tx = action.execution.tx.as_eip1559_mut();
+        if let Some(eip1559_tx) = eip1559_tx {
+            eip1559_tx.max_fee_per_gas = Some(base_fee);
+            eip1559_tx.max_priority_fee_per_gas = bid_priority_fee;
+        }
+
         action.execution.tx.set_gas(gas_usage_result);
+        
         info!("Executing tx {:?}", action.execution.tx);
         self.sender_client.send_transaction(action.execution.tx, None).await?;
         Ok(())
