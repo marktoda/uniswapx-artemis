@@ -4,7 +4,7 @@ use reqwest::header::ORIGIN;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::info;
-use uniswapx_rs::order::{PriorityOrder, ResolvedOrder, V2DutchOrder};
+use uniswapx_rs::order::{Order, ResolvedOrder};
 
 use artemis_core::types::{Collector, CollectorStream};
 use async_trait::async_trait;
@@ -17,41 +17,11 @@ const SLIPPAGE_TOLERANCE: &str = "0.5";
 const DEADLINE: u64 = 1000;
 
 #[derive(Debug, Clone)]
-pub struct V2DutchOrderData {
-    pub order: V2DutchOrder,
+pub struct OrderData {
+    pub order: Order,
     pub hash: String,
     pub signature: String,
     pub resolved: ResolvedOrder,
-}
-
-#[derive(Debug, Clone)]
-pub struct PriorityOrderData {
-    pub order: PriorityOrder,
-    pub hash: String,
-    pub signature: String,
-    pub resolved: ResolvedOrder,
-}
-
-#[derive(Debug, Clone)]
-pub enum OrderData {
-    V2DutchOrderData(V2DutchOrderData),
-    PriorityOrderData(PriorityOrderData),
-}
-
-impl OrderData {
-    pub fn signature(&self) -> String {
-        match self {
-            OrderData::V2DutchOrderData(data) => data.signature.clone(),
-            OrderData::PriorityOrderData(data) => data.signature.clone(),
-        }
-    }
-
-    pub fn hash(&self) -> String {
-        match self {
-            OrderData::V2DutchOrderData(data) => data.hash.clone(),
-            OrderData::PriorityOrderData(data) => data.hash.clone(),
-        }
-    }
 }
 
 #[derive(Clone, Debug)]

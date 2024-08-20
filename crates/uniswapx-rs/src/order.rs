@@ -85,6 +85,7 @@ sol! {
 }
 
 
+#[derive(Debug, Clone)]
 pub enum Order {
     V2DutchOrder(V2DutchOrder),
     PriorityOrder(PriorityOrder),

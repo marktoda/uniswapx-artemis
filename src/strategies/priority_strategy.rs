@@ -5,7 +5,7 @@ use super::{
 use crate::{collectors::{
     block_collector::NewBlock,
     uniswapx_order_collector::UniswapXOrder,
-    uniswapx_route_collector::{OrderBatchData, OrderData, PriorityOrderData, RoutedOrder},
+    uniswapx_route_collector::{OrderBatchData, OrderData, RoutedOrder},
 }, strategies::types::SubmitTxToMempoolWithExecutionMetadata};
 use alloy_primitives::Uint;
 use anyhow::Result;
@@ -24,7 +24,7 @@ use std::str::FromStr;
 use std::sync::Arc;
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::{error, info};
-use uniswapx_rs::order::{OrderResolution, PriorityOrder};
+use uniswapx_rs::order::{Order, OrderResolution, PriorityOrder};
 
 use super::types::{Action, Event};
 
@@ -82,7 +82,7 @@ pub struct UniswapXPriorityFill<M> {
     last_block_number: u64,
     last_block_timestamp: u64,
     // map of open order hashes to order data
-    open_orders: HashMap<String, PriorityOrderData>,
+    open_orders: HashMap<String, OrderData>,
     // map of done order hashes to time at which we can safely prune them
     done_orders: HashMap<String, u64>,
     batch_sender: Sender<Vec<OrderBatchData>>,
@@ -171,7 +171,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             .request
             .orders
             .iter()
-            .any(|o| self.done_orders.contains_key(&o.hash()))
+            .any(|o| self.done_orders.contains_key(&o.hash))
         {
             return None;
         }
@@ -242,11 +242,11 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
     fn get_signed_orders(&self, orders: Vec<OrderData>) -> Result<Vec<SignedOrder>> {
         let mut signed_orders: Vec<SignedOrder> = Vec::new();
         for batch in orders.iter() {
-            match batch {
-                OrderData::PriorityOrderData(order) => {
+            match &batch.order {
+                Order::PriorityOrder(order) => {
                     signed_orders.push(SignedOrder {
-                        order: Bytes::from(order.order.encode_inner()),
-                        sig: Bytes::from_str(&order.signature)?,
+                        order: Bytes::from(order.encode_inner()),
+                        sig: Bytes::from_str(&batch.signature)?,
                     });
                 }
                 _ => {
@@ -271,7 +271,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                 .fold(Uint::from(0), |sum, output| sum.wrapping_add(output.amount));
 
             order_batches.push(OrderBatchData {
-                orders: vec![OrderData::PriorityOrderData(order_data.clone())],
+                orders: vec![order_data.clone()],
                 amount_in,
                 amount_out_required: amount_out,
                 token_in: order_data.resolved.input.token.clone(),
@@ -352,8 +352,8 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                 }
                 self.open_orders.insert(
                     order_hash.clone(),
-                    PriorityOrderData {
-                        order,
+                    OrderData {
+                        order: Order::PriorityOrder(order),
                         hash: order_hash,
                         signature,
                         resolved: resolved_order,
@@ -378,13 +378,21 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
     fn update_open_orders(&mut self) {
         // TODO: this is nasty, plz cleanup
         let binding = self.open_orders.clone();
-        let order_hashes: Vec<(&String, &PriorityOrderData)> = binding.iter().collect();
+        let order_hashes: Vec<(&String, &OrderData)> = binding.iter().collect();
         for (order_hash, order_data) in order_hashes {
-            self.update_order_state(
-                order_data.order.clone(),
-                order_data.signature.clone(),
-                order_hash.clone().to_string(),
-            );
+            match &order_data.order {
+                Order::PriorityOrder(order) => {
+                    self.update_order_state(
+                        order.clone(),
+                        order_data.signature.clone(),
+                        order_hash.clone().to_string(),
+                    );
+                }
+                _ => {
+                    error!("Invalid order type");
+                }
+            }
+            
         }
     }
 
