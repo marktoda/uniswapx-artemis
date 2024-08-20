@@ -218,7 +218,7 @@ impl PriorityOrder {
             .map(|output| output.scale(priority_fee))
             .collect();
 
-        if Uint::from(block_number).lt(&self.cosignerData.auctionTargetBlock.saturating_sub(Uint::from(1))) {
+        if Uint::from(block_number).lt(&self.cosignerData.auctionTargetBlock.saturating_sub(Uint::from(2))) {
             return OrderResolution::NotFillableYet;
         };
 
