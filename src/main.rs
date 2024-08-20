@@ -51,6 +51,10 @@ pub struct Args {
     #[arg(long)]
     pub executor_address: String,
 
+    /// Order type to use.
+    #[arg(long)]
+    pub order_type: String,
+
     /// chain id 
     #[arg(long)]
     pub chain_id: u64,
@@ -75,6 +79,10 @@ async fn main() -> Result<()> {
     let provider = Provider::new(ws);
     let chain_id = args.chain_id;
 
+    let order_type = OrderType::from_str(&args.order_type).unwrap_or_else(|err| {
+        panic!("Error parsing order type: {}", err);
+    });
+    
     let mevblocker_provider =
         Provider::<Http>::try_from(MEV_BLOCKER).expect("could not instantiate HTTP Provider");
 
@@ -101,19 +109,12 @@ async fn main() -> Result<()> {
     engine.add_collector(Box::new(block_collector));
 
     let (batch_sender, batch_receiver) = channel(512);
-    let (priority_batch_sender, priority_batch_receiver) = channel(512);
     let (route_sender, route_receiver) = channel(512);
-    let (priority_route_sender, priority_route_receiver) = channel(512);
 
-    let uniswapx_collector = Box::new(UniswapXOrderCollector::new(chain_id, OrderType::Dutch));
-    let uniswapx_collector =
-        CollectorMap::new(uniswapx_collector, |e| Event::UniswapXOrder(Box::new(e)));
-    engine.add_collector(Box::new(uniswapx_collector));
-
-    let priority_collector = Box::new(UniswapXOrderCollector::new(chain_id, OrderType::Priority));
-    let priority_collector =
-        CollectorMap::new(priority_collector, |e| Event::PriorityOrder(Box::new(e)));
-    engine.add_collector(Box::new(priority_collector));
+    let uniswapx_order_collector = Box::new(UniswapXOrderCollector::new(chain_id, order_type.clone()));
+    let uniswapx_order_collector =
+        CollectorMap::new(uniswapx_order_collector, |e| Event::UniswapXOrder(Box::new(e)));
+    engine.add_collector(Box::new(uniswapx_order_collector));
 
     let uniswapx_route_collector =
         Box::new(UniswapXRouteCollector::new(chain_id, batch_receiver, route_sender, args.executor_address.clone()));
@@ -122,37 +123,32 @@ async fn main() -> Result<()> {
     });
     engine.add_collector(Box::new(uniswapx_route_collector));
 
-    let priority_route_collector = Box::new(UniswapXRouteCollector::new(
-        chain_id,
-        priority_batch_receiver,
-        priority_route_sender,
-        args.executor_address.clone(),
-    ));
-    let priority_route_collector = CollectorMap::new(priority_route_collector, |e| {
-        Event::UniswapXRoute(Box::new(e))
-    });
-    engine.add_collector(Box::new(priority_route_collector));
-
     let config = Config {
         bid_percentage: args.bid_percentage,
         executor_address: args.executor_address,
     };
 
-    let uniswapx_strategy = UniswapXUniswapFill::new(
-        Arc::new(provider.clone()),
-        config.clone(),
-        batch_sender,
-        route_receiver,
-    );
-    engine.add_strategy(Box::new(uniswapx_strategy));
-
-    let priority_strategy = UniswapXPriorityFill::new(
-        Arc::new(provider.clone()),
-        config.clone(),
-        priority_batch_sender,
-        priority_route_receiver,
-    );
-    engine.add_strategy(Box::new(priority_strategy));
+    match order_type {
+        OrderType::Dutch => {
+            let uniswapx_strategy = UniswapXUniswapFill::new(
+                Arc::new(provider.clone()),
+                config.clone(),
+                batch_sender,
+                route_receiver,
+            );
+            engine.add_strategy(Box::new(uniswapx_strategy));
+        }
+        OrderType::Priority => {
+            let priority_strategy = UniswapXPriorityFill::new(
+                Arc::new(provider.clone()),
+                config.clone(),
+                batch_sender, 
+                route_receiver,
+            );
+        
+            engine.add_strategy(Box::new(priority_strategy));
+        }
+    }
 
     let protect_executor = Box::new(ProtectExecutor::new(
         provider.clone(),

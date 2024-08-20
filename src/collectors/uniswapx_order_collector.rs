@@ -6,11 +6,26 @@ use reqwest::Client;
 use serde::Deserialize;
 use tokio::time::Duration;
 use tokio_stream::wrappers::IntervalStream;
+use std::fmt;
 
 static UNISWAPX_API_URL: &str = "https://api.uniswap.org/v2";
 static POLL_INTERVAL_SECS: u64 = 1;
 
-#[derive(Debug, PartialEq, Eq)]
+
+#[derive(Debug)]
+pub enum OrderTypeError {
+    InvalidOrderType,
+}
+
+impl fmt::Display for OrderTypeError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Invalid order type")
+    }
+}
+
+impl std::error::Error for OrderTypeError {}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum OrderType {
     Dutch,
     Priority,
@@ -24,11 +39,11 @@ impl OrderType {
         }
     }
 
-    pub fn from_str(s: &str) -> Option<OrderType> {
+    pub fn from_str(s: &str) -> Result<OrderType, OrderTypeError> {
         match s {
-            "Dutch_V2" => Some(OrderType::Dutch),
-            "Priority" => Some(OrderType::Priority),
-            _ => None,
+            "Dutch_V2" => Ok(OrderType::Dutch),
+            "Priority" => Ok(OrderType::Priority),
+            _ => Err(OrderTypeError::InvalidOrderType),
         }
     }
 }
