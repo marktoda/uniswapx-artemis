@@ -89,7 +89,6 @@ impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXUniswapFill<M>
             Event::UniswapXOrder(order) => self.process_order_event(*order).await,
             Event::NewBlock(block) => self.process_new_block_event(block).await,
             Event::UniswapXRoute(route) => self.process_new_route(*route).await,
-            _ => None,
         }
     }
 }
