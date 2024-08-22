@@ -1,5 +1,5 @@
 use alloy_primitives::Uint;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use reqwest::header::ORIGIN;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{Receiver, Sender};
@@ -33,7 +33,7 @@ pub struct OrderBatchData {
     pub token_out: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[allow(dead_code)]
 enum TradeType {
     #[serde(rename = "exactIn")]
@@ -42,7 +42,7 @@ enum TradeType {
     ExactOut,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
 struct RoutingApiQuery {
     token_in_address: String,
@@ -194,11 +194,16 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
 
                 let routes: Vec<_> = tasks.collect().await;
                 for (batch, route_result) in routes {
-                    if let Ok(route) = route_result {
-                        yield RoutedOrder {
-                            request: batch.clone(),
-                            route: route,
-                        };
+                    match route_result {
+                        Ok(route) => {
+                            yield RoutedOrder {
+                                request: batch.clone(),
+                                route: route,
+                            };
+                        }
+                        Err(e) => {
+                            info!("Failed to route order: {}", e);
+                        }
                     }
                 }
             }
@@ -232,9 +237,12 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
         .header(ORIGIN, "https://app.uniswap.org")
         .header("x-request-source", "uniswap-web")
         .send()
-        .await?
+        .await
+        .context("Quote request failed with {}")?
         .json::<OrderRoute>()
-        .await?)
+        .await
+        .context("Failed to parse response: {}")?
+    )
 }
 
 // The Uniswap routing API requires that "ETH" be used instead of the zero address
