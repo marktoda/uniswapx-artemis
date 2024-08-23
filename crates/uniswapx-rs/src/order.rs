@@ -93,13 +93,6 @@ pub enum Order {
 }
 
 impl Order {
-    pub fn resolve(&self, block_number: u64, timestamp: u64, priority_fee: Uint<256, 4>) -> OrderResolution {
-        match self {
-            Order::V2DutchOrder(order) => order.resolve(timestamp),
-            Order::PriorityOrder(order) => order.resolve(block_number, timestamp, priority_fee),
-        }
-    }
-
     pub fn encode(&self) -> Vec<u8> {
         match self {
             Order::V2DutchOrder(order) => order.encode_inner(),
