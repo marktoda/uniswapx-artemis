@@ -1,13 +1,11 @@
-use crate::collectors::uniswapx_order_collector::CHAIN_ID;
 use alloy_primitives::Uint;
-use anyhow::Result;
+use anyhow::{Context, Result};
 use reqwest::header::ORIGIN;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::info;
-use uniswapx_rs::order::{ExclusiveDutchOrder, ResolvedOrder};
+use uniswapx_rs::order::{Order, ResolvedOrder};
 
-use crate::strategies::uniswapx_strategy::EXECUTOR_ADDRESS;
 use artemis_core::types::{Collector, CollectorStream};
 use async_trait::async_trait;
 use futures::lock::Mutex;
@@ -20,7 +18,7 @@ const DEADLINE: u64 = 1000;
 
 #[derive(Debug, Clone)]
 pub struct OrderData {
-    pub order: ExclusiveDutchOrder,
+    pub order: Order,
     pub hash: String,
     pub signature: String,
     pub resolved: ResolvedOrder,
@@ -35,7 +33,7 @@ pub struct OrderBatchData {
     pub token_out: String,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[allow(dead_code)]
 enum TradeType {
     #[serde(rename = "exactIn")]
@@ -44,7 +42,7 @@ enum TradeType {
     ExactOut,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
 struct RoutingApiQuery {
     token_in_address: String,
@@ -57,6 +55,8 @@ struct RoutingApiQuery {
     recipient: String,
     slippage_tolerance: String,
     deadline: u64,
+    #[serde(rename = "enableUniversalRouter")]
+    enable_universal_router: bool,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -109,6 +109,7 @@ pub struct MethodParameters {
 #[serde(rename_all = "camelCase")]
 pub struct OrderRoute {
     pub quote: String,
+    pub quote_gas_adjusted: String,
     pub gas_price_wei: String,
     pub gas_use_estimate_quote: String,
     pub gas_use_estimate: String,
@@ -117,9 +118,11 @@ pub struct OrderRoute {
 }
 
 pub struct RouteOrderParams {
+    pub chain_id: u64,
     pub token_in: String,
     pub token_out: String,
     pub amount: String,
+    pub recipient: String,
 }
 
 #[derive(Clone, Debug)]
@@ -138,19 +141,25 @@ pub struct RouteResponse {
 /// [events](Route) which contain the order.
 pub struct UniswapXRouteCollector {
     pub client: Client,
+    pub chain_id: u64,
     pub route_request_receiver: Mutex<Receiver<Vec<OrderBatchData>>>,
     pub route_sender: Sender<RoutedOrder>,
+    pub executor_address: String,
 }
 
 impl UniswapXRouteCollector {
     pub fn new(
+        chain_id: u64,
         route_request_receiver: Receiver<Vec<OrderBatchData>>,
         route_sender: Sender<RoutedOrder>,
+        executor_address: String,
     ) -> Self {
         Self {
             client: Client::new(),
+            chain_id,
             route_request_receiver: Mutex::new(route_request_receiver),
             route_sender,
+            executor_address,
         }
     }
 }
@@ -174,20 +183,27 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
 
                         async move {
                             (batch, route_order(RouteOrderParams {
+                                chain_id: self.chain_id,
                                 token_in: token_in.clone(),
                                 token_out: token_out.clone(),
                                 amount: amount_in.to_string(),
+                                recipient: self.executor_address.clone(),
                             }).await)
                         }
                     }).collect();
 
                 let routes: Vec<_> = tasks.collect().await;
                 for (batch, route_result) in routes {
-                    if let Ok(route) = route_result {
-                        yield RoutedOrder {
-                            request: batch.clone(),
-                            route: route,
-                        };
+                    match route_result {
+                        Ok(route) => {
+                            yield RoutedOrder {
+                                request: batch.clone(),
+                                route: route,
+                            };
+                        }
+                        Err(e) => {
+                            info!("Failed to route order: {}", e);
+                        }
                     }
                 }
             }
@@ -200,14 +216,15 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
 pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
     // TODO: support exactOutput
     let query = RoutingApiQuery {
-        token_in_address: params.token_in,
-        token_out_address: params.token_out,
-        token_in_chain_id: CHAIN_ID,
-        token_out_chain_id: CHAIN_ID,
+        token_in_address: resolve_address(params.token_in),
+        token_out_address: resolve_address(params.token_out),
+        token_in_chain_id: params.chain_id,
+        token_out_chain_id: params.chain_id,
         trade_type: TradeType::ExactIn,
         amount: params.amount,
-        recipient: EXECUTOR_ADDRESS.to_string(),
+        recipient: params.recipient,
         slippage_tolerance: SLIPPAGE_TOLERANCE.to_string(),
+        enable_universal_router: false,
         deadline: DEADLINE,
     };
 
@@ -218,8 +235,19 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
     Ok(client
         .get(format!("{}?{}", ROUTING_API, query_string))
         .header(ORIGIN, "https://app.uniswap.org")
+        .header("x-request-source", "uniswap-web")
         .send()
-        .await?
+        .await
+        .context("Quote request failed with {}")?
         .json::<OrderRoute>()
-        .await?)
+        .await
+        .context("Failed to parse response: {}")?)
+}
+
+// The Uniswap routing API requires that "ETH" be used instead of the zero address
+fn resolve_address(token: String) -> String {
+    if token == "0x0000000000000000000000000000000000000000" {
+        return "ETH".to_string();
+    }
+    return token;
 }

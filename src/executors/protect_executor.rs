@@ -35,7 +35,6 @@ where
 {
     /// Send a transaction to the mempool.
     async fn execute(&self, mut action: SubmitTxToMempool) -> Result<()> {
-        info!("Executing tx {:?}", action.tx);
         let gas_usage_result = self
             .client
             .estimate_gas(&action.tx, None)
@@ -60,6 +59,8 @@ where
                 .context("Error getting gas price: {}")?;
         }
         action.tx.set_gas_price(bid_gas_price);
+
+        info!("Executing tx {:?}", action.tx);
         self.sender_client.send_transaction(action.tx, None).await?;
         Ok(())
     }
