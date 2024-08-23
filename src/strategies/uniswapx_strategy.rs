@@ -150,7 +150,12 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             let signed_orders = self.get_signed_orders(orders.clone()).ok()?;
             return Some(Action::SubmitTx(SubmitTxToMempool {
                 tx: self
-                    .build_fill(self.client.clone(), &self.executor_address, signed_orders, event)
+                    .build_fill(
+                        self.client.clone(),
+                        &self.executor_address,
+                        signed_orders,
+                        event,
+                    )
                     .await
                     .ok()?,
                 gas_bid_info: Some(GasBidInfo {
@@ -239,9 +244,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 });
             } else {
                 let order_batch_data = order_batches.get_mut(&token_in_token_out).unwrap();
-                order_batch_data
-                    .orders
-                    .push(order_data.clone());
+                order_batch_data.orders.push(order_data.clone());
                 order_batch_data.amount_in = order_batch_data.amount_in.wrapping_add(amount_in);
                 order_batch_data.amount_out_required = order_batch_data
                     .amount_out_required
@@ -299,7 +302,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                         order_data.signature.clone(),
                         order_hash.clone().to_string(),
                     );
-                },
+                }
                 _ => {
                     error!("Invalid order type");
                 }
@@ -323,7 +326,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             OrderResolution::Expired => OrderStatus::Done,
             OrderResolution::Invalid => OrderStatus::Done,
             OrderResolution::Resolved(resolved_order) => OrderStatus::Open(resolved_order),
-            _ => OrderStatus::Done
+            _ => OrderStatus::Done,
         };
 
         match order_status {

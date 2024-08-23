@@ -84,6 +84,7 @@ sol! {
     }
 }
 
+pub const MPS: u64 = 1e7 as u64;
 
 #[derive(Debug, Clone)]
 pub enum Order {
@@ -153,7 +154,7 @@ impl V2DutchOrder {
         // resolve over the decay curve
         // TODO: apply cosigner logic
 
-        let input: ResolvedInput = ResolvedInput {
+        let input = ResolvedInput {
             token: self.baseInput.token.to_string(),
             amount: resolve_decay(
                 timestamp,
@@ -228,7 +229,7 @@ impl PriorityOrder {
 
 impl PriorityInput {
     pub fn scale(&self, priority_fee: Uint<256, 4>) -> ResolvedInput {
-        let amount = self.amount.wrapping_mul(Uint::from(1e7).wrapping_add(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(1e7));
+        let amount = self.amount.wrapping_mul(Uint::from(MPS).wrapping_add(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(MPS));
         ResolvedInput {
             token: self.token.to_string(),
             amount,
@@ -238,7 +239,7 @@ impl PriorityInput {
 
 impl PriorityOutput {
     pub fn scale(&self, priority_fee: Uint<256, 4>) -> ResolvedOutput {
-        let amount = self.amount.wrapping_mul(Uint::from(1e7).saturating_sub(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(1e7));
+        let amount = self.amount.wrapping_mul(Uint::from(MPS).saturating_sub(priority_fee.wrapping_mul(self.mpsPerPriorityFeeWei))).wrapping_div(Uint::from(MPS));
         ResolvedOutput {
             token: self.token.to_string(),
             amount,

@@ -46,7 +46,12 @@ pub trait UniswapXStrategy<M: Middleware + 'static> {
             .await?;
 
         let reactor_approval = self
-            .get_tokens_to_approve(client.clone(), token_out, &executor_address, REACTOR_ADDRESS)
+            .get_tokens_to_approve(
+                client.clone(),
+                token_out,
+                &executor_address,
+                REACTOR_ADDRESS,
+            )
             .await?;
 
         // Strip off function selector

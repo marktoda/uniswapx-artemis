@@ -152,14 +152,14 @@ impl UniswapXRouteCollector {
         chain_id: u64,
         route_request_receiver: Receiver<Vec<OrderBatchData>>,
         route_sender: Sender<RoutedOrder>,
-        executor_address: String
+        executor_address: String,
     ) -> Self {
         Self {
             client: Client::new(),
             chain_id,
             route_request_receiver: Mutex::new(route_request_receiver),
             route_sender,
-            executor_address
+            executor_address,
         }
     }
 }
@@ -241,8 +241,7 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
         .context("Quote request failed with {}")?
         .json::<OrderRoute>()
         .await
-        .context("Failed to parse response: {}")?
-    )
+        .context("Failed to parse response: {}")?)
 }
 
 // The Uniswap routing API requires that "ETH" be used instead of the zero address

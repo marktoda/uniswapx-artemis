@@ -5,8 +5,7 @@ use artemis_core::engine::Engine;
 use artemis_core::types::{CollectorMap, ExecutorMap};
 use collectors::uniswapx_order_collector::OrderType;
 use collectors::{
-    block_collector::BlockCollector,
-    uniswapx_order_collector::UniswapXOrderCollector,
+    block_collector::BlockCollector, uniswapx_order_collector::UniswapXOrderCollector,
     uniswapx_route_collector::UniswapXRouteCollector,
 };
 use ethers::{
@@ -53,9 +52,9 @@ pub struct Args {
 
     /// Order type to use.
     #[arg(long)]
-    pub order_type: String,
+    pub order_type: OrderType,
 
-    /// chain id 
+    /// chain id
     #[arg(long)]
     pub chain_id: u64,
 }
@@ -79,10 +78,6 @@ async fn main() -> Result<()> {
     let provider = Provider::new(ws);
     let chain_id = args.chain_id;
 
-    let order_type = OrderType::from_str(&args.order_type).unwrap_or_else(|err| {
-        panic!("Error parsing order type: {}", err);
-    });
-    
     let mevblocker_provider =
         Provider::<Http>::try_from(MEV_BLOCKER).expect("could not instantiate HTTP Provider");
 
@@ -111,13 +106,21 @@ async fn main() -> Result<()> {
     let (batch_sender, batch_receiver) = channel(512);
     let (route_sender, route_receiver) = channel(512);
 
-    let uniswapx_order_collector = Box::new(UniswapXOrderCollector::new(chain_id, order_type.clone()));
-    let uniswapx_order_collector =
-        CollectorMap::new(uniswapx_order_collector, |e| Event::UniswapXOrder(Box::new(e)));
+    let uniswapx_order_collector = Box::new(UniswapXOrderCollector::new(
+        chain_id,
+        args.order_type.clone(),
+    ));
+    let uniswapx_order_collector = CollectorMap::new(uniswapx_order_collector, |e| {
+        Event::UniswapXOrder(Box::new(e))
+    });
     engine.add_collector(Box::new(uniswapx_order_collector));
 
-    let uniswapx_route_collector =
-        Box::new(UniswapXRouteCollector::new(chain_id, batch_receiver, route_sender, args.executor_address.clone()));
+    let uniswapx_route_collector = Box::new(UniswapXRouteCollector::new(
+        chain_id,
+        batch_receiver,
+        route_sender,
+        args.executor_address.clone(),
+    ));
     let uniswapx_route_collector = CollectorMap::new(uniswapx_route_collector, |e| {
         Event::UniswapXRoute(Box::new(e))
     });
@@ -128,8 +131,8 @@ async fn main() -> Result<()> {
         executor_address: args.executor_address,
     };
 
-    match order_type {
-        OrderType::Dutch => {
+    match &args.order_type {
+        OrderType::DutchV2 => {
             let uniswapx_strategy = UniswapXUniswapFill::new(
                 Arc::new(provider.clone()),
                 config.clone(),
@@ -142,10 +145,10 @@ async fn main() -> Result<()> {
             let priority_strategy = UniswapXPriorityFill::new(
                 Arc::new(provider.clone()),
                 config.clone(),
-                batch_sender, 
+                batch_sender,
                 route_receiver,
             );
-        
+
             engine.add_strategy(Box::new(priority_strategy));
         }
     }

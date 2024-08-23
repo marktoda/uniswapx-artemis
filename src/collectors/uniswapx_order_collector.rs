@@ -4,13 +4,14 @@ use async_trait::async_trait;
 use futures::{stream, StreamExt};
 use reqwest::Client;
 use serde::Deserialize;
+use std::fmt;
+use std::str::FromStr;
+use std::string::ToString;
 use tokio::time::Duration;
 use tokio_stream::wrappers::IntervalStream;
-use std::fmt;
 
 static UNISWAPX_API_URL: &str = "https://api.uniswap.org/v2";
 static POLL_INTERVAL_SECS: u64 = 1;
-
 
 #[derive(Debug)]
 pub enum OrderTypeError {
@@ -27,30 +28,34 @@ impl std::error::Error for OrderTypeError {}
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum OrderType {
-    Dutch,
+    DutchV2,
     Priority,
 }
 
-impl OrderType {
-    pub fn as_str(&self) -> &'static str {
-        match self {
-            OrderType::Dutch => "Dutch_V2",
-            OrderType::Priority => "Priority",
-        }
-    }
+impl FromStr for OrderType {
+    type Err = OrderTypeError;
 
-    pub fn from_str(s: &str) -> Result<OrderType, OrderTypeError> {
+    fn from_str(s: &str) -> Result<OrderType, OrderTypeError> {
         match s {
-            "Dutch_V2" => Ok(OrderType::Dutch),
+            "Dutch_V2" => Ok(OrderType::DutchV2),
             "Priority" => Ok(OrderType::Priority),
             _ => Err(OrderTypeError::InvalidOrderType),
         }
     }
 }
 
+impl ToString for OrderType {
+    fn to_string(&self) -> String {
+        match self {
+            OrderType::DutchV2 => "Dutch_V2".to_string(),
+            OrderType::Priority => "Priority".to_string(),
+        }
+    }
+}
+
 impl Default for OrderType {
     fn default() -> Self {
-        OrderType::Dutch
+        OrderType::DutchV2
     }
 }
 
@@ -106,7 +111,7 @@ impl Collector<UniswapXOrder> for UniswapXOrderCollector {
             "{}/orders?orderStatus=open&chainId={}&orderType={}",
             self.base_url,
             self.chain_id,
-            self.order_type.as_str()
+            self.order_type.to_string()
         );
 
         // stream that polls the UniswapX API every 5 seconds
@@ -164,7 +169,7 @@ mod tests {
             client: reqwest::Client::new(),
             base_url: url.clone(),
             chain_id: 1,
-            order_type: super::OrderType::Dutch,
+            order_type: super::OrderType::DutchV2,
         };
 
         (res, server, mock)

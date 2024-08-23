@@ -2,11 +2,14 @@ use super::{
     shared::UniswapXStrategy,
     types::{Config, OrderStatus},
 };
-use crate::{collectors::{
-    block_collector::NewBlock,
-    uniswapx_order_collector::UniswapXOrder,
-    uniswapx_route_collector::{OrderBatchData, OrderData, RoutedOrder},
-}, strategies::types::SubmitTxToMempoolWithExecutionMetadata};
+use crate::{
+    collectors::{
+        block_collector::NewBlock,
+        uniswapx_order_collector::UniswapXOrder,
+        uniswapx_route_collector::{OrderBatchData, OrderData, RoutedOrder},
+    },
+    strategies::types::SubmitTxToMempoolWithExecutionMetadata,
+};
 use alloy_primitives::Uint;
 use anyhow::Result;
 use artemis_core::executors::mempool_executor::{GasBidInfo, SubmitTxToMempool};
@@ -24,7 +27,7 @@ use std::str::FromStr;
 use std::sync::Arc;
 use tokio::sync::mpsc::{Receiver, Sender};
 use tracing::{error, info};
-use uniswapx_rs::order::{Order, OrderResolution, PriorityOrder};
+use uniswapx_rs::order::{Order, OrderResolution, PriorityOrder, MPS};
 
 use super::types::{Action, Event};
 
@@ -51,16 +54,14 @@ impl ExecutionMetadata {
     }
 
     pub fn calculate_priority_fee(&self, bid_percentage: u64) -> Option<U256> {
-        let mps = U256::from(10_000_000);
-
         if self.quote.le(&self.amount_out_required) {
             return None;
         }
-        
+
         let profit_quote = self.quote.saturating_sub(self.amount_out_required);
 
         let mps_of_improvement = profit_quote
-            .saturating_mul(mps)
+            .saturating_mul(U256::from(MPS))
             .checked_div(self.amount_out_required)?;
         info!("mps_of_improvement: {}", mps_of_improvement);
         let priority_fee = mps_of_improvement
@@ -191,20 +192,27 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             );
 
             let signed_orders = self.get_signed_orders(orders.clone()).ok()?;
-            return Some(Action::SubmitPublicTx(SubmitTxToMempoolWithExecutionMetadata {
-                execution: SubmitTxToMempool {
-                    tx: self
-                        .build_fill(self.client.clone(), &self.executor_address, signed_orders, event)
-                        .await
-                        .ok()?,
-                    gas_bid_info: Some(GasBidInfo {
-                        bid_percentage: self.bid_percentage,
-                        // this field is not used for priority orders
-                        total_profit: U256::from(0),
-                    }),
+            return Some(Action::SubmitPublicTx(
+                SubmitTxToMempoolWithExecutionMetadata {
+                    execution: SubmitTxToMempool {
+                        tx: self
+                            .build_fill(
+                                self.client.clone(),
+                                &self.executor_address,
+                                signed_orders,
+                                event,
+                            )
+                            .await
+                            .ok()?,
+                        gas_bid_info: Some(GasBidInfo {
+                            bid_percentage: self.bid_percentage,
+                            // this field is not used for priority orders
+                            total_profit: U256::from(0),
+                        }),
+                    },
+                    metadata: profit,
                 },
-                metadata: profit,
-            }));
+            ));
         }
 
         None
@@ -309,7 +317,10 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
     ///     - we will always bid the base fee
     ///     - since we have to provide 1 MP (1/1000th of a bp) for every wei of priority fee
     ///     - we return the data needed to calculate the maximum MPS of improvement we can offer from our quote and the order specs
-    fn get_execution_metadata(&self, RoutedOrder { request, route }: &RoutedOrder) -> Option<ExecutionMetadata> {
+    fn get_execution_metadata(
+        &self,
+        RoutedOrder { request, route }: &RoutedOrder,
+    ) -> Option<ExecutionMetadata> {
         let quote = U256::from_str_radix(&route.quote, 10).ok()?;
         let amount_out_required =
             U256::from_str_radix(&request.amount_out_required.to_string(), 10).ok()?;
@@ -322,11 +333,15 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                 quote,
                 amount_out_required,
             }
-        })
+        });
     }
 
     fn update_order_state(&mut self, order: PriorityOrder, signature: String, order_hash: String) {
-        let resolved = order.resolve( self.last_block_number, self.last_block_timestamp + BLOCK_TIME, Uint::from(0));
+        let resolved = order.resolve(
+            self.last_block_number,
+            self.last_block_timestamp + BLOCK_TIME,
+            Uint::from(0),
+        );
         let order_status: OrderStatus = match resolved {
             OrderResolution::Expired => OrderStatus::Done,
             OrderResolution::Invalid => OrderStatus::Done,
@@ -391,7 +406,6 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                     error!("Invalid order type");
                 }
             }
-            
         }
     }
 
