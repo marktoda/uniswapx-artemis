@@ -1,5 +1,5 @@
 use alloy_primitives::Uint;
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Result};
 use reqwest::header::ORIGIN;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{Receiver, Sender};
@@ -238,10 +238,10 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
         .header("x-request-source", "uniswap-web")
         .send()
         .await
-        .context("Quote request failed with {}")?
+        .map_err(|e| anyhow!("Quote request failed with error: {}", e))?
         .json::<OrderRoute>()
         .await
-        .context("Failed to parse response: {}")?)
+        .map_err(|e| anyhow!("Failed to parse response: {}", e))?)
 }
 
 // The Uniswap routing API requires that "ETH" be used instead of the zero address
