@@ -338,7 +338,12 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         });
     }
 
-    fn update_order_state(&mut self, order: &PriorityOrder, signature: &String, order_hash: &String) {
+    fn update_order_state(
+        &mut self,
+        order: &PriorityOrder,
+        signature: &String,
+        order_hash: &String,
+    ) {
         let resolved = order.resolve(
             self.last_block_number,
             self.last_block_timestamp + BLOCK_TIME,
@@ -411,7 +416,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
                     continue;
                 }
             };
-    
+
             self.update_order_state(&mut order, &signature, &order_hash);
         }
     }

@@ -241,27 +241,20 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
         .map_err(|e| anyhow!("Quote request failed with error: {}", e))?;
 
     match response.status() {
-        StatusCode::OK => {
-            Ok(response
-                .json::<OrderRoute>()
-                .await
-                .map_err(|e| anyhow!("Failed to parse response: {}", e))?)
-        }
-        StatusCode::BAD_REQUEST => {
-            Err(anyhow!("Bad request: {}", response.status()))
-        }
-        StatusCode::NOT_FOUND => {
-            Err(anyhow!("Not quote found: {}", response.status()))
-        }
-        StatusCode::TOO_MANY_REQUESTS => {
-            Err(anyhow!("Too many requests: {}", response.status()))
-        }
+        StatusCode::OK => Ok(response
+            .json::<OrderRoute>()
+            .await
+            .map_err(|e| anyhow!("Failed to parse response: {}", e))?),
+        StatusCode::BAD_REQUEST => Err(anyhow!("Bad request: {}", response.status())),
+        StatusCode::NOT_FOUND => Err(anyhow!("Not quote found: {}", response.status())),
+        StatusCode::TOO_MANY_REQUESTS => Err(anyhow!("Too many requests: {}", response.status())),
         StatusCode::INTERNAL_SERVER_ERROR => {
             Err(anyhow!("Internal server error: {}", response.status()))
         }
-        _ => {
-            Err(anyhow!("Unexpected error with status code: {}", response.status()))
-        }
+        _ => Err(anyhow!(
+            "Unexpected error with status code: {}",
+            response.status()
+        )),
     }
 }
 

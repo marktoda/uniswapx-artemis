@@ -64,7 +64,10 @@ where
         action.tx.set_gas_price(bid_gas_price);
 
         info!("Executing tx {:?}", action.tx);
-        self.sender_client.send_transaction(action.tx, None).await?;
+        self.sender_client
+            .send_transaction(action.tx, None)
+            .await
+            .map_err(|err| anyhow::anyhow!("Error sending transaction: {}", err))?;
         Ok(())
     }
 }
