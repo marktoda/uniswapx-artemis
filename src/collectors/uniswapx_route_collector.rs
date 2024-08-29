@@ -173,7 +173,6 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
         let stream = async_stream::stream! {
             let mut receiver = self.route_request_receiver.lock().await;
             while let Some(route_requests) = receiver.recv().await {
-                info!("received requests {:?}", route_requests);
                 let tasks: FuturesUnordered<_> = route_requests.into_iter()
                     .map(|batch| {
                         let OrderBatchData { orders, token_in, token_out, amount_in, .. } = batch.clone();
