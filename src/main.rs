@@ -1,5 +1,5 @@
 use anyhow::Result;
-use clap::Parser;
+use clap::{ArgGroup, Parser};
 
 use artemis_core::engine::Engine;
 use artemis_core::types::{CollectorMap, ExecutorMap};
@@ -15,6 +15,7 @@ use ethers::{
 };
 use executors::protect_executor::ProtectExecutor;
 use executors::public_1559_executor::Public1559Executor;
+use std::collections::HashMap;
 use std::sync::Arc;
 use strategies::priority_strategy::UniswapXPriorityFill;
 use strategies::{
@@ -33,6 +34,11 @@ const MEV_BLOCKER: &str = "https://rpc.mevblocker.io/noreverts";
 
 /// CLI Options.
 #[derive(Parser, Debug)]
+#[command(group(
+    ArgGroup::new("Key_source")
+        .required(true)
+        .args(&["private_key", "aws_secret_arn"])
+))]
 pub struct Args {
     /// Ethereum node WS endpoint.
     #[arg(long)]
@@ -40,7 +46,16 @@ pub struct Args {
 
     /// Private key for sending txs.
     #[arg(long)]
-    pub private_key: String,
+    pub private_key: Option<String>,
+    
+    /// public key for the bot that corresponds to the private key.
+    #[arg(long)]
+    pub bot_address: String,
+    
+    /// AWS secret arn for fetching private key.
+    /// This is a secret manager arn that contains the private key as plain text.
+    #[arg(long)]
+    pub aws_secret_arn: Option<String>,
 
     /// Percentage of profit to pay in gas.
     #[arg(long)]
@@ -81,8 +96,25 @@ async fn main() -> Result<()> {
     let mevblocker_provider =
         Provider::<Http>::try_from(MEV_BLOCKER).expect("could not instantiate HTTP Provider");
 
-    let wallet: LocalWallet = args
-        .private_key
+    /// TODO: support an array of addresses
+    let pk = if let Some(aws_secret_arn) = args.aws_secret_arn {
+        let config = aws_config::load_from_env().await;
+        let client = aws_sdk_secretsmanager::Client::new(&config);
+        let pk_mapping_json = client.get_secret_value()
+            .secret_id(aws_secret_arn)
+            .send()
+            .await
+            .expect("could not get private key secret")
+            .secret_string
+            .expect("secret string not found");
+        let pk_mapping = serde_json::from_str::<HashMap<String, String>>(&pk_mapping_json)
+            .expect("could not parse private key mapping");
+        pk_mapping.get(&args.bot_address).unwrap().clone()
+    } else {
+        args.private_key.clone().unwrap()
+    };
+
+    let wallet: LocalWallet = pk
         .parse::<LocalWallet>()
         .unwrap()
         .with_chain_id(chain_id);
