@@ -165,16 +165,10 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             .ok()?;
 
         self.update_order_state(&order, &event.signature, &event.order_hash);
-
-        // get the order data from open orders and send it to the batch sender
-        if let Some(order_data) = self.open_orders().get(&event.order_hash) {
-            let order_batch = self.get_order_batch(order_data);
-            self.batch_sender
-                .send(vec![order_batch])
-                .await
-                .map_err(|e| error!("failed to send order batch: {}", e))
-                .ok()?;
-        }
+        self.send_order_if_open(&event.order_hash)
+            .await
+            .map_err(|e| error!("failed to send order: {}", e))
+            .ok()?;
 
         None
     }
@@ -248,7 +242,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             .await
             .map_err(|e| error!("Error handling fills {}", e))
             .ok()?;
-        self.update_open_orders();
+        self.update_open_orders().await;
         self.prune_done_orders();
 
         None
@@ -338,6 +332,7 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         });
     }
 
+    // Resolve and order and update its state
     fn update_order_state(
         &mut self,
         order: &PriorityOrder,
@@ -400,25 +395,32 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
         }
     }
 
-    fn update_open_orders(&mut self) {
-        let order_hashes: Vec<String> = self.open_orders().keys().cloned().collect();
-        for order_hash in order_hashes {
-            let (mut order, signature) = {
-                let order_data = self.open_orders_mut().get_mut(&order_hash);
-                if let Some(order_data) = order_data {
-                    // Clone the necessary data
-                    let signature = order_data.clone().signature;
-                    match &order_data.order {
-                        Order::PriorityOrder(order) => (order.clone(), signature),
-                        _ => continue,
-                    }
-                } else {
-                    continue;
+    async fn update_open_orders(&mut self) {
+        // TODO: this is nasty, plz cleanup
+        let binding = self.open_orders.clone();
+        let order_hashes: Vec<(&String, &OrderData)> = binding.iter().collect();
+        for (order_hash, order_data) in order_hashes {
+            match &order_data.order {
+                Order::PriorityOrder(order) => {
+                    self.update_order_state(&order, &order_data.signature, &order_hash.to_string());
+                    self.send_order_if_open(order_hash)
+                        .await
+                        .map_err(|e| error!("failed to send order: {}", e))
+                        .ok();
                 }
-            };
-
-            self.update_order_state(&mut order, &signature, &order_hash);
+                _ => {
+                    error!("Invalid order type");
+                }
+            }
         }
+    }
+
+    async fn send_order_if_open(&self, order_hash: &String) -> Result<()> {
+        if let Some(order_data) = self.open_orders().get(order_hash) {
+            let order_batch = self.get_order_batch(order_data);
+            self.batch_sender.send(vec![order_batch]).await?;
+        }
+        Ok(())
     }
 
     fn mark_as_done(&mut self, order: &str) {

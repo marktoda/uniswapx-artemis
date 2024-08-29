@@ -9,7 +9,6 @@ use collectors::{
     uniswapx_route_collector::UniswapXRouteCollector,
 };
 use ethers::{
-    prelude::MiddlewareBuilder,
     providers::{Http, Provider, Ws},
     signers::{LocalWallet, Signer},
 };
@@ -17,6 +16,7 @@ use executors::protect_executor::ProtectExecutor;
 use executors::public_1559_executor::Public1559Executor;
 use std::collections::HashMap;
 use std::sync::Arc;
+use strategies::keystore::KeyStore;
 use strategies::priority_strategy::UniswapXPriorityFill;
 use strategies::{
     types::{Action, Config, Event},
@@ -39,22 +39,26 @@ const MEV_BLOCKER: &str = "https://rpc.mevblocker.io/noreverts";
         .required(true)
         .args(&["private_key", "aws_secret_arn"])
 ))]
+#[command(group(
+    ArgGroup::new("key_source")
+        .args(&["private_key", "private_key_file", "aws_secret_arn"])
+))]
 pub struct Args {
     /// Ethereum node WS endpoint.
     #[arg(long)]
     pub wss: String,
 
     /// Private key for sending txs.
-    #[arg(long)]
+    #[arg(long, group = "key_source")]
     pub private_key: Option<String>,
-    
-    /// public key for the bot that corresponds to the private key.
-    #[arg(long)]
-    pub bot_address: String,
-    
+
+    /// Path to file containing mapping between public address and private key.
+    #[arg(long, group = "key_source")]
+    pub private_key_file: Option<String>,
+
     /// AWS secret arn for fetching private key.
     /// This is a secret manager arn that contains the private key as plain text.
-    #[arg(long)]
+    #[arg(long, group = "key_source")]
     pub aws_secret_arn: Option<String>,
 
     /// Percentage of profit to pay in gas.
@@ -96,11 +100,13 @@ async fn main() -> Result<()> {
     let mevblocker_provider =
         Provider::<Http>::try_from(MEV_BLOCKER).expect("could not instantiate HTTP Provider");
 
-    /// TODO: support an array of addresses
-    let pk = if let Some(aws_secret_arn) = args.aws_secret_arn {
+    let key_store = Arc::new(KeyStore::new());
+
+    if let Some(aws_secret_arn) = args.aws_secret_arn {
         let config = aws_config::load_from_env().await;
         let client = aws_sdk_secretsmanager::Client::new(&config);
-        let pk_mapping_json = client.get_secret_value()
+        let pk_mapping_json = client
+            .get_secret_value()
             .secret_id(aws_secret_arn)
             .send()
             .await
@@ -109,23 +115,28 @@ async fn main() -> Result<()> {
             .expect("secret string not found");
         let pk_mapping = serde_json::from_str::<HashMap<String, String>>(&pk_mapping_json)
             .expect("could not parse private key mapping");
-        pk_mapping.get(&args.bot_address).unwrap().clone()
+        // load into keystore
+        for (address, pk) in pk_mapping {
+            key_store.add_key(address, pk).await;
+        }
+    } else if let Some(pk_file) = args.private_key_file {
+        let pk_mapping_json = std::fs::read_to_string(pk_file).expect("could not read pk file");
+        let pk_mapping = serde_json::from_str::<HashMap<String, String>>(&pk_mapping_json)
+            .expect("could not parse private key mapping");
+        // load into keystore
+        for (address, pk) in pk_mapping {
+            key_store.add_key(address, pk).await;
+        }
     } else {
-        args.private_key.clone().unwrap()
-    };
+        let pk = args.private_key.clone().unwrap();
+        let wallet: LocalWallet = pk.parse::<LocalWallet>().unwrap().with_chain_id(chain_id);
+        let address = wallet.address();
+        key_store.add_key(address.to_string(), pk).await;
+    }
+    info!("Key store initialized with {} keys", key_store.len().await);
 
-    let wallet: LocalWallet = pk
-        .parse::<LocalWallet>()
-        .unwrap()
-        .with_chain_id(chain_id);
-    let address = wallet.address();
-
-    let provider = Arc::new(provider.nonce_manager(address).with_signer(wallet.clone()));
-    let mevblocker_provider = Arc::new(
-        mevblocker_provider
-            .nonce_manager(address)
-            .with_signer(wallet),
-    );
+    let provider = Arc::new(provider);
+    let mevblocker_provider = Arc::new(mevblocker_provider);
 
     // Set up engine.
     let mut engine = Engine::default();
@@ -188,9 +199,14 @@ async fn main() -> Result<()> {
     let protect_executor = Box::new(ProtectExecutor::new(
         provider.clone(),
         mevblocker_provider.clone(),
+        key_store.clone(),
     ));
 
-    let public_tx_executor = Box::new(Public1559Executor::new(provider.clone(), provider.clone()));
+    let public_tx_executor = Box::new(Public1559Executor::new(
+        provider.clone(),
+        provider.clone(),
+        key_store.clone(), // TODO: this should be the same as the protect executor
+    ));
 
     let protect_executor = ExecutorMap::new(protect_executor, |action| match action {
         Action::SubmitTx(tx) => Some(tx),
