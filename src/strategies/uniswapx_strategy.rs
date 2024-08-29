@@ -86,9 +86,9 @@ impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXUniswapFill<M>
     // Process incoming events, seeing if we can arb new orders, and updating the internal state on new blocks.
     async fn process_event(&mut self, event: Event) -> Option<Action> {
         match event {
-            Event::UniswapXOrder(order) => self.process_order_event(*order).await,
-            Event::NewBlock(block) => self.process_new_block_event(block).await,
-            Event::UniswapXRoute(route) => self.process_new_route(*route).await,
+            Event::UniswapXOrder(order) => self.process_order_event(&order).await,
+            Event::NewBlock(block) => self.process_new_block_event(&block).await,
+            Event::UniswapXRoute(route) => self.process_new_route(&route).await,
         }
     }
 }
@@ -108,7 +108,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
     }
 
     // Process new orders as they come in.
-    async fn process_order_event(&mut self, event: UniswapXOrder) -> Option<Action> {
+    async fn process_order_event(&mut self, event: &UniswapXOrder) -> Option<Action> {
         if self.last_block_timestamp == 0 {
             return None;
         }
@@ -118,11 +118,11 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             .map_err(|e| error!("failed to decode: {}", e))
             .ok()?;
 
-        self.update_order_state(order, event.signature, event.order_hash);
+        self.update_order_state(order, &event.signature, &event.order_hash);
         None
     }
 
-    async fn process_new_route(&mut self, event: RoutedOrder) -> Option<Action> {
+    async fn process_new_route(&mut self, event: &RoutedOrder) -> Option<Action> {
         if event
             .request
             .orders
@@ -169,7 +169,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
     }
 
     /// Process new block events, updating the internal state.
-    async fn process_new_block_event(&mut self, event: NewBlock) -> Option<Action> {
+    async fn process_new_block_event(&mut self, event: &NewBlock) -> Option<Action> {
         self.last_block_number = event.number.as_u64();
         self.last_block_timestamp = event.timestamp.as_u64();
 
@@ -299,8 +299,8 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 Order::V2DutchOrder(order) => {
                     self.update_order_state(
                         order.clone(),
-                        order_data.signature.clone(),
-                        order_hash.clone().to_string(),
+                        &order_data.signature,
+                        &order_hash.to_string(),
                     );
                 }
                 _ => {
@@ -320,7 +320,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         }
     }
 
-    fn update_order_state(&mut self, order: V2DutchOrder, signature: String, order_hash: String) {
+    fn update_order_state(&mut self, order: V2DutchOrder, signature: &String, order_hash: &String) {
         let resolved = order.resolve(self.last_block_timestamp + BLOCK_TIME);
         let order_status: OrderStatus = match resolved {
             OrderResolution::Expired => OrderStatus::Done,
@@ -334,19 +334,19 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
                 self.mark_as_done(&order_hash);
             }
             OrderStatus::Open(resolved_order) => {
-                if self.done_orders.contains_key(&order_hash) {
+                if self.done_orders.contains_key(order_hash) {
                     info!("Order already done, skipping: {}", order_hash);
                     return;
                 }
-                if !self.open_orders.contains_key(&order_hash) {
+                if !self.open_orders.contains_key(order_hash) {
                     info!("Adding new order {}", order_hash);
                 }
                 self.open_orders.insert(
                     order_hash.clone(),
                     OrderData {
                         order: Order::V2DutchOrder(order),
-                        hash: order_hash,
-                        signature,
+                        hash: order_hash.clone(),
+                        signature: signature.clone(),
                         resolved: resolved_order,
                     },
                 );

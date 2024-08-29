@@ -1,5 +1,5 @@
 use alloy_primitives::Uint;
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Result};
 use reqwest::header::ORIGIN;
 use serde::{Deserialize, Serialize};
 use tokio::sync::mpsc::{Receiver, Sender};
@@ -10,7 +10,7 @@ use artemis_core::types::{Collector, CollectorStream};
 use async_trait::async_trait;
 use futures::lock::Mutex;
 use futures::stream::{FuturesUnordered, StreamExt};
-use reqwest::Client;
+use reqwest::{Client, StatusCode};
 
 const ROUTING_API: &str = "https://api.uniswap.org/v1/quote";
 const SLIPPAGE_TOLERANCE: &str = "0.5";
@@ -173,7 +173,7 @@ impl Collector<RoutedOrder> for UniswapXRouteCollector {
         let stream = async_stream::stream! {
             let mut receiver = self.route_request_receiver.lock().await;
             while let Some(route_requests) = receiver.recv().await {
-                let tasks: FuturesUnordered<_> = route_requests.iter()
+                let tasks: FuturesUnordered<_> = route_requests.into_iter()
                     .map(|batch| {
                         let OrderBatchData { orders, token_in, token_out, amount_in, .. } = batch.clone();
                         info!(
@@ -232,16 +232,30 @@ pub async fn route_order(params: RouteOrderParams) -> Result<OrderRoute> {
 
     let client = reqwest::Client::new();
 
-    Ok(client
+    let response = client
         .get(format!("{}?{}", ROUTING_API, query_string))
         .header(ORIGIN, "https://app.uniswap.org")
         .header("x-request-source", "uniswap-web")
         .send()
         .await
-        .context("Quote request failed with {}")?
-        .json::<OrderRoute>()
-        .await
-        .context("Failed to parse response: {}")?)
+        .map_err(|e| anyhow!("Quote request failed with error: {}", e))?;
+
+    match response.status() {
+        StatusCode::OK => Ok(response
+            .json::<OrderRoute>()
+            .await
+            .map_err(|e| anyhow!("Failed to parse response: {}", e))?),
+        StatusCode::BAD_REQUEST => Err(anyhow!("Bad request: {}", response.status())),
+        StatusCode::NOT_FOUND => Err(anyhow!("Not quote found: {}", response.status())),
+        StatusCode::TOO_MANY_REQUESTS => Err(anyhow!("Too many requests: {}", response.status())),
+        StatusCode::INTERNAL_SERVER_ERROR => {
+            Err(anyhow!("Internal server error: {}", response.status()))
+        }
+        _ => Err(anyhow!(
+            "Unexpected error with status code: {}",
+            response.status()
+        )),
+    }
 }
 
 // The Uniswap routing API requires that "ETH" be used instead of the zero address

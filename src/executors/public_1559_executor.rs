@@ -73,7 +73,8 @@ where
         info!("Executing tx {:?}", action.execution.tx);
         self.sender_client
             .send_transaction(action.execution.tx, None)
-            .await?;
+            .await
+            .map_err(|err| anyhow::anyhow!("Error sending transaction: {}", err))?;
         Ok(())
     }
 }

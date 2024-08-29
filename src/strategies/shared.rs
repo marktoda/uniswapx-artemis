@@ -27,7 +27,7 @@ pub trait UniswapXStrategy<M: Middleware + 'static> {
         client: Arc<M>,
         executor_address: &str,
         signed_orders: Vec<SignedOrder>,
-        RoutedOrder { request, route }: RoutedOrder,
+        RoutedOrder { request, route }: &RoutedOrder,
     ) -> Result<TypedTransaction> {
         let chain_id: U256 = client.get_chainid().await?;
         let fill_contract =
