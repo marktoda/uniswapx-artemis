@@ -18,10 +18,7 @@ WORKDIR /app
 
 
 # AWS CodeBuild doesn't seem to support buildkit so can't use --mount
-RUN pwd
-RUN ls -la .
-RUN ls -la ..
-COPY ./uniswapx-artemis .
+COPY . .
 RUN cargo build --locked --release && \
 cp ./target/release/$APP_NAME /bin/server
 
