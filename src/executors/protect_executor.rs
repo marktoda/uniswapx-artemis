@@ -4,11 +4,11 @@ use std::{
 };
 use tracing::info;
 
-use anyhow::{Context, Result};
+use anyhow::Result;
 use artemis_core::executors::mempool_executor::SubmitTxToMempool;
 use artemis_core::types::Executor;
 use async_trait::async_trait;
-use ethers::providers::Middleware;
+use ethers::{providers::Middleware, types::U256};
 
 /// An executor that sends transactions to the mempool.
 pub struct ProtectExecutor<M, N> {
@@ -39,9 +39,12 @@ where
             .client
             .estimate_gas(&action.tx, None)
             .await
-            .context("Error estimating gas usage: {}");
+            .unwrap_or_else(|err| {
+                info!("Error estimating gas: {}", err);
+                U256::from(1_000_000)
+            });
         info!("Gas Usage {:?}", gas_usage_result);
-        let gas_usage = gas_usage_result?;
+        let gas_usage = gas_usage_result;
 
         let bid_gas_price;
         if let Some(gas_bid_info) = action.gas_bid_info {
@@ -56,7 +59,7 @@ where
                 .client
                 .get_gas_price()
                 .await
-                .context("Error getting gas price: {}")?;
+                .map_err(|err| anyhow::anyhow!("Error getting gas price: {}", err))?;
         }
         action.tx.set_gas_price(bid_gas_price);
 

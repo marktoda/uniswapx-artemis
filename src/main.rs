@@ -22,7 +22,7 @@ use strategies::{
     uniswapx_strategy::UniswapXUniswapFill,
 };
 use tokio::sync::mpsc::channel;
-use tracing::{info, Level};
+use tracing::{error, info, Level};
 use tracing_subscriber::{filter, prelude::*};
 
 pub mod collectors;
@@ -175,9 +175,21 @@ async fn main() -> Result<()> {
     engine.add_executor(Box::new(protect_executor));
     engine.add_executor(Box::new(public_tx_executor));
     // Start engine.
-    if let Ok(mut set) = engine.run().await {
-        while let Some(res) = set.join_next().await {
-            info!("res: {:?}", res);
+    match engine.run().await {
+        Ok(mut set) => {
+            while let Some(res) = set.join_next().await {
+                match res {
+                    Ok(res) => {
+                        info!("res: {:?}", res);
+                    }
+                    Err(e) => {
+                        info!("error: {:?}", e);
+                    }
+                }
+            }
+        }
+        Err(e) => {
+            error!("Engine run error: {:?}", e);
         }
     }
     Ok(())
