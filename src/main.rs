@@ -86,7 +86,14 @@ async fn main() -> Result<()> {
         .with_target("uniswapx_artemis", Level::INFO);
 
     tracing_subscriber::registry()
-        .with(tracing_subscriber::fmt::layer())
+        .with(
+            tracing_subscriber::fmt::layer()
+                // this needs to be set to false, otherwise ANSI color codes will
+                // show up in a confusing manner in CloudWatch logs.
+                .with_ansi(false)
+                // remove the name of the function from every log entry
+                .with_target(false),
+        )
         .with(filter)
         .init();
 
