@@ -108,11 +108,21 @@ where
         let signer = nonce_manager.with_signer(wallet);
 
         info!("Executing tx {:?}", action.execution.tx);
-        let result = signer
-            .send_transaction(action.execution.tx, None)
-            .await
-            .map_err(|err| anyhow::anyhow!("Error sending transaction: {}", err));
+        let result = signer.send_transaction(action.execution.tx, None).await;
 
+        // Block on pending transaction getting confirmations
+        match result {
+            Ok(tx) => {
+                tx.confirmations(1)
+                    .await
+                    .map_err(|e| anyhow::anyhow!("Error waiting for confirmations: {}", e))?;
+            }
+            Err(e) => {
+                info!("Error sending transaction: {}", e);
+            }
+        }
+
+        // regardless of outcome, ensure we release the key
         match self.key_store.release_key(public_address.clone()).await {
             Ok(_) => {
                 info!("Released key: {}", public_address);
@@ -121,8 +131,6 @@ where
                 info!("Failed to release key: {}", e);
             }
         }
-        // Send result up the stack
-        result?;
         Ok(())
     }
 }
