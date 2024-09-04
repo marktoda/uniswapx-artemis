@@ -29,7 +29,7 @@ cp ./target/release/$APP_NAME /bin/server
 # stage.
 #
 FROM debian:bookworm-slim AS final
-RUN apt-get update && apt-get upgrade && apt-get install -y libssl3 ca-certificates && update-ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get -y update && apt-get -y upgrade && apt-get install -y libssl3 ca-certificates && update-ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
