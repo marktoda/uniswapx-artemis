@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use serde_json::Value;
 use tracing::info;
 
 use anyhow::{Context, Result};
@@ -11,6 +12,7 @@ use ethers::{
     types::U256,
 };
 
+use crate::constants::ReactorErrorCode;
 use crate::strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata};
 
 /// An executor that sends transactions to the public mempool.
@@ -40,6 +42,7 @@ where
 {
     /// Send a transaction to the mempool.
     async fn execute(&self, mut action: SubmitTxToMempoolWithExecutionMetadata) -> Result<()> {
+        let order_hash = action.metadata.order_hash.clone();
         // Acquire a key from the key store
         let (public_address, private_key) = self
             .key_store
@@ -68,11 +71,24 @@ where
 
         action.execution.tx.set_from(address);
 
+        // redundant match to log specific reasons
+        // always use 1_000_000 gas for now
         let gas_usage_result = self
             .client
             .estimate_gas(&action.execution.tx, None)
             .await
             .unwrap_or_else(|err| {
+                if let Some(Value::String(four_byte)) = err.as_error_response().unwrap().data.clone() {
+                    match four_byte.into() {
+                        ReactorErrorCode::OrderNotFillable => {
+                            info!("{} - Estimating gas but OrderNotFillable yet", order_hash);
+                            return U256::from(1_000_000);
+                        }
+                        _ => {
+                            return U256::from(1_000_000);
+                        }
+                    }
+                }
                 info!("Error estimating gas: {}", err);
                 U256::from(1_000_000)
             });
