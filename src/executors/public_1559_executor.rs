@@ -118,7 +118,7 @@ where
                 let receipt = tx.confirmations(1)
                     .await
                     .map_err(|e| anyhow::anyhow!("Error waiting for confirmations: {}", e))?;
-                info!("Transaction receipt: {:?}", receipt);
+                info!("{} - receipt: {:?}", action.metadata.order_hash, receipt);
             }
             Err(e) => {
                 info!("Error sending transaction: {}", e);
