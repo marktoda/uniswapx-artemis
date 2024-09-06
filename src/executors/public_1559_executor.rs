@@ -6,7 +6,7 @@ use artemis_core::types::Executor;
 use async_trait::async_trait;
 use ethers::{
     middleware::MiddlewareBuilder,
-    providers::Middleware,
+    providers::{Middleware, MiddlewareError},
     signers::{LocalWallet, Signer},
     types::U256,
 };
@@ -115,9 +115,10 @@ where
         // Block on pending transaction getting confirmations
         match result {
             Ok(tx) => {
-                tx.confirmations(1)
+                let receipt = tx.confirmations(1)
                     .await
                     .map_err(|e| anyhow::anyhow!("Error waiting for confirmations: {}", e))?;
+                info!("Transaction receipt: {:?}", receipt);
             }
             Err(e) => {
                 info!("Error sending transaction: {}", e);

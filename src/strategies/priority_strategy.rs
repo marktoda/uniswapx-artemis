@@ -40,16 +40,18 @@ pub const WETH_ADDRESS: &str = "0x4200000000000000000000000000000000000006";
 #[derive(Debug, Clone)]
 pub struct ExecutionMetadata {
     // amount of quote token we can get
-    quote: U256,
+    pub quote: U256,
     // amount of quote token needed to fill the order
-    amount_out_required: U256,
+    pub amount_out_required: U256,
+    pub order_hash: String,
 }
 
 impl ExecutionMetadata {
-    pub fn new(quote: U256, amount_out_required: U256) -> Self {
+    pub fn new(quote: U256, amount_out_required: U256, order_hash: &String) -> Self {
         Self {
             quote,
             amount_out_required,
+            order_hash: order_hash.clone(),
         }
     }
 
@@ -67,7 +69,7 @@ impl ExecutionMetadata {
         let priority_fee = mps_of_improvement
             .checked_mul(U256::from(bid_percentage))?
             .checked_div(U256::from(100))?;
-        return Some(priority_fee);
+        Some(priority_fee)
     }
 }
 
@@ -123,7 +125,6 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
 
 #[async_trait]
 impl<M: Middleware + 'static> Strategy<Event, Action> for UniswapXPriorityFill<M> {
-    // In order to sync this strategy, we need to get the current bid for all Sudo pools.
     async fn sync_state(&mut self) -> Result<()> {
         info!("syncing state");
 
@@ -324,12 +325,13 @@ impl<M: Middleware + 'static> UniswapXPriorityFill<M> {
             return None;
         }
 
-        return Some({
+        Some({
             ExecutionMetadata {
                 quote,
                 amount_out_required,
+                order_hash: request.orders[0].hash.clone(),
             }
-        });
+        })
     }
 
     // Resolve and order and update its state
