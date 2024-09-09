@@ -48,7 +48,7 @@ where
             .acquire_key()
             .await
             .expect("Failed to acquire key");
-        info!("{} - Acquired key: {:?}", order_hash, public_address);
+        info!("{} - Acquired key: {}", order_hash, public_address);
 
         let chain_id = u64::from_str_radix(
             &action
