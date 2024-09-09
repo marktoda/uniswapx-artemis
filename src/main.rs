@@ -27,7 +27,6 @@ use tracing::{error, info, Level};
 use tracing_subscriber::{filter, prelude::*};
 
 pub mod collectors;
-pub mod constants;
 pub mod executors;
 pub mod strategies;
 

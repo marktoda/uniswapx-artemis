@@ -1,6 +1,6 @@
 use std::sync::Arc;
 use serde_json::Value;
-use tracing::info;
+use tracing::{info, warn};
 
 use anyhow::{Context, Result};
 use artemis_core::types::Executor;
@@ -12,8 +12,7 @@ use ethers::{
     types::U256,
 };
 
-use crate::constants::ReactorErrorCode;
-use crate::strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata};
+use crate::{executors::reactor_error_code::ReactorErrorCode, strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata}};
 
 /// An executor that sends transactions to the public mempool.
 pub struct Public1559Executor<M, N> {
@@ -79,17 +78,10 @@ where
             .await
             .unwrap_or_else(|err| {
                 if let Some(Value::String(four_byte)) = err.as_error_response().unwrap().data.clone() {
-                    match four_byte.into() {
-                        ReactorErrorCode::OrderNotFillable => {
-                            info!("{} - Estimating gas but OrderNotFillable yet", order_hash);
-                            return U256::from(1_000_000);
-                        }
-                        _ => {
-                            return U256::from(1_000_000);
-                        }
-                    }
+                    warn!("Error estimating gas: {}", Into::<ReactorErrorCode>::into(four_byte));
+                } else {
+                    warn!("Error estimating gas: {:?}", err);
                 }
-                info!("Error estimating gas: {}", err);
                 U256::from(1_000_000)
             });
         info!("Gas Usage {:?}", gas_usage_result);
