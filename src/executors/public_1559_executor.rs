@@ -48,7 +48,7 @@ where
             .acquire_key()
             .await
             .expect("Failed to acquire key");
-        info!("Acquired key: {}", public_address);
+        info!("Acquired key: {} for order: {}", public_address, order_hash);
 
         let chain_id = u64::from_str_radix(
             &action
@@ -78,7 +78,7 @@ where
             .await
             .unwrap_or_else(|err| {
                 if let Some(Value::String(four_byte)) = err.as_error_response().unwrap().data.clone() {
-                    warn!("Error estimating gas: {}", Into::<ReactorErrorCode>::into(four_byte));
+                    warn!("Error estimating gas with reason: {}; {}", Into::<ReactorErrorCode>::into(four_byte.clone()), four_byte);
                 } else {
                     warn!("Error estimating gas: {:?}", err);
                 }
@@ -129,7 +129,7 @@ where
                 info!("{} - receipt: {:?}", action.metadata.order_hash, receipt);
             }
             Err(e) => {
-                info!("Error sending transaction: {}", e);
+                warn!("Error sending transaction: {}", e);
             }
         }
 

@@ -16,7 +16,7 @@ impl From<String> for ReactorErrorCode {
 impl std::fmt::Display for ReactorErrorCode {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let s = match self {
-            ReactorErrorCode::OrderNotFillable => "0xc6035520",
+            ReactorErrorCode::OrderNotFillable => "OrderNotFillable",
             ReactorErrorCode::Unknown => "Unknown",
         };
         write!(f, "{}", s)
