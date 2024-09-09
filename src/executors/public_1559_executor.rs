@@ -1,5 +1,5 @@
-use std::sync::Arc;
 use serde_json::Value;
+use std::sync::Arc;
 use tracing::{info, warn};
 
 use anyhow::{Context, Result};
@@ -12,7 +12,10 @@ use ethers::{
     types::U256,
 };
 
-use crate::{executors::reactor_error_code::ReactorErrorCode, strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata}};
+use crate::{
+    executors::reactor_error_code::ReactorErrorCode,
+    strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata},
+};
 
 /// An executor that sends transactions to the public mempool.
 pub struct Public1559Executor<M, N> {
@@ -77,8 +80,14 @@ where
             .estimate_gas(&action.execution.tx, None)
             .await
             .unwrap_or_else(|err| {
-                if let Some(Value::String(four_byte)) = err.as_error_response().unwrap().data.clone() {
-                    warn!("Error estimating gas with reason: {}; {}", Into::<ReactorErrorCode>::into(four_byte.clone()), four_byte);
+                if let Some(Value::String(four_byte)) =
+                    err.as_error_response().unwrap().data.clone()
+                {
+                    warn!(
+                        "Error estimating gas with reason: {}; {}",
+                        Into::<ReactorErrorCode>::into(four_byte.clone()),
+                        four_byte
+                    );
                 } else {
                     warn!("Error estimating gas: {:?}", err);
                 }
@@ -122,14 +131,22 @@ where
         // Block on pending transaction getting confirmations
         match result {
             Ok(tx) => {
-                let receipt = tx.confirmations(1)
+                let receipt = tx
+                    .confirmations(1)
                     .await
-                    .map_err(|e| anyhow::anyhow!("{} - Error waiting for confirmations: {}", order_hash, e))?
+                    .map_err(|e| {
+                        anyhow::anyhow!("{} - Error waiting for confirmations: {}", order_hash, e)
+                    })?
                     .unwrap();
-                info!("{} - receipt: tx_hash: {:?}, status: {}",order_hash, receipt.transaction_hash, receipt.status.unwrap_or_default());
+                info!(
+                    "{} - receipt: tx_hash: {:?}, status: {}",
+                    order_hash,
+                    receipt.transaction_hash,
+                    receipt.status.unwrap_or_default()
+                );
             }
             Err(e) => {
-                warn!("{} - Error sending transaction: {}",order_hash , e);
+                warn!("{} - Error sending transaction: {}", order_hash, e);
             }
         }
 
