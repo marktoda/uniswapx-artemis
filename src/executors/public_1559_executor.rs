@@ -1,17 +1,18 @@
 use std::sync::Arc;
-use tracing::info;
+use serde_json::Value;
+use tracing::{info, warn};
 
 use anyhow::{Context, Result};
 use artemis_core::types::Executor;
 use async_trait::async_trait;
 use ethers::{
     middleware::MiddlewareBuilder,
-    providers::Middleware,
+    providers::{Middleware, MiddlewareError},
     signers::{LocalWallet, Signer},
     types::U256,
 };
 
-use crate::strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata};
+use crate::{executors::reactor_error_code::ReactorErrorCode, strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata}};
 
 /// An executor that sends transactions to the public mempool.
 pub struct Public1559Executor<M, N> {
@@ -40,13 +41,14 @@ where
 {
     /// Send a transaction to the mempool.
     async fn execute(&self, mut action: SubmitTxToMempoolWithExecutionMetadata) -> Result<()> {
+        let order_hash = action.metadata.order_hash.clone();
         // Acquire a key from the key store
         let (public_address, private_key) = self
             .key_store
             .acquire_key()
             .await
             .expect("Failed to acquire key");
-        info!("Acquired key: {}", public_address);
+        info!("Acquired key: {} for order: {}", public_address, order_hash);
 
         let chain_id = u64::from_str_radix(
             &action
@@ -68,12 +70,18 @@ where
 
         action.execution.tx.set_from(address);
 
+        // redundant match to log specific reasons
+        // always use 1_000_000 gas for now
         let gas_usage_result = self
             .client
             .estimate_gas(&action.execution.tx, None)
             .await
             .unwrap_or_else(|err| {
-                info!("Error estimating gas: {}", err);
+                if let Some(Value::String(four_byte)) = err.as_error_response().unwrap().data.clone() {
+                    warn!("Error estimating gas with reason: {}; {}", Into::<ReactorErrorCode>::into(four_byte.clone()), four_byte);
+                } else {
+                    warn!("Error estimating gas: {:?}", err);
+                }
                 U256::from(1_000_000)
             });
         info!("Gas Usage {:?}", gas_usage_result);
@@ -115,12 +123,13 @@ where
         // Block on pending transaction getting confirmations
         match result {
             Ok(tx) => {
-                tx.confirmations(1)
+                let receipt = tx.confirmations(1)
                     .await
                     .map_err(|e| anyhow::anyhow!("Error waiting for confirmations: {}", e))?;
+                info!("{} - receipt: {:?}", action.metadata.order_hash, receipt);
             }
             Err(e) => {
-                info!("Error sending transaction: {}", e);
+                warn!("Error sending transaction: {}", e);
             }
         }
 

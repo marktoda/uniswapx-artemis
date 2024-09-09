@@ -35,11 +35,6 @@ const MEV_BLOCKER: &str = "https://rpc.mevblocker.io/noreverts";
 /// CLI Options.
 #[derive(Parser, Debug)]
 #[command(group(
-    ArgGroup::new("Key_source")
-        .required(true)
-        .args(&["private_key", "aws_secret_arn"])
-))]
-#[command(group(
     ArgGroup::new("key_source")
         .args(&["private_key", "private_key_file", "aws_secret_arn"])
 ))]
