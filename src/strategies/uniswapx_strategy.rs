@@ -266,7 +266,7 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
         for log in logs {
             let order_hash = format!("0x{:x}", log.topics[1]);
             // remove from open
-            info!("Removing filled order {}", order_hash);
+            info!("{} - Removing filled order", order_hash);
             self.open_orders.remove(&order_hash);
             // add to done
             self.done_orders.insert(
@@ -335,11 +335,11 @@ impl<M: Middleware + 'static> UniswapXUniswapFill<M> {
             }
             OrderStatus::Open(resolved_order) => {
                 if self.done_orders.contains_key(order_hash) {
-                    info!("Order already done, skipping: {}", order_hash);
+                    info!("{} - Order already done, skipping", order_hash);
                     return;
                 }
                 if !self.open_orders.contains_key(order_hash) {
-                    info!("Adding new order {}", order_hash);
+                    info!("{} - Adding new order", order_hash);
                 }
                 self.open_orders.insert(
                     order_hash.clone(),
