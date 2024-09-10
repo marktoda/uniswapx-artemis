@@ -1,5 +1,5 @@
-use std::sync::Arc;
 use serde_json::Value;
+use std::sync::Arc;
 use tracing::{info, warn};
 
 use anyhow::{Context, Result};
@@ -12,7 +12,10 @@ use ethers::{
     types::U256,
 };
 
-use crate::{executors::reactor_error_code::ReactorErrorCode, strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata}};
+use crate::{
+    executors::reactor_error_code::ReactorErrorCode,
+    strategies::{keystore::KeyStore, types::SubmitTxToMempoolWithExecutionMetadata},
+};
 
 /// An executor that sends transactions to the public mempool.
 pub struct Public1559Executor<M, N> {
@@ -48,7 +51,7 @@ where
             .acquire_key()
             .await
             .expect("Failed to acquire key");
-        info!("Acquired key: {} for order: {}", public_address, order_hash);
+        info!("{} - Acquired key: {}", order_hash, public_address);
 
         let chain_id = u64::from_str_radix(
             &action
@@ -77,14 +80,19 @@ where
             .estimate_gas(&action.execution.tx, None)
             .await
             .unwrap_or_else(|err| {
-                if let Some(Value::String(four_byte)) = err.as_error_response().unwrap().data.clone() {
-                    warn!("Error estimating gas with reason: {}; {}", Into::<ReactorErrorCode>::into(four_byte.clone()), four_byte);
+                if let Some(Value::String(four_byte)) =
+                    err.as_error_response().unwrap().data.clone()
+                {
+                    warn!(
+                        "Error estimating gas with reason: {}; {}",
+                        Into::<ReactorErrorCode>::into(four_byte.clone()),
+                        four_byte
+                    );
                 } else {
                     warn!("Error estimating gas: {:?}", err);
                 }
                 U256::from(1_000_000)
             });
-        info!("Gas Usage {:?}", gas_usage_result);
 
         let bid_priority_fee;
         let base_fee: U256 = self
@@ -117,29 +125,38 @@ where
         let nonce_manager = sender_client.nonce_manager(address);
         let signer = nonce_manager.with_signer(wallet);
 
-        info!("Executing tx {:?}", action.execution.tx);
+        info!("{} - Executing tx from {:?}", order_hash, address);
         let result = signer.send_transaction(action.execution.tx, None).await;
 
         // Block on pending transaction getting confirmations
         match result {
             Ok(tx) => {
-                let receipt = tx.confirmations(1)
+                let receipt = tx
+                    .confirmations(1)
                     .await
-                    .map_err(|e| anyhow::anyhow!("Error waiting for confirmations: {}", e))?;
-                info!("{} - receipt: {:?}", action.metadata.order_hash, receipt);
+                    .map_err(|e| {
+                        anyhow::anyhow!("{} - Error waiting for confirmations: {}", order_hash, e)
+                    })?
+                    .unwrap();
+                info!(
+                    "{} - receipt: tx_hash: {:?}, status: {}",
+                    order_hash,
+                    receipt.transaction_hash,
+                    receipt.status.unwrap_or_default()
+                );
             }
             Err(e) => {
-                warn!("Error sending transaction: {}", e);
+                warn!("{} - Error sending transaction: {}", order_hash, e);
             }
         }
 
         // regardless of outcome, ensure we release the key
         match self.key_store.release_key(public_address.clone()).await {
             Ok(_) => {
-                info!("Released key: {}", public_address);
+                info!("{} - Released key: {}", order_hash, public_address);
             }
             Err(e) => {
-                info!("Failed to release key: {}", e);
+                info!("{} - Failed to release key: {}", order_hash, e);
             }
         }
         Ok(())
