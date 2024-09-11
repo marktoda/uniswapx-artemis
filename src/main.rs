@@ -102,7 +102,7 @@ async fn main() -> Result<()> {
     let mevblocker_provider =
         Provider::<Http>::try_from(MEV_BLOCKER).expect("could not instantiate HTTP Provider");
 
-    let key_store = Arc::new(KeyStore::new());
+    let mut key_store = Arc::new(KeyStore::new());
 
     if let Some(aws_secret_arn) = args.aws_secret_arn {
         let config = aws_config::load_from_env().await;
@@ -119,7 +119,7 @@ async fn main() -> Result<()> {
             .expect("could not parse private key mapping");
         // load into keystore
         for (address, pk) in pk_mapping {
-            key_store.add_key(address, pk).await;
+            Arc::make_mut(&mut key_store).add_key(address, pk).await;
         }
     } else if let Some(pk_file) = args.private_key_file {
         let pk_mapping_json = std::fs::read_to_string(pk_file).expect("could not read pk file");
@@ -127,15 +127,17 @@ async fn main() -> Result<()> {
             .expect("could not parse private key mapping");
         // load into keystore
         for (address, pk) in pk_mapping {
-            key_store.add_key(address, pk).await;
+            Arc::make_mut(&mut key_store).add_key(address, pk).await;
         }
     } else {
         let pk = args.private_key.clone().unwrap();
         let wallet: LocalWallet = pk.parse::<LocalWallet>().unwrap().with_chain_id(chain_id);
         let address = wallet.address();
-        key_store.add_key(address.to_string(), pk).await;
+        Arc::make_mut(&mut key_store)
+            .add_key(address.to_string(), pk)
+            .await;
     }
-    info!("Key store initialized with {} keys", key_store.len().await);
+    info!("Key store initialized with {} keys", key_store.len());
 
     let provider = Arc::new(provider);
     let mevblocker_provider = Arc::new(mevblocker_provider);

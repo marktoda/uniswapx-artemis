@@ -45,43 +45,43 @@ impl PartialEq for PrivateKey {
 
 #[derive(Clone)]
 pub struct KeyStore {
-    keys: Arc<Mutex<HashMap<String, (PrivateKey, bool)>>>, // Public address to (private key, in-use flag) mapping
+    keys: HashMap<String, Arc<Mutex<(PrivateKey, bool)>>>,
     notify: Arc<Notify>,
 }
 
 impl KeyStore {
     pub fn new() -> Self {
         KeyStore {
-            keys: Arc::new(Mutex::new(HashMap::new())),
+            keys: HashMap::new(),
             notify: Arc::new(Notify::new()),
         }
     }
 
-    pub async fn add_key(&self, public_address: String, private_key: String) {
-        let mut keys = self.keys.lock().await;
-        keys.insert(public_address, (PrivateKey::new(private_key), false));
+    pub async fn add_key(&mut self, public_address: String, private_key: String) {
+        self.keys.insert(
+            public_address,
+            Arc::new(Mutex::new((PrivateKey::new(private_key), false))),
+        );
     }
 
     pub async fn acquire_key(&self) -> Result<(String, PrivateKey), KeyStoreError> {
         loop {
-            let mut keys: tokio::sync::MutexGuard<'_, HashMap<String, (PrivateKey, bool)>> =
-                self.keys.lock().await;
-            if let Some((public_address, (private_key, in_use))) =
-                keys.iter_mut().find(|(_, (_, in_use))| !*in_use)
-            {
-                *in_use = true;
-                return Ok((public_address.clone(), private_key.clone()));
+            for (public_address, key_mutex) in &self.keys {
+                let mut key_data = key_mutex.lock().await;
+                let (private_key, in_use) = &mut *key_data;
+                if !*in_use {
+                    *in_use = true;
+                    return Ok((public_address.clone(), private_key.clone()));
+                }
             }
-            drop(keys); // Release the lock before waiting
-            println!("Waiting for key");
             self.notify.notified().await;
         }
     }
 
     pub async fn release_key(&self, public_address: String) -> Result<(), KeyStoreError> {
-        let mut keys = self.keys.lock().await;
-        if let Some((_, in_use)) = keys.get_mut(&public_address) {
-            *in_use = false;
+        if let Some(key_mutex) = self.keys.get(&public_address) {
+            let mut key_data = key_mutex.lock().await;
+            key_data.1 = false;
             self.notify.notify_one();
             Ok(())
         } else {
@@ -89,74 +89,63 @@ impl KeyStore {
         }
     }
 
-    pub async fn len(&self) -> usize {
-        let keys = self.keys.lock().await;
-        keys.len()
+    pub fn len(&self) -> usize {
+        self.keys.len()
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::collections::HashMap;
-    use std::sync::Arc;
-    use tokio::sync::Mutex;
-    use tokio::sync::Notify;
+    use tokio::time::{timeout, Duration};
 
     #[tokio::test]
     async fn test_acquire_key() {
-        let mut keys: HashMap<String, (PrivateKey, bool)> = HashMap::new();
-        keys.insert(
-            "address1".to_string(),
-            (PrivateKey::new("private_key1".to_string()), false),
-        );
-        let keystore = KeyStore {
-            keys: Arc::new(Mutex::new(keys)),
-            notify: Arc::new(Notify::new()),
-        };
+        let mut keystore = KeyStore::new();
+        keystore
+            .add_key("address1".to_string(), "private_key".to_string())
+            .await;
+        keystore
+            .add_key("address2".to_string(), "private_key".to_string())
+            .await;
 
         // Test for valid key retrieval
         let (public_key, private_key) = keystore.acquire_key().await.unwrap();
-        if private_key != PrivateKey::new("private_key1".to_string())
-            || private_key.as_str() != "private_key1"
-        {
-            panic!("Private key not found");
-        }
+        assert_eq!(private_key.as_str(), "private_key");
 
         // Test that the key is marked as in-use
-        let keys = keystore.keys.lock().await;
-        let (_, in_use) = keys.get(&public_key).unwrap();
-        assert!(*in_use);
+        let key_data = keystore.keys.get(&public_key).unwrap().lock().await;
+        assert!(key_data.1);
+        drop(key_data);
+
+        // Test for valid key retrieval of the second key
+        let (public_key2, private_key2) = keystore.acquire_key().await.unwrap();
+        assert_eq!(private_key2.as_str(), "private_key");
+        assert_ne!(public_key, public_key2);
+
+        // Test that the second key is marked as in-use
+        let key_data2 = keystore.keys.get(&public_key2).unwrap().lock().await;
+        assert!(key_data2.1);
+        drop(key_data2);
     }
 
     #[tokio::test]
     async fn test_len() {
-        let mut keys = HashMap::new();
-        keys.insert(
-            "address1".to_string(),
-            (PrivateKey::new("private_key1".to_string()), true),
-        );
-        keys.insert(
-            "address2".to_string(),
-            (PrivateKey::new("private_key2".to_string()), true),
-        );
-        let keystore = KeyStore {
-            keys: Arc::new(Mutex::new(keys)),
-            notify: Arc::new(Notify::new()),
-        };
+        let mut keystore = KeyStore::new();
+        keystore
+            .add_key("address1".to_string(), "private_key1".to_string())
+            .await;
+        keystore
+            .add_key("address2".to_string(), "private_key2".to_string())
+            .await;
 
         // Test for correct length
-        let len = keystore.len().await;
-        assert_eq!(len, 2);
+        assert_eq!(keystore.len(), 2);
     }
 
     #[tokio::test]
     async fn test_release_nonexistent_key() {
-        let keys: HashMap<String, (PrivateKey, bool)> = HashMap::new();
-        let keystore = KeyStore {
-            keys: Arc::new(Mutex::new(keys)),
-            notify: Arc::new(Notify::new()),
-        };
+        let keystore = KeyStore::new();
 
         // Attempt to release a key that is not in the store
         let result = keystore
@@ -164,5 +153,41 @@ mod tests {
             .await;
         assert!(result.is_err());
         assert_eq!(result.unwrap_err(), KeyStoreError::KeyNotFound);
+    }
+
+    #[tokio::test]
+    async fn test_notify_on_key_release() {
+        let mut keystore = KeyStore::new();
+        keystore.add_key("address1".to_string(), "private_key1".to_string()).await;
+        keystore.add_key("address2".to_string(), "private_key2".to_string()).await;
+
+        // Acquire both keys
+        let (addr1, _) = keystore.acquire_key().await.unwrap();
+        let (addr2, _) = keystore.acquire_key().await.unwrap();
+
+        // Attempt to acquire a key (should wait)
+        let acquire_future = tokio::spawn({
+            let keystore = keystore.clone();
+            async move {
+                keystore.acquire_key().await
+            }
+        });
+
+        // Wait a bit to ensure the acquire_future is waiting
+        tokio::time::sleep(Duration::from_millis(100)).await;
+
+        // Release one key
+        keystore.release_key(addr1.clone()).await.unwrap();
+
+        // The acquire_future should now complete
+        let acquire_result = timeout(Duration::from_secs(1), acquire_future).await;
+        assert!(acquire_result.is_ok(), "Acquire operation timed out");
+        
+        let (acquired_addr, _) = acquire_result.unwrap().unwrap().unwrap();
+        assert_eq!(acquired_addr, addr1, "Acquired address should match released address");
+
+        // Clean up
+        keystore.release_key(addr2).await.unwrap();
+        keystore.release_key(acquired_addr).await.unwrap();
     }
 }
